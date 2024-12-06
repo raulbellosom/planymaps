@@ -149,6 +149,7 @@ model Layer {
   id        String   @id @default(uuid())
   name      String
   mapId     String
+  order     Int
   map       Map      @relation(fields: [mapId], references: [id])
   pins      Pin[]
   drawings  Drawing[]

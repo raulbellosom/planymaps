@@ -86,3 +86,105 @@ export const deleteMap = async (id) => {
     throw error;
   }
 };
+
+// layers
+
+export const getLayers = async (id) => {
+  try {
+    const { data } = await api.get(`/layers/mapId/${id}`);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const getLayerById = async (id) => {
+  try {
+    const { data } = await api.get(`/layers/${id}`);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const createLayer = async (layer) => {
+  try {
+    const formData = new FormData();
+    const image = layer?.image[0] || null;
+
+    if (image instanceof File) {
+      formData.append('image', image);
+    }
+
+    formData.append(
+      'layerData',
+      JSON.stringify({
+        name: layer.name,
+        mapId: layer.mapId,
+        order: layer.order,
+        type: 'map',
+      }),
+    );
+
+    const { data } = await api.post('/layers', formData, headerFormData);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const updateLayer = async (layer) => {
+  try {
+    const formData = new FormData();
+    const image = layer?.image[0] || null;
+
+    if (image instanceof File) {
+      formData.append('image', image);
+    }
+
+    formData.append(
+      'layerData',
+      JSON.stringify({
+        name: layer.name,
+        order: layer.order,
+        mapId: layer.mapId,
+        type: 'map',
+      }),
+    );
+
+    const { data } = await api.put(
+      `/layers/${layer.id}`,
+      formData,
+      headerFormData,
+    );
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const updateLayersOrder = async (layers) => {
+  try {
+    const { data } = await api.put('/layers/order', layers);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const deleteLayer = async (id) => {
+  try {
+    const { data } = await api.delete(`/layers/${id}`);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};

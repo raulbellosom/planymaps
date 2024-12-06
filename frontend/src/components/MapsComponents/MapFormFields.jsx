@@ -6,7 +6,7 @@ import TextArea from '../Inputs/TextArea';
 import { LiaMapSolid } from 'react-icons/lia';
 import { TbWorldCog } from 'react-icons/tb';
 
-const UserFormFields = ({}) => {
+const MapFormFields = ({}) => {
   return (
     <div className="grid grid-cols-1 space-y-4">
       <Field
@@ -40,4 +40,4 @@ const UserFormFields = ({}) => {
   );
 };
 
-export default React.memo(UserFormFields);
+export default React.memo(MapFormFields);

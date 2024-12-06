@@ -8,7 +8,7 @@ const BASE_PATH = "src/uploads";
 
 const storage = diskStorage({
   destination: (req, file, cb) => {
-    const mapOrPin = req.body.type === "map" || req.body.type === "pin";
+    const mapOrPin = req.imageType == "map" ? "map" : "pin";
     const dir = file.mimetype.includes("image")
       ? `${BASE_PATH}/${mapOrPin}/images/`
       : `${BASE_PATH}/${mapOrPin}/files/`;
@@ -26,43 +26,53 @@ const storage = diskStorage({
 const upload = multer({ storage });
 
 const processImages = async (req, res, next) => {
-  if (!req.files) {
-    return next();
-  }
+  const file = req.file || null;
+  try {
+    if (!req.file) {
+      return next();
+    } else {
+      const { mimetype, filename } = file;
+      const fileName = path.parse(filename).name;
+      const thumbnailDir = path.join(
+        BASE_PATH,
+        req.imageType == "map" ? "map/thumbnails" : "pin/thumbnails"
+      );
 
-  const imageFiles = req.files["images"] || [];
-  const imageDestination =
-    req.body.type === "map"
-      ? `${BASE_PATH}/map/images/`
-      : `${BASE_PATH}/pin/images/`;
+      const thumbnailPath = path.join(
+        thumbnailDir,
+        `${fileName}-thumbnail${path.extname(filename)}`
+      );
 
-  const processedFiles = await Promise.all(
-    imageFiles.map(async (file) => {
-      const fileName = path.parse(file.filename).name;
-
-      const thumbnailDir = `${imageDestination}thumbnails/`;
-
-      const thumbnailPath = `${thumbnailDir}${fileName}-thumbnail.jpg`;
-
-      if (!fs.existsSync(thumbnailDir)) {
+      // Crear directorios si no existen
+      if (!fs.existsSync(thumbnailDir))
         fs.mkdirSync(thumbnailDir, { recursive: true });
-      }
 
       await sharp(file.path).resize(150, 150).toFile(thumbnailPath);
 
-      let urlRelativePath = imageDestination.replace("src/", "");
-      let thumbnailRelativePath = thumbnailPath.split("src/")[1];
-      return {
-        url: `${urlRelativePath}images/${file.filename}`,
-        type: file.mimetype,
+      const urlRelativePath = path.relative(
+        "src",
+        path.join(
+          BASE_PATH,
+          req.imageType == "map" ? "map/images" : "pin/files",
+          filename
+        )
+      );
+
+      const thumbnailRelativePath = path.relative("src", thumbnailPath);
+
+      req.processedFiles = {
+        url: urlRelativePath,
+        type: mimetype,
         metadata: { ...file },
         thumbnail: thumbnailRelativePath,
       };
-    })
-  );
 
-  req.processedFiles = processedFiles;
-  next();
+      next();
+    }
+  } catch (error) {
+    console.error("Error processing images:", error);
+    return res.status(500).json({ message: error.message });
+  }
 };
 
 export { upload, processImages };

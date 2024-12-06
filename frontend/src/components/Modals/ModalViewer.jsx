@@ -16,7 +16,6 @@ const ModalViewer = ({
       size={size}
       onClose={onCloseModal}
       dismissible={dismissible}
-      popup
     >
       <Modal.Header className="border-b border-neutral-200 truncate">
         {title}

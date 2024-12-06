@@ -20,6 +20,7 @@ import {
   getLayerById,
   updateLayer,
   deleteLayer,
+  updateLayersOrder,
 } from "../controllers/layer.controller.js";
 import {
   createTemplateDrawing,
@@ -63,10 +64,31 @@ router.put(
 router.delete("/maps/:id", protect, deleteMap);
 
 // Rutas para Layer
-router.post("/layers", protect, createLayer);
-router.get("/layers", protect, getLayers);
+router.post(
+  "/layers",
+  (req, res, next) => {
+    req.imageType = "map";
+    next();
+  },
+  upload.single("image"),
+  processImages,
+  protect,
+  createLayer
+);
+router.put("/layers/order", protect, updateLayersOrder);
+router.get("/layers/mapId/:id", protect, getLayers);
 router.get("/layers/:id", protect, getLayerById);
-router.put("/layers/:id", protect, updateLayer);
+router.put(
+  "/layers/:id",
+  (req, res, next) => {
+    req.imageType = "map";
+    next();
+  },
+  upload.single("image"),
+  processImages,
+  protect,
+  updateLayer
+);
 router.delete("/layers/:id", protect, deleteLayer);
 
 // Rutas para TemplateDrawing

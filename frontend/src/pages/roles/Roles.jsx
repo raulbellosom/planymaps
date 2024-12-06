@@ -213,22 +213,24 @@ const Roles = () => {
 
   return (
     <>
-      <section className="flex flex-col gap-3 min-h-full h-full bg-white shadow-md rounded-md dark:bg-neutral-900 p-3 pb-0 antialiased">
-        <TableHeader
-          title="Control de Roles"
-          icon={FaUserShield}
-          actions={[
-            {
-              label: 'Agregar Rol',
-              action: isCreateRolesPermission.hasPermission
-                ? () => setIsModalOpen(true)
-                : null,
-              color: 'primary',
-              icon: IoMdAdd,
-              filled: true,
-            },
-          ]}
-        />
+      <section className="w-full flex flex-col relative pt-14 px-4">
+        <div className="md:absolute md:top-2 md:left-16 flex-1 w-full md:pr-20">
+          <TableHeader
+            title="Control de Roles"
+            icon={FaUserShield}
+            actions={[
+              {
+                label: 'Agregar Rol',
+                action: isCreateRolesPermission.hasPermission
+                  ? () => setIsModalOpen(true)
+                  : null,
+                color: 'primary',
+                icon: IoMdAdd,
+                filled: true,
+              },
+            ]}
+          />
+        </div>
         <div className="h-full grid grid-cols-3 gap-8 p-2 pt-4 pb-0">
           <div className="col-span-3 lg:col-span-1">
             <div className="mb-4">

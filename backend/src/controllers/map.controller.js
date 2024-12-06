@@ -54,7 +54,17 @@ export const getMapById = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const map = await db.map.findUnique({ where: { id } });
+    const map = await db.map.findUnique({
+      where: { id },
+      include: {
+        layers: {
+          include: {
+            image: true,
+          },
+        },
+        template: true,
+      },
+    });
 
     if (!map) {
       return res.status(404).json({ message: "Map not found" });

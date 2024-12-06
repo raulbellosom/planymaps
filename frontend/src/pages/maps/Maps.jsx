@@ -81,7 +81,7 @@ const Maps = () => {
           />
         </div>
         <div className="pt-4">
-          <div className="w-full flex flex-col border-b border-neutral-100 pb-2 gap-4">
+          <div className="w-full flex flex-col pb-1 gap-4">
             <h2 className="text-2xl font-bold text-nowrap">Todos los mapas</h2>
             <div className="flex gap-4 w-full">
               <ActionButtons
@@ -109,10 +109,21 @@ const Maps = () => {
                 className="w-1/3"
                 color="white"
                 icon={FiSearch}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value === '') {
+                    setMaps(allMaps);
+                  } else {
+                    const filteredMaps = allMaps.filter((map) =>
+                      map.name.toLowerCase().includes(value.toLowerCase()),
+                    );
+                    setMaps(filteredMaps);
+                  }
+                }}
               />
             </div>
           </div>
-          <div className="grid grid-cols-[repeat(auto-fill,_minmax(400px,_1fr))] gap-4 pt-4">
+          <div className="grid grid-cols-1 md:grid-cols-[repeat(auto-fill,_minmax(400px,_1fr))] gap-4 pt-4">
             {!isPending && maps && maps.length > 0 ? (
               maps?.map((map) => (
                 <MapsCard

@@ -17,19 +17,18 @@ const MapsCard = ({ map, actions, collapsedActions, role }) => {
       )}
     >
       <div className="w-[98%] flex border border-neutral-300 bg-neutral-50 flex-col rounded-md justify-between">
-        <div className="flex gap-2 h-full w-full">
-          <div className="w-1/4 min-w-[25%] p-2 h-full flex items-center justify-center">
+        <div className="flex flex-row gap-2 h-full w-full relative">
+          <div className="hidden w-1/4 min-w-[20%] p-2 h-full md:flex items-center justify-center">
             <img
               src={Logo}
               alt="logo"
               className="h-auto w-full object-contain rounded-t-lg"
             />
           </div>
-
-          <div className="flex rounded-md flex-col gap-3 p-2 pt-4 pb-2 relative w-full h-full">
+          <div className="flex rounded-md flex-col gap-3 p-2 pt-4 pb-2  w-full h-full">
             <div className="absolute top-4 right-3">
               <span
-                className={`px-3 py-1 font-semibold rounded-full text-white ${
+                className={`px-3 py-1 text-xs md:text-base font-semibold rounded-full text-white ${
                   map.visibility === 'private'
                     ? 'bg-planymaps-secondary-light'
                     : 'bg-planymaps-primary'

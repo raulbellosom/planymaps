@@ -67,7 +67,7 @@ const Users = () => {
   const [currentPageNumber, setCurrentPageNumber] = useState(1);
   const [searchFilters, setSearchFilters] = useState({
     searchTerm: '',
-    pageSize: 5,
+    pageSize: 10,
     page: currentPageNumber,
     sortBy: 'name',
     order: 'asc',
@@ -269,31 +269,35 @@ const Users = () => {
   const isRemoveUserPermission = useCheckPermissions('delete_users');
 
   return (
-    <div className="flex flex-col gap-3 bg-white shadow-md rounded-md dark:bg-gray-900 p-3 antialiased">
-      <TableHeader
-        title={'Usuarios'}
-        icon={FaUserShield}
-        actions={[
-          {
-            label: 'Nuevo',
-            action: isCreateUserPermission.hasPermission
-              ? () => setIsOpenModal(true)
-              : null,
-            color: 'primary',
-            icon: IoMdAdd,
-            filled: true,
-          },
-        ]}
-      />
-      <TableActions
-        onRefreshData={handleRefreshData}
-        handleSearchTerm={handleSearch}
-        headers={columns}
-      />
+    <div className="flex flex-col min-h-[100dvh] gap-3p-3 antialiased pt-12">
+      <div className="md:absolute md:top-2 md:left-16 w-full p-4 pb-0 md:p-0 md:pr-20">
+        <TableHeader
+          title={'Usuarios'}
+          icon={FaUserShield}
+          actions={[
+            {
+              label: 'Nuevo',
+              action: isCreateUserPermission.hasPermission
+                ? () => setIsOpenModal(true)
+                : null,
+              color: 'primary',
+              icon: IoMdAdd,
+              filled: true,
+            },
+          ]}
+        />
+      </div>
+      <div className="p-4">
+        <TableActions
+          onRefreshData={handleRefreshData}
+          handleSearchTerm={handleSearch}
+          headers={columns}
+        />
+      </div>
       {users && !isPending ? (
         users?.data?.length > 0 ? (
           <>
-            <div className="hidden md:block text-nowrap">
+            <div className="hidden md:block text-nowrap p-4 h-full">
               <Table
                 columns={columns}
                 sortBy={sortBy}
@@ -466,7 +470,9 @@ const Users = () => {
             </div>
           </>
         ) : (
-          <TableResultsNotFound />
+          <div className="min-h-[70dvh] flex items-center justify-center">
+            <TableResultsNotFound />
+          </div>
         )
       ) : (
         <Skeleton count={5} className="h-10" />

@@ -1,5 +1,4 @@
 import React from 'react';
-import TableSearchByHeader from './TableSearchByHeader';
 import { TextInput, Dropdown } from 'flowbite-react';
 import { TbFilter } from 'react-icons/tb';
 import { LuSearch } from 'react-icons/lu';
@@ -11,9 +10,6 @@ const TableActions = ({
   handleSearchTerm,
   onCheckFilter,
   selectedFilters,
-  headers,
-  deepSearch,
-  setDeepSearch,
   filters,
   onRefreshData,
 }) => {
@@ -112,15 +108,6 @@ const TableActions = ({
           />
         </div>
       </div>
-      {deepSearch && (
-        <div className="w-full col-span-12 whitespace-nowrap flex flex-wrap">
-          <TableSearchByHeader
-            currentFilters={deepSearch}
-            setCurrentFilters={setDeepSearch}
-            headers={headers}
-          />
-        </div>
-      )}
     </div>
   );
 };

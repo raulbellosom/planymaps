@@ -7,6 +7,10 @@ const MapsContext = createContext({
   useCreateMap: async () => {},
   useUpdateMap: async () => {},
   useDeleteMap: async () => {},
+  useCreateLayer: async () => {},
+  useUpdateLayer: async () => {},
+  useDeleteLayer: async () => {},
+  useUpdateLayersOrder: async () => {},
 });
 
 export const useMapsContext = () => useContext(MapsContext);

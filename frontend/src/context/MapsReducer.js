@@ -34,6 +34,32 @@ const MapsReducer = (state, action) => {
         maps: action.payload,
         loading: false,
       };
+    case 'CREATE_LAYER':
+      return {
+        ...state,
+        layer: action.payload,
+        layers: [...state.layers, action.payload],
+        loading: false,
+      };
+    case 'UPDATE_LAYER':
+      return {
+        ...state,
+        layer: action.payload,
+        layers: [...state.layers, action.payload],
+        loading: false,
+      };
+    case 'DELETE_LAYER':
+      return {
+        ...state,
+        layers: action.payload,
+        loading: false,
+      };
+    case 'UPDATE_LAYERS_ORDER':
+      return {
+        ...state,
+        layers: action.payload,
+        loading: false,
+      };
     default:
       return state;
   }

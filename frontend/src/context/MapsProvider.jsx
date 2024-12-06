@@ -7,9 +7,19 @@ const MapsProvider = ({ children }) => {
   const [state, dispatch] = useReducer(MapsReducer, {
     maps: [],
     map: null,
+    layers: [],
+    layer: null,
   });
 
-  const { useCreateMap, useDeleteMap, useUpdateMap } = useMaps(dispatch);
+  const {
+    useCreateMap,
+    useDeleteMap,
+    useUpdateMap,
+    useCreateLayer,
+    useDeleteLayer,
+    useUpdateLayer,
+    useUpdateLayersOrder,
+  } = useMaps(dispatch);
 
   return (
     <MapsContext.Provider
@@ -19,6 +29,10 @@ const MapsProvider = ({ children }) => {
         useCreateMap,
         useDeleteMap,
         useUpdateMap,
+        useCreateLayer,
+        useDeleteLayer,
+        useUpdateLayer,
+        useUpdateLayersOrder,
       }}
     >
       {children}
