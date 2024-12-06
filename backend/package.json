@@ -14,7 +14,7 @@
     "generate": "npx prisma generate",
     "pull": "npx prisma db pull",
     "preprod": "npm run generate && npm run migrate && npm run seed",
-    "prod": "npm run preprod && pm2 start src/index.js --no-autorestart && pm2 logs",
+    "prod": "npm run preprod && pm2 start src/index.js --name planymaps --no-autorestart && pm2 logs",
     "prod:dev": "npm run preprod && pm2 start src/index.js --name planymaps-backend-dev --no-autorestart && pm2 logs"
   },
   "dependencies": {
