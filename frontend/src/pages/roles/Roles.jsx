@@ -223,7 +223,7 @@ const Roles = () => {
               action: isCreateRolesPermission.hasPermission
                 ? () => setIsModalOpen(true)
                 : null,
-              color: 'mycad',
+              color: 'primary',
               icon: IoMdAdd,
               filled: true,
             },

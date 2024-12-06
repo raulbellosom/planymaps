@@ -1,13 +1,10 @@
 import React from 'react';
 import AuthProvider from './AuthProvider';
 import UserProvider from './UserProvider';
-import InventoryProvider from './InventoryProvider';
 import LoadingProvider from './LoadingProvider';
-import CatalogProvider from './CatalogProvider';
 import RoleProvider from './RoleProvider';
 import PermissionProvider from './PermissionProvider';
-import { BreadcrumbProvider } from './BreadcrumbContext';
-import CustomFieldProvider from './CustomFieldProvider';
+import MapsProvider from './MapsProvider';
 
 const SecurityProvider = ({ children }) => (
   <AuthProvider>
@@ -19,20 +16,14 @@ const SecurityProvider = ({ children }) => (
 
 const DataProvider = ({ children }) => (
   <UserProvider>
-    <InventoryProvider>
-      <CatalogProvider>
-        <CustomFieldProvider>{children}</CustomFieldProvider>
-      </CatalogProvider>
-    </InventoryProvider>
+    <MapsProvider>{children}</MapsProvider>
   </UserProvider>
 );
 
 const AppProvider = ({ children }) => (
   <LoadingProvider>
     <SecurityProvider>
-      <DataProvider>
-        <BreadcrumbProvider>{children}</BreadcrumbProvider>
-      </DataProvider>
+      <DataProvider>{children}</DataProvider>
     </SecurityProvider>
   </LoadingProvider>
 );

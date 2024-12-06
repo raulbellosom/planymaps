@@ -6,19 +6,19 @@ import { IoChevronForward } from 'react-icons/io5';
 
 const Breadcrumbs = ({ breadcrumbs = [] }) => {
   return (
-    <div className="group flex items-start pb-4">
-      <Link
+    <div className="group flex items-start">
+      {/* <Link
         to="/"
-        className="text-neutral-700 hover:text-indigo-900 cursor-pointer p-0 m-0 group flex items-center"
+        className="text-neutral-700 hover:text-indigo-900 cursor-pointer group flex items-center"
       >
-        <HiHome className="h-4 w-4 p-0" />
+        <HiHome className="p-0 text-xl" />
         <span className="text-sm font-semibold">&nbsp;</span>
-      </Link>
+      </Link> */}
       {breadcrumbs &&
         breadcrumbs?.map((route, index) => (
           <span className="group flex items-center" key={index}>
             <span>
-              <IoChevronForward className="mx-1 h-4 w-4 text-gray-400 md:mx-2" />{' '}
+              <IoChevronForward className="mx-1 text-gray-400 md:mx-2" />{' '}
             </span>
             <Link
               to={route?.href}

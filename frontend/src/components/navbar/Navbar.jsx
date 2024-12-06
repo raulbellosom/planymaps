@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'flowbite-react';
 import { HiOutlineMenuAlt1 } from 'react-icons/hi';
-import Logo from '../../assets/logo/sinabe_icon.png';
+import Logo from '../../assets/logos/logo.svg';
 
 const Navbar = ({
   collapsed,

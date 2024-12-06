@@ -6,21 +6,22 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Montserrat', 'sans-serif'],
+        sans: ['Jaldi', 'sans-serif'],
       },
-
       colors: {
-        'mycad-danger': '#EF476F',
-        'mycad-warning': '#FFD166',
-        'mycad-success': '#06D6A0',
-        'mycad-info': '#118AB2',
-        'mycad-primary': '#7e3af2',
-        'mycad-secondary': '#D9376E',
-        'mycad-dark': '#0D0D0D',
-        'mycad-light': '#FFFFFE',
-        'mycad-gray': '#e7e5e4',
-        'mycad-blue-dark': '#073B4C',
-        'mycad-gray-dark': '#44403c',
+        'planymaps-danger': '#EF476F',
+        'planymaps-warning': '#FFD166',
+        'planymaps-success': '#06D6A0',
+        'planymaps-info': '#118AB2',
+        'planymaps-dark': '#141010',
+        'planymaps-light': '#FFFFFE',
+        'planymaps-gray': '#e7e5e4',
+        'planymaps-gray-dark': '#44403c',
+        'planymaps-primary': '#64ee85',
+        'planymaps-secondary': '#0a3042',
+        'planymaps-primary-light': '#92f3a9',
+        'planymaps-primary-dark': '#36e961',
+        'planymaps-secondary-light': '#11506e',
       },
       animation: {
         shake: 'shake 0.82s cubic-bezier(.36,.07,.19,.97) both',

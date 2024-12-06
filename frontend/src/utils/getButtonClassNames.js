@@ -7,15 +7,17 @@ export const getButtonClassNames = (
   className,
 ) => {
   const baseClasses =
-    'w-full md:w-fit h-9 xl:h-10 text-sm xl:text-base transition ease-in-out duration-200 p-2 xl:p-4 flex items-center justify-center rounded-md border text-stone-800';
+    'w-full md:w-fit h-9 xl:h-10 text-lg transition ease-in-out duration-200 p-2 xl:p-4 flex items-center justify-center rounded-md border border-neutral-200 text-neutral-600';
 
   let notFilledClasses = {
-    'hover:bg-purple-500 hover:text-white': color === 'mycad' && !disabled,
-    'hover:bg-mycad-danger hover:text-white': color === 'danger' && !disabled,
-    'hover:bg-mycad-warning hover:text-white': color === 'warning' && !disabled,
-    'hover:bg-mycad-success hover:text-white': color === 'success' && !disabled,
-    'hover:bg-mycad-info hover:text-white': color === 'info' && !disabled,
-    'hover:bg-mycad-dark hover:text-white': color === 'dark' && !disabled,
+    'hover:bg-planymaps-danger hover:text-white':
+      color === 'danger' && !disabled,
+    'hover:bg-planymaps-warning hover:text-white':
+      color === 'warning' && !disabled,
+    'hover:bg-planymaps-success hover:text-white':
+      color === 'success' && !disabled,
+    'hover:bg-planymaps-info hover:text-white': color === 'info' && !disabled,
+    'hover:bg-planymaps-dark hover:text-white': color === 'dark' && !disabled,
     'hover:bg-red-500 hover:text-white': color === 'red' && !disabled,
     'hover:bg-yellow-300 hover:text-white': color === 'yellow' && !disabled,
     'hover:bg-cyan-500 hover:text-white': color === 'cyan' && !disabled,
@@ -35,21 +37,20 @@ export const getButtonClassNames = (
     'hover:bg-cyan-500 hover:text-white': color === 'cyan' && !disabled,
     'hover:bg-rose-500 hover:text-white': color === 'rose' && !disabled,
     'hover:bg-fuchsia-500 hover:text-white': color === 'fuchsia' && !disabled,
+    'hover:bg-neutral-200 hover:text-black': color === 'neutral' && !disabled,
     'hover:bg-white text-black': color === 'white' && !disabled,
     'hover:bg-black hover:text-white': color === 'black' && !disabled,
+    'hover:bg-planymaps-primary hover:text-white':
+      color === 'primary' && !disabled,
+    'hover:bg-planymaps-secondary hover:text-white':
+      color === 'secondary' && !disabled,
   };
   let filledClasses = {
-    'bg-purple-500 text-white border-purple-500 hover:bg-purple-600':
-      color === 'mycad',
-    'bg-mycad-danger text-white border-mycad-danger hover:bg-mycad-rose':
-      color === 'danger',
-    'bg-mycad-warning text-white border-mycad-warning hover:bg-mycad-salmon':
-      color === 'warning',
-    'bg-mycad-success text-white border-mycad-success hover:bg-mycad-success':
+    'bg-planymaps-success text-white border-planymaps-success hover:bg-planymaps-success':
       color === 'success',
-    'bg-mycad-info text-white border-mycad-info hover:bg-mycad-info':
+    'bg-planymaps-info text-white border-planymaps-info hover:bg-planymaps-info':
       color === 'info',
-    'bg-mycad-dark text-white border-mycad-dark hover:bg-mycad-dark':
+    'bg-planymaps-dark text-white border-planymaps-dark hover:bg-planymaps-dark':
       color === 'dark',
     'bg-red-500 text-white border-red-500 hover:bg-red-700': color === 'red',
     'bg-yellow-300 text-white border-yellow-300 hover:bg-yellow-400':
@@ -88,9 +89,15 @@ export const getButtonClassNames = (
       color === 'rose',
     'bg-fuchsia-500 text-white border-fuchsia-500 hover:bg-fuchsia-700':
       color === 'fuchsia',
-    'bg-white text-black border-white hover:bg-white': color === 'white',
+    'bg-white text-black border-white hover:bg-neutral-100': color === 'white',
+    'bg-neutral-500 text-white border-neutral-500 hover:bg-neutral-700':
+      color === 'neutral',
     'bg-black text-white border-black hover:border-gray-200 hover:text-black hover:bg-stone-200':
       color === 'black',
+    'bg-planymaps-primary text-white border-planymaps-primary hover:bg-planymaps-primary-dark':
+      color === 'primary',
+    'bg-planymaps-secondary text-white border-planymaps-secondary hover:bg-planymaps-secondary-light':
+      color === 'secondary',
   };
 
   const disabledClasses = {

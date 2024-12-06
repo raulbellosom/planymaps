@@ -46,131 +46,14 @@ model User {
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   enabled     Boolean     @default(true)
-  inventories Inventory[]
   role        Role        @relation(fields: [roleId], references: [id])
   photo       UserImage[] @relation("UserImages")
+  maps        Map[]       
+  templates   Template[]  @relation("UserTemplates")
+  contacts    Contact[]   @relation("ContactUser")
+  userContacts Contact[]  @relation("UserContacts")
 
   @@index([roleId], map: "User_roleId_fkey")
-}
-
-model Inventory {
-  id            String                 @id @default(uuid())
-  status        Status
-  createdById   String // Referencia al usuario creador
-  activeNumber  String?
-  serialNumber  String?
-  comments      String?                @db.Text
-  modelId       Int
-  enabled       Boolean                @default(true)
-  receptionDate DateTime?
-  altaDate      DateTime?
-  bajaDate      DateTime?
-  createdAt     DateTime               @default(now())
-  updatedAt     DateTime               @updatedAt
-  details       Json?
-  files         File[]
-  images        Image[]                @relation("InventoryImages")
-  createdBy     User                   @relation(fields: [createdById], references: [id])
-  model         Model                  @relation(fields: [modelId], references: [id])
-  conditions    InventoryCondition[]
-  customField   InventoryCustomField[]
-
-  @@index([createdById], map: "Inventory_createdById_fkey")
-  @@index([modelId], map: "Inventory_modelId_fkey")
-}
-
-model InventoryType {
-  id      Int     @id @default(autoincrement())
-  enabled Boolean @default(true)
-  name    String
-  models  Model[]
-}
-
-model InventoryBrand {
-  id      Int     @id @default(autoincrement())
-  name    String
-  enabled Boolean @default(true)
-  models  Model[]
-}
-
-model Model {
-  id          Int            @id @default(autoincrement())
-  name        String
-  typeId      Int
-  brandId     Int
-  enabled     Boolean        @default(true)
-  inventories Inventory[]
-  brand       InventoryBrand @relation(fields: [brandId], references: [id])
-  type        InventoryType  @relation(fields: [typeId], references: [id])
-
-  @@index([brandId], map: "Model_brandId_fkey")
-  @@index([typeId], map: "Model_typeId_fkey")
-}
-
-model CustomField {
-  id          Int                    @id @default(autoincrement())
-  name        String
-  enabled     Boolean                @default(true)
-  createdAt   DateTime               @default(now())
-  inventories InventoryCustomField[]
-}
-
-model InventoryCustomField {
-  id            Int         @id @default(autoincrement())
-  inventoryId   String
-  customFieldId Int
-  value         String
-  customField   CustomField @relation(fields: [customFieldId], references: [id])
-  inventory     Inventory   @relation(fields: [inventoryId], references: [id])
-
-  @@unique([inventoryId, customFieldId])
-  @@index([customFieldId], map: "InventoryCustomField_customFieldId_fkey")
-}
-
-model File {
-  id          String    @id @default(uuid())
-  inventoryId String
-  metadata    Json?
-  uploadedAt  DateTime  @default(now())
-  createdAt   DateTime  @default(now())
-  enabled     Boolean   @default(true)
-  type        String
-  url         String
-  inventory   Inventory @relation(fields: [inventoryId], references: [id])
-
-  @@index([inventoryId], map: "File_inventoryId_fkey")
-}
-
-model Condition {
-  id          Int                  @id @default(autoincrement())
-  name        String
-  enabled     Boolean              @default(true)
-  inventories InventoryCondition[]
-}
-
-model InventoryCondition {
-  id          Int       @id @default(autoincrement())
-  inventoryId String
-  conditionId Int
-  condition   Condition @relation(fields: [conditionId], references: [id])
-  inventory   Inventory @relation(fields: [inventoryId], references: [id])
-
-  @@unique([inventoryId, conditionId])
-  @@index([conditionId], map: "InventoryCondition_conditionId_fkey")
-}
-
-model Image {
-  id          String     @id @default(uuid())
-  url         String
-  thumbnail   String?
-  type        String
-  metadata    Json?
-  createdAt   DateTime   @default(now())
-  enabled     Boolean    @default(true)
-  inventoryId String?
-  inventory   Inventory? @relation("InventoryImages", fields: [inventoryId], references: [id])
-
-  @@index([inventoryId])
 }
 
 model UserImage {
@@ -187,8 +70,141 @@ model UserImage {
   @@index([userId])
 }
 
-enum Status {
-  ALTA
-  BAJA
-  PROPUESTA
+model Contact {
+  id         String   @id @default(uuid())
+  userId     String   // Usuario que tiene este contacto
+  user       User     @relation("UserContacts", fields: [userId], references: [id])
+  contactId  String   // Usuario que es el contacto
+  contact    User     @relation("ContactUser", fields: [contactId], references: [id])
+  status     String   @default("pending") // "pending", "accepted", "blocked"
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, contactId])
+}
+
+model Template {
+  id           String   @id @default(uuid())
+  name         String
+  description  String?
+  visibility   String   @default("private") // "public" o "private"
+  createdById  String
+  createdBy    User     @relation("UserTemplates", fields: [createdById], references: [id])
+  map          Map[]
+  layers       TemplateLayer[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model TemplateLayer {
+  id         String   @id @default(uuid())
+  name       String
+  templateId String
+  template   Template @relation(fields: [templateId], references: [id])
+  pins       TemplatePin[]
+  drawings   TemplateDrawing[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model TemplatePin {
+  id         String   @id @default(uuid())
+  title      String
+  description String?
+  position   Json      // Coordenadas: {x: 10, y: 20}
+  templateLayerId String
+  templateLayer   TemplateLayer @relation(fields: [templateLayerId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model TemplateDrawing {
+  id         String   @id @default(uuid())
+  type       String   // "line", "shape"
+  data       Json     // Datos del dibujo
+  templateLayerId String
+  templateLayer   TemplateLayer @relation(fields: [templateLayerId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Map {
+  id           String   @id @default(uuid())
+  name         String
+  description  String?
+  enabled      Boolean  @default(true)
+  visibility   String   @default("private") // "public" o "private"
+  templateId   String?  // Si el mapa fue creado desde una plantilla
+  template     Template? @relation(fields: [templateId], references: [id])
+  createdById  String
+  createdBy    User     @relation(fields: [createdById], references: [id])
+  layers       Layer[]
+  sharedMaps   SharedMap[]
+  imageId      String?
+  image        Image[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Layer {
+  id        String   @id @default(uuid())
+  name      String
+  mapId     String
+  map       Map      @relation(fields: [mapId], references: [id])
+  pins      Pin[]
+  drawings  Drawing[]
+  imageId   String?
+  image     Image[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Pin {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  position    Json     // To store coordinates, e.g., {x: 10, y: 20}
+  layerId     String
+  layer       Layer    @relation(fields: [layerId], references: [id])
+  images      Image[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Drawing {
+  id        String   @id @default(uuid())
+  type      String   // e.g., "line", "shape"
+  data      Json     // Store the drawing data
+  layerId   String
+  layer     Layer    @relation(fields: [layerId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model SharedMap {
+  id        String   @id @default(uuid())
+  mapId     String
+  map       Map      @relation(fields: [mapId], references: [id])
+  token     String   @unique // Unique link for public sharing
+  editable  Boolean  @default(false) // Whether the link allows editing
+  createdAt DateTime @default(now())
+}
+
+model Image {
+  id         String   @id @default(uuid())
+  url        String
+  thumbnail  String?
+  filetype   String
+  metadata   Json?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  mapId      String?
+  map        Map? @relation(fields: [mapId], references: [id])
+
+  pinId      String?
+  pin        Pin? @relation(fields: [pinId], references: [id])
+
+  layerId    String?
+  layer      Layer? @relation(fields: [layerId], references: [id])
 }

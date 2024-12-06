@@ -7,7 +7,7 @@ import { MdClose } from 'react-icons/md';
 
 const handleKeyDown = (event) => {
   if (event.key === 'Enter') {
-    event.preventDefault(); // Prevenir comportamiento por defecto
+    event.preventDefault();
     event.target.form.dispatchEvent(
       new Event('submit', { bubbles: true, cancelable: true }),
     );
@@ -44,7 +44,9 @@ const ModalForm = ({
       onClose={onClose}
       dismissible={dismissible}
     >
-      <Modal.Header>{title}</Modal.Header>
+      <Modal.Header>
+        <span className="text-2xl">{title}</span>
+      </Modal.Header>
       <Modal.Body>
         <FormikProvider value={formik}>
           <Form onSubmit={formik.handleSubmit} onKeyDown={handleKeyDown}>
@@ -64,7 +66,7 @@ const ModalForm = ({
             {
               label: saveLabel ? saveLabel : 'Guardar',
               action: formik.submitForm,
-              color: 'mycad',
+              color: 'primary',
               filled: true,
               icon: FaSave,
               type: 'submit',

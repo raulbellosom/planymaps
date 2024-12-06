@@ -7,7 +7,7 @@ const DateInput = ({ field, form: { touched, errors }, ...props }) => (
   <div className={classNames('w-full', props.className)}>
     <Label
       htmlFor={props.id || props.name}
-      className="block text-sm font-medium text-nowrap"
+      className="block text-base font-medium text-nowrap"
       color={touched[field.name] && errors[field.name] ? 'failure' : ''}
       value={props.label}
     />

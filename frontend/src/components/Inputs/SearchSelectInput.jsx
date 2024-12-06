@@ -28,7 +28,7 @@ const SearchSelectInput = ({
     <div className={classNames('w-full', className)}>
       <Label
         htmlFor={props.id || props.name}
-        className="block text-sm font-medium"
+        className="block text-base font-medium"
         color={touched[field.name] && errors[field.name] ? 'failure' : ''}
         value={props.label}
       />

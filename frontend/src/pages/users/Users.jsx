@@ -279,7 +279,7 @@ const Users = () => {
             action: isCreateUserPermission.hasPermission
               ? () => setIsOpenModal(true)
               : null,
-            color: 'mycad',
+            color: 'primary',
             icon: IoMdAdd,
             filled: true,
           },

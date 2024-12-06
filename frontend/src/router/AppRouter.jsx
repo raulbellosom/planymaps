@@ -11,16 +11,13 @@ import Sidebar from '../components/sidebar/Sidebar';
 import ProtectedRoute from './ProtectedRoute';
 
 import Login from '../pages/login/Login';
-import Dashboard from '../pages/dashboard/Dashboard';
-import Inventories from '../pages/inventories/Inventories';
-import CreateInventory from '../pages/inventories/CreateInventory';
-import UpdateInventory from '../pages/inventories/UpdateInventory';
-import ViewInventory from '../pages/inventories/ViewInventory';
-import Catalogs from '../pages/inventories/catalogs/Catalogs';
 import Account from '../pages/account/Account';
 import Users from '../pages/users/Users';
 import NotFound from '../pages/notFound/NotFound';
 import Roles from '../pages/roles/Roles';
+import Maps from '../pages/maps/Maps';
+import Contacts from '../pages/contacts/Contacts';
+import ViewMap from '../pages/maps/ViewMap';
 
 const AppRouter = () => {
   const { user } = useContext(AuthContext);
@@ -46,24 +43,13 @@ const AuthorizedRoute = ({ user }) => {
             <Sidebar>
               <Routes>
                 <Route element={<ProtectedRoute user={user} />}>
-                  <Route path="/" element={<Dashboard />} />
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/account-settings" element={<Account />} />
+                  <Route path="/" element={<Maps />} />
+                  <Route path="/maps/view/:id" element={<ViewMap />} />
+                  <Route path="/maps" element={<Maps />} />
                   <Route path="/users" element={<Users />} />
-                  <Route path="/inventories" element={<Inventories />} />
-                  <Route
-                    path="/inventories/create"
-                    element={<CreateInventory />}
-                  />
-                  <Route
-                    path="/inventories/edit/:id"
-                    element={<UpdateInventory />}
-                  />
-                  <Route
-                    path="/inventories/view/:id"
-                    element={<ViewInventory />}
-                  />
-                  <Route path="/catalogs" element={<Catalogs />} />
+                  <Route path="/contacts" element={<Contacts />} />
+
+                  <Route path="/account-settings" element={<Account />} />
                   <Route path="/roles" element={<Roles />} />
                   <Route
                     path="/login"

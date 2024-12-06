@@ -13,31 +13,29 @@ import {
   FaSignOutAlt,
   FaUserCog,
   FaUserShield,
-  FaBoxes,
-  FaClipboardList,
 } from 'react-icons/fa';
 import { useAuthContext } from '../../context/AuthContext';
 import AccountSidebar from './AccountSidebar';
-import BgPattern from '../../assets/bg/bg_pattern_dark.png';
 import { Button } from 'flowbite-react';
-import Navbar from '../navbar/Navbar';
 import MainLayout from '../../Layout/MainLayout';
-import { BiCategory } from 'react-icons/bi';
-import { MdAddBox, MdAdminPanelSettings } from 'react-icons/md';
+import { MdAdminPanelSettings } from 'react-icons/md';
 import useCheckPermissions from '../../hooks/useCheckPermissions';
-import { FaListCheck } from 'react-icons/fa6';
+import { LiaMapSolid } from 'react-icons/lia';
+import { TbMapStar } from 'react-icons/tb';
+import { BiSolidContact } from 'react-icons/bi';
+import ActionButtons from '../ActionButtons/ActionButtons';
 
 const themes = {
   light: {
     sidebar: {
-      backgroundColor: '#0D0D0D',
-      color: '#ffffff',
+      backgroundColor: '#fafafa',
+      color: '#0a3042',
     },
     menu: {
-      menuContent: '#0D0D0D',
-      icon: '#ffffff',
+      menuContent: '#fff',
+      icon: '#0a3042',
       hover: {
-        backgroundColor: '#7e3af2',
+        backgroundColor: '#64ee85',
         color: '#fff',
       },
       disabled: {
@@ -45,7 +43,7 @@ const themes = {
       },
       active: {
         color: '#FFF',
-        backgroundColor: '#7e3af2',
+        backgroundColor: '#64ee85',
       },
     },
   },
@@ -83,7 +81,7 @@ const Sidebar = ({ children }) => {
   const [toggled, setToggled] = useState(false);
   const [broken, setBroken] = useState(false);
   const [rtl, setRtl] = useState(false);
-  const [hasImage, setHasImage] = useState(true);
+  const [hasImage, setHasImage] = useState(false);
   const [theme, setTheme] = useState('light');
 
   const handleRTLChange = (e) => {
@@ -174,24 +172,9 @@ const Sidebar = ({ children }) => {
     return false;
   };
 
-  const isDashBoardPermission = useCheckPermissions('view_dashboard');
   const isUsersPermission = useCheckPermissions('view_users');
   const isAccountPermission = useCheckPermissions('view_account');
   const isRolesPermission = useCheckPermissions('view_roles');
-  const isInventoriesPermission = useCheckPermissions('view_inventories');
-  const isCreateInventoryPermission = useCheckPermissions('create_inventories');
-  const isModelsPermission = useCheckPermissions('view_inventories_models');
-  const isBrandsPermission = useCheckPermissions('view_inventories_brands');
-  const isTypesPermission = useCheckPermissions('view_inventories_types');
-  const isConditionsPermission = useCheckPermissions(
-    'view_inventories_conditions',
-  );
-
-  const isCatalogsPermission =
-    isModelsPermission.hasPermission ||
-    isBrandsPermission.hasPermission ||
-    isTypesPermission.hasPermission ||
-    isConditionsPermission.hasPermission;
 
   return (
     <div
@@ -206,7 +189,6 @@ const Sidebar = ({ children }) => {
         toggled={toggled}
         onBackdropClick={() => setToggled(false)}
         onBreakPoint={setBroken}
-        image={BgPattern}
         rtl={rtl}
         breakPoint="md"
         backgroundColor={hexToRgba(
@@ -232,58 +214,21 @@ const Sidebar = ({ children }) => {
               photo={user.photo}
               collapsed={collapsed}
             />
-            <div className="border-t border-gray-300 py-1" />
             <Menu menuItemStyles={menuItemStyles}>
-              {isDashBoardPermission.hasPermission && (
-                <MenuItem
-                  component={<Link to={'/dashboard'} />}
-                  active={isActivePath('/dashboard')}
-                  icon={<FaTachometerAlt size={23} />}
-                >
-                  Dashboard
-                </MenuItem>
-              )}
-              {(isCatalogsPermission ||
-                isInventoriesPermission.hasPermission) && (
-                <SubMenu label="Inventarios" icon={<FaListCheck size={23} />}>
-                  {isCreateInventoryPermission.hasPermission && (
-                    <MenuItem
-                      icon={<MdAddBox size={23} />}
-                      active={isActivePath('/inventories/create')}
-                      component={<Link to={'/inventories/create'} />}
-                      onClick={() => {
-                        setToggled(false);
-                      }}
-                    >
-                      Nuevo Inventario
-                    </MenuItem>
-                  )}
-                  {isInventoriesPermission.hasPermission && (
-                    <MenuItem
-                      icon={<FaClipboardList size={23} />}
-                      active={isActivePath('/inventories')}
-                      component={<Link to={'/inventories'} />}
-                      onClick={() => {
-                        setToggled(false);
-                      }}
-                    >
-                      Mis Inventarios
-                    </MenuItem>
-                  )}
-                  {isCatalogsPermission && (
-                    <MenuItem
-                      icon={<FaBoxes size={23} />}
-                      active={isActivePath('/catalogs')}
-                      component={<Link to={'/catalogs'} />}
-                      onClick={() => {
-                        setToggled(false);
-                      }}
-                    >
-                      Catálogos
-                    </MenuItem>
-                  )}
-                </SubMenu>
-              )}
+              <MenuItem
+                icon={<TbMapStar size={23} />}
+                active={isActivePath('/')}
+                component={<Link to={'/'} />}
+              >
+                Mis Mapas
+              </MenuItem>
+              <MenuItem
+                icon={<BiSolidContact size={23} />}
+                active={isActivePath('/contacts')}
+                component={<Link to={'/contacts'} />}
+              >
+                Contactos
+              </MenuItem>
               {(isUsersPermission.hasPermission ||
                 isRolesPermission.hasPermission) && (
                 <SubMenu
@@ -322,7 +267,7 @@ const Sidebar = ({ children }) => {
             </Menu>
           </div>
           <div className="p-4">
-            <Button
+            {/* <Button
               type="button"
               color={'light'}
               className="w-full border-none truncate flex justify-start items-center"
@@ -341,20 +286,33 @@ const Sidebar = ({ children }) => {
                 </i>
                 {collapsed ? null : <span className="ml-4">Cerrar Sesión</span>}
               </div>
-            </Button>
+            </Button> */}
+            <ActionButtons
+              extraActions={[
+                {
+                  color: 'secondary',
+                  icon: FaSignOutAlt,
+                  action: logout,
+                  label: !collapsed && 'Cerrar Sesión',
+                  className: 'border-none min-w-full truncate',
+                  filled: true,
+                },
+              ]}
+            />
           </div>
         </div>
       </ProSidebar>
       <div className="flex-1 min-h-0 max-h-dvh overflow-hidden relative">
-        <Navbar
-          collapsed={collapsed}
-          setCollapsed={() => setCollapsed(!collapsed)}
-          toggled={toggled}
-          setToggled={() => setToggled(!toggled)}
-          broken={broken}
-        />
-        <div className="flex-1 overflow-auto pt-16 h-full">
-          <MainLayout>{children}</MainLayout>
+        <div className="flex-1 overflow-auto h-full">
+          <MainLayout
+            collapsed={collapsed}
+            setCollapsed={() => setCollapsed(!collapsed)}
+            toggled={toggled}
+            setToggled={() => setToggled(!toggled)}
+            broken={broken}
+          >
+            {children}
+          </MainLayout>
         </div>
       </div>
     </div>

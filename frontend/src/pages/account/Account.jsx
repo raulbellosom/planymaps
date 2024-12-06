@@ -44,7 +44,7 @@ const Account = () => {
           icon: RiImageEditLine,
           action: () => handleImageUpload(),
           filled: image ? true : false,
-          color: 'mycad',
+          color: 'planymaps-primary',
         },
       ]);
     } else {
@@ -182,9 +182,11 @@ const Account = () => {
   const isUpdateImagePermission = useCheckPermissions('change_account_image');
 
   return (
-    <div className="flex flex-col gap-6">
-      <section className="bg-white shadow-md p-4 rounded-lg">
-        <h1 className="text-2xl font-bold text-purple-500 mb-2">Mi cuenta</h1>
+    <div className="flex flex-col gap-6 pt-10">
+      <section className="bg-white p-4 rounded-lg">
+        <h1 className="text-2xl font-bold text-planymaps-primary mb-2">
+          Mi cuenta
+        </h1>
         <form className="flex flex-col items-center justify-center gap-4">
           <div className="flex justify-start w-full">
             <h2 className="text-lg font-semibold">Imagen del perfil</h2>
@@ -199,7 +201,7 @@ const Account = () => {
               />
             )}
           </div>
-          <div className="rounded-full min-h-36 min-w-36 ring-4 ring-purple-500 p-1.5">
+          <div className="rounded-full min-h-36 min-w-36 ring-4 ring-planymaps-primary p-1.5">
             <ImageViewer
               containerClassNames={
                 'rounded-full overflow-hidden min-w-36 min-h-36 object-cover'
@@ -248,7 +250,7 @@ const Account = () => {
                     label: 'Guardar cambios',
                     icon: FaSave,
                     action: onSaveFieldChanges,
-                    color: 'mycad',
+                    color: 'primary',
                     filled: true,
                   },
                 ]}

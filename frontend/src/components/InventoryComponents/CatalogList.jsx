@@ -32,7 +32,7 @@ const CatalogList = ({
               {
                 label: 'Nuevo',
                 action: onCreate,
-                color: 'mycad',
+                color: 'primary',
                 icon: IoMdAdd,
                 filled: true,
               },
@@ -114,7 +114,7 @@ CatalogList.Skeleton = () => {
                   {
                     label: 'Nuevo',
                     action: () => {},
-                    color: 'mycad',
+                    color: 'primary',
                     icon: IoMdAdd,
                     filled: true,
                   },
