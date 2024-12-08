@@ -8,6 +8,8 @@ import { MdOutlineInvertColors, MdOutlineRestore } from 'react-icons/md';
 import ModalViewer from '../../components/Modals/ModalViewer';
 import Layers from './Layers';
 import Canvas from '../../components/MapsComponents/Canvas';
+import { Tooltip } from 'flowbite-react';
+import { BsStack } from 'react-icons/bs';
 
 const ViewMap = () => {
   const id = useParams().id;
@@ -45,6 +47,38 @@ const ViewMap = () => {
           <span className="text-planymaps-primary font-semibold">
             {map?.name}
           </span>
+        </div>
+        {/* Selección de capas */}
+        <div className="fixed bottom-3 right-3 flex gap-2 z-50">
+          {layers.map((layer) => (
+            <ActionButtons
+              key={layer.id}
+              extraActions={[
+                {
+                  label: layer.name,
+                  action: () => {
+                    resetTransform();
+                    setLayerSelected(layer);
+                  },
+                  color: 'stone',
+                },
+              ]}
+            />
+          ))}
+          <Tooltip content="Administrar capas" position="left">
+            <ActionButtons
+              extraActions={[
+                {
+                  label: 'Capas',
+                  action: () => {
+                    setShowModalLayer(true);
+                  },
+                  color: 'stone',
+                  icon: BsStack,
+                },
+              ]}
+            />
+          </Tooltip>
         </div>
 
         <>{layers && <Canvas layers={layers} />}</>

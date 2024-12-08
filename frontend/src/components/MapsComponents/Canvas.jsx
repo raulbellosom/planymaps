@@ -2,10 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import ActionButtons from '../ActionButtons/ActionButtons';
 import { GoZoomIn, GoZoomOut } from 'react-icons/go';
-import { TbResize, TbRestore, TbZoomScan } from 'react-icons/tb';
+import { TbRestore, TbZoomScan } from 'react-icons/tb';
 import { MdGridOff, MdGridOn, MdOutlineFormatColorFill } from 'react-icons/md';
-import { BsStack } from 'react-icons/bs';
-import { Tooltip } from 'flowbite-react';
 import { FormattedUrlImage } from '../../utils/FormattedUrlImage';
 import LoadingModal from '../loadingModal/LoadingModal';
 import ModalViewer from '../Modals/ModalViewer';
@@ -97,43 +95,12 @@ const Canvas = ({ layers }) => {
                         color: 'stone',
                       },
                       {
-                        icon: TbResize,
+                        icon: MdOutlineFormatColorFill,
                         color: 'stone',
                         action: () => setModalGridColorPicker(true),
                       },
                     ]}
                   />
-                </div>
-
-                {/* Selección de capas */}
-                <div className="fixed bottom-3 right-3 flex gap-2 z-50">
-                  {allLayers.map((layer) => (
-                    <ActionButtons
-                      key={layer.id}
-                      extraActions={[
-                        {
-                          label: layer.name,
-                          action: () => {
-                            resetTransform();
-                            setLayerSelected(layer);
-                          },
-                          color: 'stone',
-                        },
-                      ]}
-                    />
-                  ))}
-                  <Tooltip content="Administrar capas" position="left">
-                    <ActionButtons
-                      extraActions={[
-                        {
-                          label: 'Capas',
-                          action: () => console.log('Administrar capas'),
-                          color: 'stone',
-                          icon: BsStack,
-                        },
-                      ]}
-                    />
-                  </Tooltip>
                 </div>
 
                 {/* Cuadrícula */}
