@@ -26,6 +26,8 @@ const AuthProvider = ({ children }) => {
         const token = localStorage.getItem('token');
         if (!token) {
           dispatch({ type: 'AUTH_ERROR' });
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
           return;
         }
 
@@ -33,15 +35,17 @@ const AuthProvider = ({ children }) => {
         if (user) {
           dispatch({ type: 'LOAD_USER', payload: user });
         } else {
-          dispatch({ type: 'AUTH_ERROR' });
+          throw new Error('Invalid user');
         }
       } catch (error) {
         dispatch({ type: 'AUTH_ERROR' });
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
       }
     };
 
     verifyToken();
-  }, []);
+  }, [loadUser]);
 
   return (
     <AuthContext.Provider

@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import ModalRemove from '../../components/Modals/ModalRemove';
 import { TextInput } from 'flowbite-react';
 import { FiSearch } from 'react-icons/fi';
+import { useAuthContext } from '../../context/AuthContext';
 
 const Initvalues = {
   name: '',
@@ -24,6 +25,7 @@ const Initvalues = {
 };
 
 const Maps = () => {
+  const { user, token } = useAuthContext();
   const navigate = useNavigate();
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);

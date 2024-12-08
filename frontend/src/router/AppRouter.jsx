@@ -5,7 +5,7 @@ import {
   Route,
   Navigate,
 } from 'react-router-dom';
-import AuthContext from '../context/AuthContext';
+import AuthContext, { useAuthContext } from '../context/AuthContext';
 import LoadingModal from '../components/loadingModal/LoadingModal';
 import Sidebar from '../components/sidebar/Sidebar';
 import ProtectedRoute from './ProtectedRoute';
@@ -20,16 +20,18 @@ import Contacts from '../pages/contacts/Contacts';
 import ViewMap from '../pages/maps/ViewMap';
 
 const AppRouter = () => {
-  const { user } = useContext(AuthContext);
+  const { user, loading } = useAuthContext();
+
+  if (loading) {
+    return <LoadingModal loading={true} />;
+  }
 
   return (
-    <>
-      <Router>
-        <Suspense fallback={<LoadingModal loading={true} />}>
-          {user ? <AuthorizedRoute user={user} /> : <UnauthorizedRoute />}
-        </Suspense>
-      </Router>
-    </>
+    <Router>
+      <Suspense fallback={<LoadingModal loading={true} />}>
+        {user ? <AuthorizedRoute user={user} /> : <UnauthorizedRoute />}
+      </Suspense>
+    </Router>
   );
 };
 

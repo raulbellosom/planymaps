@@ -23,6 +23,7 @@ const LayerFormFields = ({}) => {
         component={ImagePicker}
         label="Imagenes"
         accept="image/.png,.jpg,.jpeg"
+        multiple={false}
       />
       <Field name="order" id="order" component={TextInput} type="hidden" />
       <Field name="mapId" id="mapId" component={TextInput} type="hidden" />

@@ -26,6 +26,11 @@ export const createMap = async (req, res) => {
 // Obtener todos los mapas
 export const getMaps = async (req, res) => {
   try {
+    // if user.id is not defined, return 401
+    if (!req.user.id) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
     const maps = await db.map.findMany({
       where: {
         enabled: true,
