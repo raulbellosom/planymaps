@@ -7,9 +7,12 @@ import { MdGridOff, MdGridOn, MdOutlineFormatColorFill } from 'react-icons/md';
 import { FormattedUrlImage } from '../../utils/FormattedUrlImage';
 import LoadingModal from '../loadingModal/LoadingModal';
 import ModalViewer from '../Modals/ModalViewer';
+import { Tooltip } from 'flowbite-react';
+import { BsStack } from 'react-icons/bs';
 
 const Canvas = ({ layers }) => {
   const cellSize = 50;
+  const [gridBackground, setGridBackground] = useState(null);
   const [allLayers, setAllLayers] = useState([]);
   const [layerSelected, setLayerSelected] = useState(null);
   const [showGrid, setShowGrid] = useState(true);
@@ -21,6 +24,7 @@ const Canvas = ({ layers }) => {
   const [gridColor, setGridColor] = useState(
     localStorage.getItem('gridColor') || '#6b7280',
   );
+  const [prevGridColor, setPrevGridColor] = useState(gridColor);
 
   useEffect(() => {
     setAllLayers(layers);
@@ -40,9 +44,40 @@ const Canvas = ({ layers }) => {
     }
   }, [layerSelected]);
 
-  if (!allLayers) {
-    return <LoadingModal loading={true} />;
-  }
+  const generateGridImage = (width, height, cellSize, color) => {
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d');
+
+    ctx.strokeStyle = color;
+    for (let x = 0; x < width; x += cellSize) {
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, height);
+      ctx.stroke();
+    }
+    for (let y = 0; y < height; y += cellSize) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(width, y);
+      ctx.stroke();
+    }
+
+    return canvas.toDataURL('image/png');
+  };
+
+  useEffect(() => {
+    if (imageDimensions.width && imageDimensions.height) {
+      const gridImage = generateGridImage(
+        imageDimensions.width,
+        imageDimensions.height,
+        cellSize,
+        gridColor,
+      );
+      setGridBackground(gridImage);
+    }
+  }, [imageDimensions, cellSize, gridColor]);
 
   // Calcular el número de filas y columnas
   const columns = Math.floor(imageDimensions.width / cellSize);
@@ -57,6 +92,10 @@ const Canvas = ({ layers }) => {
     return label;
   };
 
+  if (!allLayers) {
+    return <LoadingModal loading={true} />;
+  }
+
   return (
     <>
       <div className="relative w-full h-screen overflow-hidden ">
@@ -64,6 +103,7 @@ const Canvas = ({ layers }) => {
           initialScale={1}
           minScale={0.1}
           maxScale={5}
+          centerOnInit
           wheel={{ step: 0.1 }}
           limitToBounds={false}
         >
@@ -125,14 +165,14 @@ const Canvas = ({ layers }) => {
                     />
                   )}
                   {showGrid && (
-                    <div
+                    <img
+                      src={gridBackground}
+                      alt="Grid"
                       className="absolute top-0 left-0 pointer-events-none"
                       style={{
                         zIndex: 10,
                         width: '100%',
                         height: '100%',
-                        backgroundSize: `${cellSize * 1}px ${cellSize * 1}px`,
-                        backgroundImage: `linear-gradient(to right, ${gridColor} 1px, transparent 1px), linear-gradient(to bottom, ${gridColor} 1px, transparent 1px)`,
                       }}
                     />
                   )}
@@ -141,14 +181,14 @@ const Canvas = ({ layers }) => {
                   {Array.from({ length: rows }).map((_, index) => (
                     <div
                       key={`row-label-${index}`}
-                      className="absolute text-sm text-gray-500"
+                      className="absolute text-xxs lg:text-sm text-gray-500"
                       style={{
                         top: `${(index * 100) / rows}%`,
                         left: '-20px',
                         transform: 'translateY(-50%)',
                       }}
                     >
-                      {index + 1}
+                      {index}
                     </div>
                   ))}
 
@@ -156,17 +196,48 @@ const Canvas = ({ layers }) => {
                   {Array.from({ length: columns }).map((_, index) => (
                     <div
                       key={`col-label-${index}`}
-                      className="absolute text-sm text-gray-500"
+                      className="absolute text-xxs lg:text-sm text-gray-500"
                       style={{
                         top: '-20px',
                         left: `${(index * 100) / columns}%`,
                         transform: 'translateX(-50%)',
                       }}
                     >
-                      {getColumnLabel(index)}
+                      {index == 0 ? index : getColumnLabel(index - 1)}
                     </div>
                   ))}
                 </TransformComponent>
+                <div className="absolute bottom-3 right-3 flex gap-2 z-50 text-nowrap max-w-[100vw] md:max-w-full overflow-auto">
+                  {allLayers.map((layer) => (
+                    <ActionButtons
+                      key={layer.id}
+                      extraActions={[
+                        {
+                          label: layer.name,
+                          action: () => {
+                            resetTransform();
+                            setLayerSelected(layer);
+                          },
+                          color: 'stone',
+                        },
+                      ]}
+                    />
+                  ))}
+                  <Tooltip content="Administrar capas" position="left">
+                    <ActionButtons
+                      extraActions={[
+                        {
+                          label: 'Capas',
+                          action: () => {
+                            setShowModalLayer(true);
+                          },
+                          color: 'stone',
+                          icon: BsStack,
+                        },
+                      ]}
+                    />
+                  </Tooltip>
+                </div>
               </div>
             </>
           )}
@@ -192,9 +263,9 @@ const Canvas = ({ layers }) => {
               <input
                 className="w-full h-24"
                 type="color"
-                value={gridColor}
+                value={prevGridColor}
                 onChange={(e) => {
-                  setGridColor(e.target.value);
+                  setPrevGridColor(e.target.value);
                 }}
               />
             </div>
@@ -214,7 +285,8 @@ const Canvas = ({ layers }) => {
                     icon: MdOutlineFormatColorFill,
                     label: 'Recordar cuadrícula',
                     action: () => {
-                      localStorage.setItem('gridColor', gridColor);
+                      localStorage.setItem('gridColor', prevGridColor);
+                      setGridColor(prevGridColor);
                       setModalGridColorPicker(false);
                     },
                     color: 'primary',

@@ -23,6 +23,9 @@ module.exports = {
         'planymaps-primary-dark': '#36e961',
         'planymaps-secondary-light': '#11506e',
       },
+      fontSize: {
+        xxs: '0.5rem', // Nuevo estilo para texto muy pequeño
+      },
       animation: {
         shake: 'shake 0.82s cubic-bezier(.36,.07,.19,.97) both',
       },
