@@ -207,7 +207,7 @@ const Canvas = ({ layers }) => {
                     </div>
                   ))}
                 </TransformComponent>
-                <div className="absolute bottom-3 right-3 flex gap-2 z-50 text-nowrap max-w-[100vw] md:max-w-full overflow-auto">
+                <div className="fixed bottom-3 right-3 flex gap-2 z-50 text-nowrap max-w-[100vw] md:max-w-full overflow-auto">
                   {allLayers.map((layer) => (
                     <ActionButtons
                       key={layer.id}
