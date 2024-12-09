@@ -269,7 +269,7 @@ const Canvas = ({ layers }) => {
                 }}
               />
             </div>
-            <div className="flex gap-4 justify-end text-nowrap">
+            <div className="flex flex-col md:flex-row gap-4 justify-end text-nowrap">
               <ActionButtons
                 extraActions={[
                   {
