@@ -12,6 +12,10 @@ const ImagePicker = ({
 }) => {
   const handleFileChange = (event) => {
     const newFiles = Array.from(event.target.files);
+    if (!props.multiple) {
+      setFieldValue(field.name, newFiles);
+      return;
+    }
     const currentFiles = field.value || [];
     const combinedFiles = [...currentFiles, ...newFiles];
     setFieldValue(field.name, combinedFiles);
@@ -26,6 +30,10 @@ const ImagePicker = ({
     e.preventDefault();
     e.stopPropagation();
     const newFiles = Array.from(e.dataTransfer.files);
+    if (!props.multiple) {
+      setFieldValue(field.name, newFiles.slice(0, 1));
+      return;
+    }
     const currentFiles = field.value || [];
     const files = [...currentFiles, ...newFiles];
     setFieldValue(field.name, files);

@@ -78,7 +78,7 @@ export const getLayerById = async (req, res) => {
 export const updateLayer = async (req, res) => {
   const { id } = req.params;
   const { layerData } = req.body;
-  const { name, mapId, order } = JSON.parse(layerData);
+  const { name, mapId, order, cellSize, cellColor } = JSON.parse(layerData);
   try {
     const layerExists = await db.layer.findUnique({ where: { id } });
 
@@ -92,11 +92,15 @@ export const updateLayer = async (req, res) => {
 
     const layer = await db.layer.update({
       where: { id },
-      data: { name: layerName, order: parseInt(order, 10) },
+      data: {
+        name: layerName,
+        order: parseInt(order, 10),
+        cellSize: cellSize ? parseInt(cellSize, 10) : null,
+        cellColor: cellColor ? cellColor : null,
+      },
     });
 
     if (req.processedFiles) {
-      // Eliminar la imagen anterior
       await db.image.deleteMany({ where: { layerId: id } });
 
       const file = req.processedFiles;

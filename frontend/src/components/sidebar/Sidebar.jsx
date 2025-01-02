@@ -8,7 +8,6 @@ import {
   SubMenu,
 } from 'react-pro-sidebar';
 import {
-  FaTachometerAlt,
   FaUserCircle,
   FaSignOutAlt,
   FaUserCog,
@@ -16,11 +15,9 @@ import {
 } from 'react-icons/fa';
 import { useAuthContext } from '../../context/AuthContext';
 import AccountSidebar from './AccountSidebar';
-import { Button } from 'flowbite-react';
 import MainLayout from '../../Layout/MainLayout';
 import { MdAdminPanelSettings } from 'react-icons/md';
 import useCheckPermissions from '../../hooks/useCheckPermissions';
-import { LiaMapSolid } from 'react-icons/lia';
 import { TbMapStar } from 'react-icons/tb';
 import { BiSolidContact } from 'react-icons/bi';
 import ActionButtons from '../ActionButtons/ActionButtons';

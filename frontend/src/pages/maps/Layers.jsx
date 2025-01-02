@@ -70,6 +70,7 @@ const LayerItem = ({
                   name: item.name,
                   image: item.image,
                   mapId: item.mapId,
+                  order: item.order,
                   id: item.id,
                 });
                 setIsOpenModal(true);
@@ -166,7 +167,7 @@ const Layers = ({ mapId }) => {
               ]}
             />
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
             {!isPending && layers.length > 0 ? (
               layers.map((item, index) => (
                 <LayerItem
@@ -197,7 +198,11 @@ const Layers = ({ mapId }) => {
         <ModalFormikForm
           dismissible={true}
           formFields={<LayerFormFields />}
-          initialValues={{ ...layer, mapId, order: layers.length }}
+          initialValues={{
+            ...layer,
+            mapId,
+            order: layer.order || layers.length,
+          }}
           onSubmit={handleSubmit}
           schema={LayerFormSchema}
           isOpenModal={openModal}

@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import ModalViewer from '../../components/Modals/ModalViewer';
 import Layers from './Layers';
 import Canvas from '../../components/MapsComponents/Canvas';
+import DrawingComponent from '../../components/MapsComponents/DrawingComponent';
 
 const ViewMap = () => {
   const id = useParams().id;
@@ -36,16 +37,9 @@ const ViewMap = () => {
   return (
     <>
       <div className="relative w-full h-[100vh]">
-        <div className="absolute z-10 top-12 left-2 md:top-2 md:left-16 p-1 px-2 bg-white w-fit flex gap-2 text-2xl items-center">
-          <i>
-            <RiMap2Line className="text-planymaps-primary" />
-          </i>
-          <span className="text-planymaps-primary text-xs md:text-base font-semibold">
-            {map?.name}
-          </span>
-        </div>
-
-        <>{layers && <Canvas layers={layers} />}</>
+        {layers && (
+          <Canvas layers={layers} setShowModalLayer={setShowModalLayer} />
+        )}
       </div>
 
       {showModalLayer && (

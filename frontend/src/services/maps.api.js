@@ -153,6 +153,8 @@ export const updateLayer = async (layer) => {
         order: layer.order,
         mapId: layer.mapId,
         type: 'map',
+        cellSize: layer.cellSize,
+        cellColor: layer.cellColor,
       }),
     );
 

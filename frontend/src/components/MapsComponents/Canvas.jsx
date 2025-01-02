@@ -1,18 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState, useRef } from 'react';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import ActionButtons from '../ActionButtons/ActionButtons';
 import { GoZoomIn, GoZoomOut } from 'react-icons/go';
 import { TbRestore, TbZoomScan } from 'react-icons/tb';
-import { MdGridOff, MdGridOn, MdOutlineFormatColorFill } from 'react-icons/md';
+import {
+  MdDraw,
+  MdGridOff,
+  MdGridOn,
+  MdOutlineFormatColorFill,
+} from 'react-icons/md';
 import { FormattedUrlImage } from '../../utils/FormattedUrlImage';
 import LoadingModal from '../loadingModal/LoadingModal';
 import ModalViewer from '../Modals/ModalViewer';
 import { Tooltip } from 'flowbite-react';
 import { BsStack } from 'react-icons/bs';
+import { generateGridImage } from '../../utils/CanvasUtils';
+import { useMapsContext } from '../../context/MapsContext';
+// import DrawingComponent from './DrawingComponent';
+import * as fabric from 'fabric';
 
-const Canvas = ({ layers }) => {
-  const cellSize = 50;
-  const [gridBackground, setGridBackground] = useState(null);
+const Canvas = ({ layers, setShowModalLayer }) => {
+  const { useUpdateLayer } = useMapsContext();
   const [allLayers, setAllLayers] = useState([]);
   const [layerSelected, setLayerSelected] = useState(null);
   const [showGrid, setShowGrid] = useState(true);
@@ -20,16 +28,30 @@ const Canvas = ({ layers }) => {
     width: 0,
     height: 0,
   });
-  const [modalGridColorPicker, setModalGridColorPicker] = useState(false);
-  const [gridColor, setGridColor] = useState(
-    localStorage.getItem('gridColor') || '#6b7280',
-  );
-  const [prevGridColor, setPrevGridColor] = useState(gridColor);
+  const [modalGridConfig, setModalGridConfig] = useState(false);
+  const [cellSize, setCellSize] = useState(50);
+  const [cellColor, setCellColor] = useState('#6b7280');
+  const [prevCellColor, setPrevCellColor] = useState(cellColor);
+  const [prevCellSize, setPrevCellSize] = useState(cellSize);
+  const [drawingMode, setDrawingMode] = useState(false);
+  const [canvas, setCanvas] = useState(null);
+
+  const canvasRef = useRef(null);
+  const fabricCanvas = useRef(null);
 
   useEffect(() => {
     setAllLayers(layers);
     setLayerSelected(layers[0]);
   }, [layers]);
+
+  useEffect(() => {
+    if (layerSelected) {
+      setCellSize(layerSelected.cellSize || 50);
+      setCellColor(layerSelected.cellColor || '#6b7280');
+      setPrevCellSize(layerSelected.cellSize || 50);
+      setPrevCellColor(layerSelected.cellColor || '#6b7280');
+    }
+  }, [layerSelected]);
 
   useEffect(() => {
     if (layerSelected) {
@@ -44,42 +66,38 @@ const Canvas = ({ layers }) => {
     }
   }, [layerSelected]);
 
-  const generateGridImage = (width, height, cellSize, color) => {
-    const canvas = document.createElement('canvas');
-    canvas.width = width;
-    canvas.height = height;
-    const ctx = canvas.getContext('2d');
-
-    ctx.strokeStyle = color;
-    for (let x = 0; x < width; x += cellSize) {
-      ctx.beginPath();
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, height);
-      ctx.stroke();
-    }
-    for (let y = 0; y < height; y += cellSize) {
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(width, y);
-      ctx.stroke();
-    }
-
-    return canvas.toDataURL('image/png');
-  };
-
   useEffect(() => {
     if (imageDimensions.width && imageDimensions.height) {
-      const gridImage = generateGridImage(
+      // Inicializar canvas después de que la imagen haya cargado
+      const fabricc = new fabric.Canvas(fabricCanvas.current, {
+        height: imageDimensions.height,
+        width: imageDimensions.width,
+        isDrawingMode: drawingMode,
+      });
+
+      fabricc.freeDrawingBrush = new fabric.PencilBrush(fabricc);
+      fabricc.freeDrawingBrush.color = '#000000';
+      fabricc.freeDrawingBrush.width = 5;
+      setCanvas(fabricc);
+
+      return () => {
+        fabricc.dispose();
+      };
+    }
+  }, [imageDimensions, drawingMode]);
+
+  const gridBackground = useMemo(() => {
+    if (imageDimensions.width && imageDimensions.height) {
+      return generateGridImage(
         imageDimensions.width,
         imageDimensions.height,
         cellSize,
-        gridColor,
+        cellColor,
       );
-      setGridBackground(gridImage);
     }
-  }, [imageDimensions, cellSize, gridColor]);
+    return null;
+  }, [imageDimensions, cellSize, cellColor]);
 
-  // Calcular el número de filas y columnas
   const columns = Math.floor(imageDimensions.width / cellSize);
   const rows = Math.floor(imageDimensions.height / cellSize);
 
@@ -96,6 +114,18 @@ const Canvas = ({ layers }) => {
     return <LoadingModal loading={true} />;
   }
 
+  const handleUpdateLayer = async (values) => {
+    try {
+      await useUpdateLayer(values);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const toggleDrawingMode = () => {
+    setDrawingMode((prev) => !prev);
+  };
+
   return (
     <>
       <div className="relative w-full h-screen overflow-hidden ">
@@ -106,6 +136,7 @@ const Canvas = ({ layers }) => {
           centerOnInit
           wheel={{ step: 0.1 }}
           limitToBounds={false}
+          disabled={drawingMode}
         >
           {({ zoomIn, zoomOut, resetTransform }) => (
             <>
@@ -137,12 +168,16 @@ const Canvas = ({ layers }) => {
                       {
                         icon: MdOutlineFormatColorFill,
                         color: 'stone',
-                        action: () => setModalGridColorPicker(true),
+                        action: () => setModalGridConfig(true),
+                      },
+                      {
+                        icon: MdDraw,
+                        color: 'stone',
+                        action: toggleDrawingMode,
                       },
                     ]}
                   />
                 </div>
-
                 {/* Cuadrícula */}
 
                 {/* Imagen */}
@@ -164,48 +199,48 @@ const Canvas = ({ layers }) => {
                       }}
                     />
                   )}
+
                   {showGrid && (
                     <img
                       src={gridBackground}
                       alt="Grid"
-                      className="absolute top-0 left-0 pointer-events-none"
-                      style={{
-                        zIndex: 10,
-                        width: '100%',
-                        height: '100%',
-                      }}
+                      className="absolute top-0 left-0"
                     />
                   )}
-
+                  <div className="absolute top-0 left-0">
+                    <canvas ref={fabricCanvas} className="" />
+                  </div>
                   {/* Etiquetas de las filas (números) */}
-                  {Array.from({ length: rows }).map((_, index) => (
-                    <div
-                      key={`row-label-${index}`}
-                      className="absolute text-xxs lg:text-sm text-gray-500"
-                      style={{
-                        top: `${(index * 100) / rows}%`,
-                        left: '-20px',
-                        transform: 'translateY(-50%)',
-                      }}
-                    >
-                      {index}
-                    </div>
-                  ))}
+                  {showGrid &&
+                    Array.from({ length: rows }).map((_, index) => (
+                      <div
+                        key={`row-label-${index}`}
+                        className="absolute text-xxs lg:text-sm text-gray-500"
+                        style={{
+                          top: `${(index * 100) / rows}%`,
+                          left: '-20px',
+                          transform: 'translateY(-50%)',
+                        }}
+                      >
+                        {index}
+                      </div>
+                    ))}
 
                   {/* Etiquetas de las columnas (letras) */}
-                  {Array.from({ length: columns }).map((_, index) => (
-                    <div
-                      key={`col-label-${index}`}
-                      className="absolute text-xxs lg:text-sm text-gray-500"
-                      style={{
-                        top: '-20px',
-                        left: `${(index * 100) / columns}%`,
-                        transform: 'translateX(-50%)',
-                      }}
-                    >
-                      {index == 0 ? index : getColumnLabel(index - 1)}
-                    </div>
-                  ))}
+                  {showGrid &&
+                    Array.from({ length: columns }).map((_, index) => (
+                      <div
+                        key={`col-label-${index}`}
+                        className="absolute text-xxs lg:text-sm text-gray-500"
+                        style={{
+                          top: '-20px',
+                          left: `${(index * 100) / columns}%`,
+                          transform: 'translateX(-50%)',
+                        }}
+                      >
+                        {index == 0 ? index : getColumnLabel(index - 1)}
+                      </div>
+                    ))}
                 </TransformComponent>
                 <div className="fixed bottom-3 right-3 flex gap-2 z-50 text-nowrap max-w-[100vw] md:max-w-full overflow-auto">
                   {allLayers.map((layer) => (
@@ -243,31 +278,50 @@ const Canvas = ({ layers }) => {
           )}
         </TransformWrapper>
       </div>
-      {modalGridColorPicker && (
+      {modalGridConfig && (
         <ModalViewer
           size="3xl"
-          isOpenModal={modalGridColorPicker}
-          setIsOpenModal={setModalGridColorPicker}
+          isOpenModal={modalGridConfig}
+          setIsOpenModal={setModalGridConfig}
           dismissible={false}
-          onCloseModal={() => setModalGridColorPicker(false)}
+          onCloseModal={() => setModalGridConfig(false)}
           title="Color de la cuadrícula"
         >
           <div className="flex flex-col gap-4 w-full">
-            <div>
-              <div>
-                <label htmlFor="grid-color">Color de la cuadrícula</label>
-                <p className="text-sm text-gray-500">
-                  Has clic en el color para seleccionar uno nuevo.
-                </p>
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-col">
+                <div>
+                  <label htmlFor="cell-color">Color de la cuadrícula</label>
+                  <p className="text-sm text-gray-500">
+                    Has clic en el color para seleccionar uno nuevo.
+                  </p>
+                </div>
+                <input
+                  name="cell-color"
+                  id="cell-color"
+                  type="color"
+                  className="w-full h-24"
+                  value={prevCellColor}
+                  onChange={(e) => {
+                    setPrevCellColor(e.target.value);
+                  }}
+                />
               </div>
-              <input
-                className="w-full h-24"
-                type="color"
-                value={prevGridColor}
-                onChange={(e) => {
-                  setPrevGridColor(e.target.value);
-                }}
-              />
+              <div className="flex flex-col">
+                <label htmlFor="cell-size">Tamaño de la celda (px)</label>
+                <input
+                  name="cell-size"
+                  id="cell-size"
+                  type="number"
+                  className="w-full"
+                  min="1"
+                  step="1"
+                  value={prevCellSize}
+                  onChange={(e) => {
+                    setPrevCellSize(e.target.value);
+                  }}
+                />
+              </div>
             </div>
             <div className="flex flex-col md:flex-row gap-4 justify-end text-nowrap">
               <ActionButtons
@@ -276,18 +330,21 @@ const Canvas = ({ layers }) => {
                     icon: TbRestore,
                     label: 'Reestablecer cuadrícula',
                     action: () => {
-                      setGridColor('#6b7280');
-                      localStorage.removeItem('gridColor');
+                      setCellColor('#6b7280');
+                      setCellSize(50);
                     },
                     color: 'info',
                   },
                   {
                     icon: MdOutlineFormatColorFill,
-                    label: 'Recordar cuadrícula',
+                    label: 'Guardar cuadrícula',
                     action: () => {
-                      localStorage.setItem('gridColor', prevGridColor);
-                      setGridColor(prevGridColor);
-                      setModalGridColorPicker(false);
+                      handleUpdateLayer({
+                        ...layerSelected,
+                        cellColor: prevCellColor,
+                        cellSize: prevCellSize,
+                      });
+                      setModalGridConfig(false);
                     },
                     color: 'primary',
                     filled: true,
