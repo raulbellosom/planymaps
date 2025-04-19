@@ -15,10 +15,30 @@ const Notifies = (type, message) => {
       toast.error(message);
       break;
     case 'warning':
-      toast.warning(message);
+      toast.success(message, {
+        style: {
+          border: '1px solid #FFD166',
+          padding: '16px',
+          color: '#FFD166',
+        },
+        iconTheme: {
+          primary: '#FFD166',
+          secondary: '#FFFAEE',
+        },
+      });
       break;
     case 'info':
-      toast(message); // 'react-hot-toast' no tiene un toast.info, por lo que usamos el genérico
+      toast.success(message, {
+        style: {
+          border: '1px solid #118AB2',
+          padding: '16px',
+          color: '#118AB2',
+        },
+        iconTheme: {
+          primary: '#118AB2',
+          secondary: '#FFFAEE',
+        },
+      }); // 'react-hot-toast' no tiene un toast.info, por lo que usamos el genérico
       break;
     default:
       toast(message);

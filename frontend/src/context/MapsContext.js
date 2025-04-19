@@ -11,6 +11,11 @@ const MapsContext = createContext({
   useUpdateLayer: async () => {},
   useDeleteLayer: async () => {},
   useUpdateLayersOrder: async () => {},
+  useCreateDrawing: async () => {},
+  useUpdateDrawing: async () => {},
+  useDeleteDrawing: async () => {},
+  useDeleteAllDrawingsByLayer: async () => {},
+  useGetDrawingsByLayerId: async () => {},
 });
 
 export const useMapsContext = () => useContext(MapsContext);

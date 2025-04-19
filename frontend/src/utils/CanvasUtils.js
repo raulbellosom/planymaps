@@ -4,6 +4,11 @@ export const generateGridImage = (width, height, cellSize, color) => {
   canvas.height = height;
   const ctx = canvas.getContext('2d');
 
+  if (!ctx) {
+    console.error('No se pudo obtener el contexto 2D del lienzo.');
+    return null;
+  }
+
   ctx.strokeStyle = color;
   for (let x = 0; x < width; x += cellSize) {
     ctx.beginPath();
@@ -19,4 +24,11 @@ export const generateGridImage = (width, height, cellSize, color) => {
   }
 
   return canvas.toDataURL('image/png');
+};
+
+export const normalizeSavedCanvasState = (savedCanvasState) => {
+  const combinedObjects = savedCanvasState.reduce((acc, drawing) => {
+    return acc.concat(drawing.data.objects); // Combinar los objetos de cada trazo
+  }, []);
+  return combinedObjects;
 };

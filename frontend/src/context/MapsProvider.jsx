@@ -19,6 +19,11 @@ const MapsProvider = ({ children }) => {
     useDeleteLayer,
     useUpdateLayer,
     useUpdateLayersOrder,
+    useCreateDrawing,
+    useUpdateDrawing,
+    useDeleteDrawing,
+    useDeleteAllDrawingsByLayer,
+    useGetDrawingsByLayerId,
   } = useMaps(dispatch);
 
   return (
@@ -33,6 +38,11 @@ const MapsProvider = ({ children }) => {
         useDeleteLayer,
         useUpdateLayer,
         useUpdateLayersOrder,
+        useCreateDrawing,
+        useUpdateDrawing,
+        useDeleteDrawing,
+        useDeleteAllDrawingsByLayer,
+        useGetDrawingsByLayerId,
       }}
     >
       {children}

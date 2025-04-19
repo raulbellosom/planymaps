@@ -1,6 +1,7 @@
-import React, { useEffect, useMemo, useState, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import ActionButtons from '../ActionButtons/ActionButtons';
+import _, { fill, set } from 'lodash';
 import { GoZoomIn, GoZoomOut } from 'react-icons/go';
 import { TbRestore, TbZoomScan } from 'react-icons/tb';
 import {
@@ -8,19 +9,29 @@ import {
   MdGridOff,
   MdGridOn,
   MdOutlineFormatColorFill,
+  MdOutlineSettingsBackupRestore,
+  MdSaveAlt,
 } from 'react-icons/md';
 import { FormattedUrlImage } from '../../utils/FormattedUrlImage';
 import LoadingModal from '../loadingModal/LoadingModal';
 import ModalViewer from '../Modals/ModalViewer';
-import { Tooltip } from 'flowbite-react';
-import { BsStack } from 'react-icons/bs';
+import { BsStack, BsThreeDotsVertical } from 'react-icons/bs';
+import { PiCursorFill } from 'react-icons/pi';
 import { generateGridImage } from '../../utils/CanvasUtils';
 import { useMapsContext } from '../../context/MapsContext';
-// import DrawingComponent from './DrawingComponent';
-import * as fabric from 'fabric';
+import DrawingComponent from './DrawingComponent';
+import { AiOutlineClear } from 'react-icons/ai';
+import Notifies from '../Notifies/Notifies';
+import { Dropdown } from 'flowbite-react';
+import { FaEraser } from 'react-icons/fa';
 
 const Canvas = ({ layers, setShowModalLayer }) => {
-  const { useUpdateLayer } = useMapsContext();
+  const {
+    useUpdateLayer,
+    useCreateDrawing,
+    useDeleteAllDrawingsByLayer,
+    useDeleteDrawing,
+  } = useMapsContext();
   const [allLayers, setAllLayers] = useState([]);
   const [layerSelected, setLayerSelected] = useState(null);
   const [showGrid, setShowGrid] = useState(true);
@@ -34,14 +45,16 @@ const Canvas = ({ layers, setShowModalLayer }) => {
   const [prevCellColor, setPrevCellColor] = useState(cellColor);
   const [prevCellSize, setPrevCellSize] = useState(cellSize);
   const [drawingMode, setDrawingMode] = useState(false);
-  const [canvas, setCanvas] = useState(null);
-
-  const canvasRef = useRef(null);
-  const fabricCanvas = useRef(null);
+  const [currentCanvas, setCurrentCanvas] = useState(null);
+  const [originalCanvasState, setOriginalCanvasState] = useState(null);
+  const [ereaseDrawsMode, setEreaseDrawsMode] = useState(false);
 
   useEffect(() => {
-    setAllLayers(layers);
-    setLayerSelected(layers[0]);
+    if (layers && layers.length > 0) {
+      const sortedLayers = layers.sort((a, b) => a.order - b.order);
+      setAllLayers(sortedLayers);
+      setLayerSelected(sortedLayers[0]);
+    }
   }, [layers]);
 
   useEffect(() => {
@@ -50,11 +63,7 @@ const Canvas = ({ layers, setShowModalLayer }) => {
       setCellColor(layerSelected.cellColor || '#6b7280');
       setPrevCellSize(layerSelected.cellSize || 50);
       setPrevCellColor(layerSelected.cellColor || '#6b7280');
-    }
-  }, [layerSelected]);
 
-  useEffect(() => {
-    if (layerSelected) {
       const img = new Image();
       img.onload = () => {
         setImageDimensions({
@@ -67,24 +76,10 @@ const Canvas = ({ layers, setShowModalLayer }) => {
   }, [layerSelected]);
 
   useEffect(() => {
-    if (imageDimensions.width && imageDimensions.height) {
-      // Inicializar canvas después de que la imagen haya cargado
-      const fabricc = new fabric.Canvas(fabricCanvas.current, {
-        height: imageDimensions.height,
-        width: imageDimensions.width,
-        isDrawingMode: drawingMode,
-      });
-
-      fabricc.freeDrawingBrush = new fabric.PencilBrush(fabricc);
-      fabricc.freeDrawingBrush.color = '#000000';
-      fabricc.freeDrawingBrush.width = 5;
-      setCanvas(fabricc);
-
-      return () => {
-        fabricc.dispose();
-      };
+    if (layerSelected && currentCanvas) {
+      loadDrawingsToCanvas(currentCanvas, layerSelected.drawings);
     }
-  }, [imageDimensions, drawingMode]);
+  }, [layerSelected, currentCanvas]);
 
   const gridBackground = useMemo(() => {
     if (imageDimensions.width && imageDimensions.height) {
@@ -122,8 +117,154 @@ const Canvas = ({ layers, setShowModalLayer }) => {
     }
   };
 
+  const handleLayerChange = (newLayer) => {
+    setLayerSelected(newLayer);
+
+    if (currentCanvas) {
+      const existingDrawing = newLayer.drawings;
+      if (existingDrawing) {
+        currentCanvas.loadFromJSON(existingDrawing, () => {
+          currentCanvas.renderAll();
+        });
+      }
+    }
+  };
+
+  const handleSaveDrawing = useCallback(
+    async (canvas) => {
+      if (canvas && layerSelected) {
+        const json = canvas.toJSON();
+        try {
+          const res = await useCreateDrawing({
+            layerId: layerSelected.id,
+            type: 'drawing',
+            data: json,
+          });
+          setLayerSelected((prev) => ({
+            ...prev,
+            drawings: res.drawings,
+          }));
+          setDrawingMode(false);
+          setEreaseDrawsMode(false);
+        } catch (error) {
+          console.error('Error al guardar el trazo:', error);
+          Notifies('error', 'Error al guardar el trazo');
+        }
+      }
+    },
+    [layerSelected, useCreateDrawing],
+  );
+
+  const handleLoadDrawing = useCallback(
+    (canvas) => {
+      if (canvas) {
+        setCurrentCanvas(canvas);
+        if (layerSelected) {
+          loadDrawingsToCanvas(canvas, layerSelected.drawings);
+        }
+      }
+    },
+    [layerSelected],
+  );
+
   const toggleDrawingMode = () => {
+    if (drawingMode) {
+      const currentCanvasState = currentCanvas.toJSON();
+      const hasUnsavedChanges = !_.isEqual(
+        currentCanvasState.objects,
+        originalCanvasState.objects,
+      );
+
+      if (hasUnsavedChanges) {
+        Notifies(
+          'warning',
+          'Hay trazos sin guardar en la capa actual. Guarda los cambios antes de salir del modo dibujo.',
+        );
+        return;
+      }
+    }
+
+    Notifies(
+      'info',
+      `Modo de dibujo ${drawingMode ? 'desactivado' : 'activado'}`,
+    );
     setDrawingMode((prev) => !prev);
+  };
+
+  const loadDrawingsToCanvas = (canvas, drawings) => {
+    if (!canvas || !drawings) return;
+    const combinedDrawing = {
+      objects: drawings.reduce(
+        (acc, drawing) => acc.concat(drawing.data.objects),
+        [],
+      ),
+    };
+    setOriginalCanvasState(combinedDrawing);
+
+    if (combinedDrawing.objects?.length > 0) {
+      try {
+        canvas.loadFromJSON(combinedDrawing, () => {
+          canvas.getObjects().forEach((obj) => {
+            obj.visible = true;
+            obj.isPersistent = true;
+          });
+          setTimeout(() => {
+            canvas.renderAll();
+          }, 100);
+        });
+      } catch (error) {
+        console.error('Error al cargar los dibujos:', error);
+      }
+    }
+  };
+
+  const handleSelectDrawingToDelete = (drawingId) => {
+    const drawingToDelete = layerSelected.drawings.find(
+      (drawing) => drawing.id === drawingId,
+    );
+    if (drawingToDelete) {
+      const canvas = currentCanvas;
+      if (canvas) {
+        const objectToDelete = canvas.getObjects().find((obj) => {
+          return obj.id === drawingToDelete.id;
+        });
+        if (objectToDelete) {
+          canvas.remove(objectToDelete);
+          canvas.renderAll();
+        }
+      }
+    }
+  };
+
+  const handleDeleteAllDrawings = async () => {
+    try {
+      await useDeleteAllDrawingsByLayer(layerSelected.id);
+    } catch (error) {
+      console.error('Error al eliminar todos los trazos:', error);
+    }
+  };
+
+  const toggleEreaseDrawsMode = () => {
+    if (ereaseDrawsMode) {
+      const currentCanvasState = currentCanvas.toJSON();
+      const hasUnsavedChanges = !_.isEqual(
+        currentCanvasState.objects,
+        originalCanvasState.objects,
+      );
+      if (hasUnsavedChanges) {
+        Notifies(
+          'warning',
+          'Hay cambios sin guardar en la capa actual. Guarda los cambios antes de salir del modo borrado.',
+        );
+        return;
+      }
+
+      setEreaseDrawsMode(false);
+      Notifies('info', 'Modo de borrado desactivado');
+    } else {
+      setEreaseDrawsMode(true);
+      Notifies('info', 'Modo de borrado activado');
+    }
   };
 
   return (
@@ -138,7 +279,7 @@ const Canvas = ({ layers, setShowModalLayer }) => {
           limitToBounds={false}
           disabled={drawingMode}
         >
-          {({ zoomIn, zoomOut, resetTransform }) => (
+          {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
             <>
               <div className="relative w-full h-full">
                 {/* Botones de acción */}
@@ -148,32 +289,46 @@ const Canvas = ({ layers, setShowModalLayer }) => {
                       {
                         icon: GoZoomIn,
                         action: () => zoomIn(),
-                        color: 'stone',
+                        color: 'primary',
+                        blured: true,
                       },
                       {
                         icon: GoZoomOut,
                         action: () => zoomOut(),
-                        color: 'stone',
+                        color: 'primary',
+                        blured: true,
                       },
                       {
                         icon: TbZoomScan,
                         action: () => resetTransform(),
-                        color: 'stone',
+                        color: 'primary',
+                        blured: true,
                       },
                       {
                         icon: showGrid ? MdGridOff : MdGridOn,
                         action: () => setShowGrid(!showGrid),
-                        color: 'stone',
+                        color: 'primary',
+                        blured: true,
                       },
                       {
                         icon: MdOutlineFormatColorFill,
-                        color: 'stone',
+                        color: 'primary',
                         action: () => setModalGridConfig(true),
+                        blured: true,
                       },
                       {
-                        icon: MdDraw,
-                        color: 'stone',
+                        icon: drawingMode ? PiCursorFill : MdDraw,
+                        color: 'primary',
                         action: toggleDrawingMode,
+                        blured: true,
+                      },
+                      {
+                        label: '',
+                        icon: FaEraser,
+                        action: toggleEreaseDrawsMode,
+                        color: 'primary',
+                        blured: true,
+                        filled: ereaseDrawsMode,
                       },
                     ]}
                   />
@@ -207,9 +362,27 @@ const Canvas = ({ layers, setShowModalLayer }) => {
                       className="absolute top-0 left-0"
                     />
                   )}
-                  <div className="absolute top-0 left-0">
-                    <canvas ref={fabricCanvas} className="" />
-                  </div>
+                  {/* Componente de dibujo */}
+                  {layerSelected && (
+                    <div
+                      style={{
+                        backgroundColor: 'transparent',
+                      }}
+                      className="absolute top-0 left-0 overflow-hidden w-full h-full"
+                    >
+                      <DrawingComponent
+                        width={imageDimensions.width}
+                        height={imageDimensions.height}
+                        scale={rest?.instance?.transformState?.scale}
+                        offsetX={rest?.instance?.transformState?.positionX}
+                        offsetY={rest?.instance?.transformState?.positionY}
+                        drawingMode={drawingMode}
+                        onLoad={handleLoadDrawing}
+                        setCanvas={setCurrentCanvas}
+                        ereaseDrawsMode={ereaseDrawsMode}
+                      />
+                    </div>
+                  )}
                   {/* Etiquetas de las filas (números) */}
                   {showGrid &&
                     Array.from({ length: rows }).map((_, index) => (
@@ -242,36 +415,110 @@ const Canvas = ({ layers, setShowModalLayer }) => {
                       </div>
                     ))}
                 </TransformComponent>
-                <div className="fixed bottom-3 right-3 flex gap-2 z-50 text-nowrap max-w-[100vw] md:max-w-full overflow-auto">
-                  {allLayers.map((layer) => (
-                    <ActionButtons
-                      key={layer.id}
-                      extraActions={[
-                        {
-                          label: layer.name,
-                          action: () => {
-                            resetTransform();
-                            setLayerSelected(layer);
+                <div className="fixed bottom-3 right-3 flex gap-2 z-50 text-nowrap max-w-[100vw] md:max-w-full">
+                  {!(drawingMode || ereaseDrawsMode) ? (
+                    <>
+                      <ActionButtons
+                        extraActions={[
+                          {
+                            label: layerSelected?.name,
+                            action: () => resetTransform(),
+                            color: 'primary',
+                            blured: true,
                           },
-                          color: 'stone',
+                        ]}
+                      />
+                      <Dropdown
+                        renderTrigger={() => (
+                          <button className="w-fit backdrop-blur-lg text-planymaps-primary md:w-fit h-9 xl:h-10 text-sm xl:text-base cursor-pointer transition ease-in-out duration-200 p-4 flex items-center justify-center rounded-md border border-neutral-200 ">
+                            <BsThreeDotsVertical className="text-lg " />
+                          </button>
+                        )}
+                        dismissOnClick={true}
+                        inline
+                        arrowIcon={null}
+                        placement="right"
+                        className="md:w-52"
+                      >
+                        {allLayers?.map((layer, index) => (
+                          <Dropdown.Item
+                            key={index}
+                            className="min-w-36 min-h-12 text-planymaps-primary backdrop-blur-lg"
+                            onClick={() => handleLayerChange(layer)}
+                          >
+                            <span>{layer?.name}</span>
+                          </Dropdown.Item>
+                        ))}
+                      </Dropdown>
+
+                      <ActionButtons
+                        extraActions={[
+                          {
+                            label: 'Capas',
+                            action: () => {
+                              setShowModalLayer(true);
+                            },
+                            color: 'primary',
+                            icon: BsStack,
+                            blured: true,
+                          },
+                        ]}
+                      />
+                    </>
+                  ) : (
+                    <ActionButtons
+                      extraActions={[
+                        // {
+                        //   label: '',
+                        //   icon: ImUndo,
+                        //   action: handleUndo,
+                        //   color: 'primary',
+                        //   blured: true,
+                        // },
+                        // {
+                        //   label: '',
+                        //   icon: ImRedo,
+                        //   action: handleRedo,
+                        //   color: 'primary',
+                        //   blured: true,
+                        // },
+
+                        {
+                          label: '',
+                          icon: MdOutlineSettingsBackupRestore,
+                          action: () =>
+                            handleLoadDrawing(
+                              currentCanvas,
+                              layerSelected.drawings,
+                            ),
+                          color: 'primary',
+                          blured: true,
+                        },
+                        {
+                          label: '',
+                          icon: AiOutlineClear,
+                          action: () => {
+                            if (currentCanvas) {
+                              currentCanvas.clear();
+                            }
+                            handleDeleteAllDrawings();
+                          },
+                          color: 'primary',
+                          blured: true,
+                        },
+                        {
+                          label: '',
+                          icon: MdSaveAlt,
+                          action: () => {
+                            handleSaveDrawing(currentCanvas);
+                          },
+                          color: 'primary',
+                          filled: true,
+                          blured: true,
                         },
                       ]}
                     />
-                  ))}
-                  <Tooltip content="Administrar capas" position="left">
-                    <ActionButtons
-                      extraActions={[
-                        {
-                          label: 'Capas',
-                          action: () => {
-                            setShowModalLayer(true);
-                          },
-                          color: 'stone',
-                          icon: BsStack,
-                        },
-                      ]}
-                    />
-                  </Tooltip>
+                  )}
                 </div>
               </div>
             </>

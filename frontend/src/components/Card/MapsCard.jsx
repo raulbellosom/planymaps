@@ -66,7 +66,7 @@ const MapsCard = ({ map, actions, collapsedActions, role }) => {
         <div className="w-full rounded-b-lg bg-white flex gap-2 p-4 text-neutral-200">
           <>
             {actions && <ActionButtons extraActions={actions} />}
-            {collapsedActions && role !== 'Athlete' && (
+            {collapsedActions && (
               <Dropdown
                 renderTrigger={() => (
                   <button className="w-fit bg-white hover:bg-neutral-200 md:w-fit h-9 xl:h-10 text-sm xl:text-base cursor-pointer transition ease-in-out duration-200 p-4 flex items-center justify-center rounded-md border border-neutral-200 text-stone-800">

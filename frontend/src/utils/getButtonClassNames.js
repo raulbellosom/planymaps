@@ -40,7 +40,7 @@ export const getButtonClassNames = (
     'hover:bg-neutral-200 hover:text-black': color === 'neutral' && !disabled,
     'hover:bg-white text-black': color === 'white' && !disabled,
     'hover:bg-black hover:text-white': color === 'black' && !disabled,
-    'hover:bg-planymaps-primary hover:text-white':
+    'hover:bg-planymaps-primary text-planymaps-primary hover:text-white':
       color === 'primary' && !disabled,
     'hover:bg-planymaps-secondary hover:text-white':
       color === 'secondary' && !disabled,

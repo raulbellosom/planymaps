@@ -13,17 +13,21 @@ const ViewMap = () => {
   const [map, setMap] = useState(null);
   const [showModalLayer, setShowModalLayer] = useState(false);
   const [layers, setLayers] = useState([]);
+  const [shouldRefetch, setShouldRefetch] = useState(true); // Nuevo estado
 
   const { data, refetch } = useQuery({
     queryKey: ['map'],
     queryFn: ({ signal }) => getMapById(id, signal),
     staleTime: 1000 * 60 * 5,
     cacheTime: 1000 * 60 * 10,
+    enabled: shouldRefetch, // Controla si se debe ejecutar la petición
   });
 
   useEffect(() => {
-    refetch();
-  }, []);
+    if (shouldRefetch) {
+      refetch();
+    }
+  }, [shouldRefetch]);
 
   useEffect(() => {
     if (data) {
@@ -34,9 +38,13 @@ const ViewMap = () => {
     }
   }, [data]);
 
+  const handleSaveOrder = () => {
+    setShouldRefetch(false); // Evita que se ejecute el refetch
+  };
+
   return (
     <>
-      <div className="relative w-full h-[100vh]">
+      <div className="relative w-full h-[100vh] bg-stone-100">
         {layers && (
           <Canvas layers={layers} setShowModalLayer={setShowModalLayer} />
         )}
@@ -51,7 +59,7 @@ const ViewMap = () => {
           onCloseModal={() => setShowModalLayer(false)}
           title="Administrar capas"
         >
-          <Layers mapId={id} />
+          <Layers mapId={id} onSaveOrder={handleSaveOrder} />
         </ModalViewer>
       )}
     </>

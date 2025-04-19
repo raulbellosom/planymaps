@@ -190,3 +190,59 @@ export const deleteLayer = async (id) => {
     throw error;
   }
 };
+
+// Drawings
+// Obtener todos los trazos de una capa específica
+export const getDrawingsByLayerId = async (layerId) => {
+  try {
+    const { data } = await api.get(`/drawings/layer/${layerId}`);
+    return data;
+  } catch (error) {
+    console.log('Error al obtener los trazos:', error);
+    throw error;
+  }
+};
+
+// Crear un nuevo trazo
+export const createDrawing = async (drawing) => {
+  try {
+    const { data } = await api.post(`/drawings`, drawing);
+    return data;
+  } catch (error) {
+    console.log('Error al crear el trazo:', error);
+    throw error;
+  }
+};
+
+// Actualizar un trazo existente
+export const updateDrawing = async (id, drawing) => {
+  try {
+    const { data } = await api.put(`/drawings/${id}`, drawing);
+    return data;
+  } catch (error) {
+    console.log('Error al actualizar el trazo:', error);
+    throw error;
+  }
+};
+
+// Eliminar un trazo por su ID
+export const deleteDrawing = async (id) => {
+  try {
+    const { data } = await api.delete(`/drawings/${id}`);
+    return data;
+  } catch (error) {
+    console.log('Error al eliminar el trazo:', error);
+    throw error;
+  }
+};
+
+// Eliminar todos los trazos de una capa específica
+export const deleteAllDrawingsByLayer = async (layerId) => {
+  try {
+    const { data } = await api.delete(`/drawings/layer/${layerId}`);
+    return data;
+  } catch (error) {
+    console.log('Error al eliminar todos los trazos de la capa:', error);
+    throw error;
+  }
+};

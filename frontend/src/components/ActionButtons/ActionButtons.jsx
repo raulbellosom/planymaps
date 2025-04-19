@@ -3,6 +3,7 @@ import { FaEdit, FaEye, FaPlus, FaTrash } from 'react-icons/fa';
 import { MdCancel } from 'react-icons/md';
 import LinkButton from './LinkButton';
 import { getButtonClassNames } from '../../utils/getButtonClassNames';
+import classNames from 'classnames';
 
 const ActionButtons = forwardRef(
   (
@@ -87,11 +88,14 @@ const ActionButtons = forwardRef(
           key={index}
           ref={ref}
           onClick={action.action}
-          className={getButtonClassNames(
-            action?.color,
-            action?.filled,
-            action?.disabled,
-            action?.className,
+          className={classNames(
+            getButtonClassNames(
+              action?.color,
+              action?.filled,
+              action?.disabled,
+              action?.className,
+            ),
+            { 'backdrop-blur-lg': action?.blured },
           )}
           outline={action?.outline}
           type={action?.type || 'button'}

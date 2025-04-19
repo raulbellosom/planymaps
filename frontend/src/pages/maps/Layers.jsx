@@ -43,6 +43,7 @@ const LayerItem = ({
       }
     },
     drop: () => {
+      // Save the order without closing the modal
       saveOrder();
     },
   });
@@ -50,21 +51,26 @@ const LayerItem = ({
   return (
     <div
       ref={(node) => ref(drop(node))}
-      className="flex flex-col border border-neutral-200 rounded-lg p-4 bg-white shadow-sm"
+      className="flex flex-col border border-neutral-200 rounded-lg p-2 bg-white shadow-sm"
     >
       <img
         alt={item.name}
         src={FormattedUrlImage(item.image?.[0]?.url)}
-        className="w-full h-48 object-cover rounded-lg"
+        className="w-full h-24 object-cover rounded-lg"
       />
-      <h5 className="text-xl font-medium tracking-tight text-gray-900 mt-2">
+      <h5 className="text-xl font-medium truncate tracking-tight text-gray-900 mt-2">
         {item.name}
       </h5>
-      <div className="flex justify-end gap-4 pt-4">
+      <div className="flex justify-center gap-4 pt-4">
         <ActionButtons
           extraActions={[
             {
-              label: 'Editar',
+              label: '',
+              action: () => onRemove(),
+              icon: FaTrash,
+            },
+            {
+              label: '',
               action: () => {
                 setLayer({
                   name: item.name,
@@ -77,11 +83,6 @@ const LayerItem = ({
               },
               icon: FaPenSquare,
             },
-            {
-              label: 'Eliminar',
-              action: () => onRemove(),
-              icon: FaTrash,
-            },
           ]}
         />
       </div>
@@ -89,7 +90,7 @@ const LayerItem = ({
   );
 };
 
-const Layers = ({ mapId }) => {
+const Layers = ({ mapId, onSaveOrder }) => {
   const {
     useCreateLayer,
     useUpdateLayer,
@@ -141,16 +142,23 @@ const Layers = ({ mapId }) => {
   };
 
   const saveOrder = async () => {
-    await useUpdateLayersOrder(
-      layers.map((layer, index) => ({ id: layer.id, order: index })),
-    );
+    try {
+      await useUpdateLayersOrder(
+        layers.map((layer, index) => ({ id: layer.id, order: index })),
+      );
+      if (onSaveOrder) {
+        onSaveOrder(); // Llama a la función para evitar el refetch
+      }
+    } catch (error) {
+      console.error('Error saving layer order:', error);
+    }
   };
 
   return (
     <>
       <DndProvider backend={HTML5Backend}>
         <div className="flex flex-col items-start w-full">
-          <div className="flex gap-2 justify-between w-full">
+          <div className="flex flex-col-reverse md:flex-row gap-2 justify-between w-full">
             <h2 className="text-xl font-normal">
               Capas disponibles en este mapa
             </h2>
@@ -167,7 +175,7 @@ const Layers = ({ mapId }) => {
               ]}
             />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
             {!isPending && layers.length > 0 ? (
               layers.map((item, index) => (
                 <LayerItem

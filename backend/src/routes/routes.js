@@ -40,7 +40,12 @@ import {
   processImages,
   upload,
 } from "../controllers/uploadImages.controller.js";
-
+import {
+  createDrawing,
+  deleteAllDrawingsByLayer,
+  deleteDrawing,
+  updateDrawing,
+} from "../controllers/drawing.controller.js";
 const router = express.Router();
 
 // Rutas para Template
@@ -90,6 +95,12 @@ router.put(
   updateLayer
 );
 router.delete("/layers/:id", protect, deleteLayer);
+
+// Rutas para Drawing
+router.post("/drawings", protect, createDrawing); // Crear un nuevo trazo
+router.put("/drawings/:id", protect, updateDrawing); // Actualizar un trazo existente
+router.delete("/drawings/:id", protect, deleteDrawing); // Eliminar un trazo por su ID
+router.delete("/drawings/layer/:layerId", protect, deleteAllDrawingsByLayer); // Eliminar todos los trazos de una capa específica
 
 // Rutas para TemplateDrawing
 router.post("/templateDrawings", protect, createTemplateDrawing);

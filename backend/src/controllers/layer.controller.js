@@ -47,8 +47,18 @@ export const getLayers = async (req, res) => {
     const id = req.params.id;
     const layers = await db.layer.findMany({
       where: { mapId: id },
-      include: { image: true },
+      include: { image: true, drawings: true },
     });
+
+    if (!layers) {
+      return res.status(404).json({ message: "Capas no encontradas." });
+    }
+
+    if (layers.length === 0) {
+      return res.status(404).json({ message: "Capas no encontradas." });
+    }
+
+    layers.sort((a, b) => a.order - b.order);
     res.status(200).json(layers);
   } catch (error) {
     console.log("Error on getLayers", error);
@@ -61,7 +71,13 @@ export const getLayerById = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const layer = await db.layer.findUnique({ where: { id } });
+    const layer = await db.layer.findUnique({
+      where: { id },
+      include: {
+        image: true,
+        drawings: true, // Incluir los trazos asociados a la capa
+      },
+    });
 
     if (!layer) {
       return res.status(404).json({ message: "Layer not found" });
@@ -117,7 +133,7 @@ export const updateLayer = async (req, res) => {
 
     const allLayers = await db.layer.findMany({
       where: { mapId },
-      include: { image: true },
+      include: { image: true, drawings: true },
     });
 
     res.status(200).json({ data: allLayers });
@@ -149,6 +165,7 @@ export const updateLayersOrder = async (req, res) => {
       await db.layer.update({
         where: { id: layer.id },
         data: { order: index },
+        include: { image: true, drawings: true },
       });
     });
 

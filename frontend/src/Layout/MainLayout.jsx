@@ -9,18 +9,18 @@ const MainLayout = ({
 }) => {
   return (
     <div className="flex flex-col flex-1 h-full bg-white overflow-y-auto overflow-x-hidden relative">
-      <div className="flex items-center justify-start absolute top-2 left-2 md:left-0 z-50">
+      <div className="flex items-center justify-start absolute top-2 left-2 z-50 gap-2">
         <ActionButtons
           extraActions={[
             {
-              color: 'white',
+              color: 'primary',
               icon: FiSidebar,
               action: broken ? () => setToggled() : () => setCollapsed(),
               filled: true,
             },
           ]}
         />
-        <h1 className="text-2xl font-medium text-center w-full md:hidden">
+        <h1 className="text-2xl font-semibold text-center w-full md:hidden text-planymaps-primary">
           planymaps
         </h1>
       </div>

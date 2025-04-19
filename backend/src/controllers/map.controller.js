@@ -65,6 +65,7 @@ export const getMapById = async (req, res) => {
         layers: {
           include: {
             image: true,
+            drawings: true,
           },
         },
         template: true,
@@ -74,6 +75,9 @@ export const getMapById = async (req, res) => {
     if (!map) {
       return res.status(404).json({ message: "Map not found" });
     }
+
+    // sort layers by order
+    map.layers.sort((a, b) => a.order - b.order);
 
     res.status(200).json(map);
   } catch (error) {
