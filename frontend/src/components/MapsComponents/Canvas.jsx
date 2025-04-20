@@ -17,7 +17,10 @@ import LoadingModal from '../loadingModal/LoadingModal';
 import ModalViewer from '../Modals/ModalViewer';
 import { BsStack, BsThreeDotsVertical } from 'react-icons/bs';
 import { PiCursorFill } from 'react-icons/pi';
-import { generateGridImage } from '../../utils/CanvasUtils';
+import {
+  generateGridImage,
+  generateGridWithLabels,
+} from '../../utils/CanvasUtils';
 import { useMapsContext } from '../../context/MapsContext';
 import DrawingComponent from './DrawingComponent';
 import { AiOutlineClear } from 'react-icons/ai';
@@ -26,12 +29,8 @@ import { Dropdown } from 'flowbite-react';
 import { FaEraser } from 'react-icons/fa';
 
 const Canvas = ({ layers, setShowModalLayer }) => {
-  const {
-    useUpdateLayer,
-    useCreateDrawing,
-    useDeleteAllDrawingsByLayer,
-    useDeleteDrawing,
-  } = useMapsContext();
+  const { useUpdateLayer, useCreateDrawing, useDeleteAllDrawingsByLayer } =
+    useMapsContext();
   const [allLayers, setAllLayers] = useState([]);
   const [layerSelected, setLayerSelected] = useState(null);
   const [showGrid, setShowGrid] = useState(true);
@@ -48,6 +47,7 @@ const Canvas = ({ layers, setShowModalLayer }) => {
   const [currentCanvas, setCurrentCanvas] = useState(null);
   const [originalCanvasState, setOriginalCanvasState] = useState(null);
   const [ereaseDrawsMode, setEreaseDrawsMode] = useState(false);
+  const [scaledImageUrl, setScaledImageUrl] = useState(null);
 
   useEffect(() => {
     if (layers && layers.length > 0) {
@@ -65,11 +65,35 @@ const Canvas = ({ layers, setShowModalLayer }) => {
       setPrevCellColor(layerSelected.cellColor || '#6b7280');
 
       const img = new Image();
+      img.crossOrigin = 'anonymous';
       img.onload = () => {
+        // Escalar la imagen
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const maxWidth = 1920; // Ancho máximo deseado
+        const maxHeight = 1080; // Alto máximo deseado
+
+        let width = img.width;
+        let height = img.height;
+
+        if (width > maxWidth || height > maxHeight) {
+          const scale = Math.min(maxWidth / width, maxHeight / height);
+          width = Math.floor(width * scale);
+          height = Math.floor(height * scale);
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        ctx.drawImage(img, 0, 0, width, height);
+
         setImageDimensions({
-          width: img.width,
-          height: img.height,
+          width,
+          height,
         });
+
+        // Convertir el lienzo a una URL de imagen
+        const scaledImageUrl = canvas.toDataURL();
+        setScaledImageUrl(scaledImageUrl);
       };
       img.src = FormattedUrlImage(layerSelected?.image?.[0]?.url);
     }
@@ -83,7 +107,7 @@ const Canvas = ({ layers, setShowModalLayer }) => {
 
   const gridBackground = useMemo(() => {
     if (imageDimensions.width && imageDimensions.height) {
-      return generateGridImage(
+      return generateGridWithLabels(
         imageDimensions.width,
         imageDimensions.height,
         cellSize,
@@ -105,6 +129,14 @@ const Canvas = ({ layers, setShowModalLayer }) => {
     return label;
   };
 
+  useEffect(() => {
+    return () => {
+      if (currentCanvas) {
+        currentCanvas.dispose(); // Libera los recursos del lienzo
+      }
+    };
+  }, []);
+
   if (!allLayers) {
     return <LoadingModal loading={true} />;
   }
@@ -121,6 +153,8 @@ const Canvas = ({ layers, setShowModalLayer }) => {
     setLayerSelected(newLayer);
 
     if (currentCanvas) {
+      currentCanvas.clear();
+
       const existingDrawing = newLayer.drawings;
       if (existingDrawing) {
         currentCanvas.loadFromJSON(existingDrawing, () => {
@@ -193,12 +227,14 @@ const Canvas = ({ layers, setShowModalLayer }) => {
 
   const loadDrawingsToCanvas = (canvas, drawings) => {
     if (!canvas || !drawings) return;
+
     const combinedDrawing = {
       objects: drawings.reduce(
         (acc, drawing) => acc.concat(drawing.data.objects),
         [],
       ),
     };
+
     setOriginalCanvasState(combinedDrawing);
 
     if (combinedDrawing.objects?.length > 0) {
@@ -342,15 +378,16 @@ const Canvas = ({ layers, setShowModalLayer }) => {
                     height: '100%',
                   }}
                 >
-                  {layerSelected && (
+                  {layerSelected && scaledImageUrl && (
                     <img
-                      src={FormattedUrlImage(layerSelected?.image?.[0]?.url)}
+                      src={scaledImageUrl}
                       alt="Canvas"
                       className="block mx-auto"
                       style={{
                         position: 'relative',
-                        width: 'auto',
-                        height: 'auto',
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'contain',
                       }}
                     />
                   )}
@@ -359,7 +396,7 @@ const Canvas = ({ layers, setShowModalLayer }) => {
                     <img
                       src={gridBackground}
                       alt="Grid"
-                      className="absolute top-0 left-0"
+                      className="absolute -top-6 -left-6"
                     />
                   )}
                   {/* Componente de dibujo */}
@@ -383,37 +420,6 @@ const Canvas = ({ layers, setShowModalLayer }) => {
                       />
                     </div>
                   )}
-                  {/* Etiquetas de las filas (números) */}
-                  {showGrid &&
-                    Array.from({ length: rows }).map((_, index) => (
-                      <div
-                        key={`row-label-${index}`}
-                        className="absolute text-xxs lg:text-sm text-gray-500"
-                        style={{
-                          top: `${(index * 100) / rows}%`,
-                          left: '-20px',
-                          transform: 'translateY(-50%)',
-                        }}
-                      >
-                        {index}
-                      </div>
-                    ))}
-
-                  {/* Etiquetas de las columnas (letras) */}
-                  {showGrid &&
-                    Array.from({ length: columns }).map((_, index) => (
-                      <div
-                        key={`col-label-${index}`}
-                        className="absolute text-xxs lg:text-sm text-gray-500"
-                        style={{
-                          top: '-20px',
-                          left: `${(index * 100) / columns}%`,
-                          transform: 'translateX(-50%)',
-                        }}
-                      >
-                        {index == 0 ? index : getColumnLabel(index - 1)}
-                      </div>
-                    ))}
                 </TransformComponent>
                 <div className="fixed bottom-3 right-3 flex gap-2 z-50 text-nowrap max-w-[100vw] md:max-w-full">
                   {!(drawingMode || ereaseDrawsMode) ? (
@@ -468,21 +474,6 @@ const Canvas = ({ layers, setShowModalLayer }) => {
                   ) : (
                     <ActionButtons
                       extraActions={[
-                        // {
-                        //   label: '',
-                        //   icon: ImUndo,
-                        //   action: handleUndo,
-                        //   color: 'primary',
-                        //   blured: true,
-                        // },
-                        // {
-                        //   label: '',
-                        //   icon: ImRedo,
-                        //   action: handleRedo,
-                        //   color: 'primary',
-                        //   blured: true,
-                        // },
-
                         {
                           label: '',
                           icon: MdOutlineSettingsBackupRestore,

@@ -217,6 +217,7 @@ const Users = () => {
 
   const onCloseModal = () => {
     setIsOpenModal(false);
+    setChangePasswordModal(false);
     setEditMode(false);
     setInitialValues({
       firstName: '',
@@ -228,6 +229,7 @@ const Users = () => {
       status: true,
       password: '',
       repeatPassword: '',
+      id: '',
     });
   };
 
@@ -521,11 +523,13 @@ const Users = () => {
           saveLabel={editMode ? 'Actualizar' : 'Guardar'}
         />
       )}
-      <ModalRemove
-        isOpenModal={isRemoveModalOpen}
-        onCloseModal={() => setIsRemoveModalOpen(false)}
-        removeFunction={onConfirmRemoveUser}
-      />
+      {isRemoveModalOpen && (
+        <ModalRemove
+          isOpenModal={isRemoveModalOpen}
+          onCloseModal={() => setIsRemoveModalOpen(false)}
+          removeFunction={onConfirmRemoveUser}
+        />
+      )}
     </div>
   );
 };
