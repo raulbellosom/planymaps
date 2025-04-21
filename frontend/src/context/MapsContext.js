@@ -7,6 +7,7 @@ const MapsContext = createContext({
   useCreateMap: async () => {},
   useUpdateMap: async () => {},
   useDeleteMap: async () => {},
+  useGetMapById: async () => {},
   useCreateLayer: async () => {},
   useUpdateLayer: async () => {},
   useDeleteLayer: async () => {},

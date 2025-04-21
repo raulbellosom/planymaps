@@ -1,52 +1,72 @@
 import React, { useEffect, useState } from 'react';
-import { RiMap2Line } from 'react-icons/ri';
 import { getMapById } from '../../services/maps.api';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import ModalViewer from '../../components/Modals/ModalViewer';
 import Layers from './Layers';
 import Canvas from '../../components/MapsComponents/Canvas';
-import DrawingComponent from '../../components/MapsComponents/DrawingComponent';
+import useMaps from '../../hooks/useMaps';
 
 const ViewMap = () => {
-  const id = useParams().id;
-  const [map, setMap] = useState(null);
+  const id = useParams().id; // ID del mapa actual
+  const { useGetLayerById } = useMaps();
   const [showModalLayer, setShowModalLayer] = useState(false);
   const [layers, setLayers] = useState([]);
-  const [shouldRefetch, setShouldRefetch] = useState(true); // Nuevo estado
+  const [layer, setLayer] = useState(null);
+  const [layerSelected, setLayerSelected] = useState(null);
 
   const { data, refetch } = useQuery({
     queryKey: ['map'],
     queryFn: ({ signal }) => getMapById(id, signal),
     staleTime: 1000 * 60 * 5,
     cacheTime: 1000 * 60 * 10,
-    enabled: shouldRefetch, // Controla si se debe ejecutar la petición
   });
 
   useEffect(() => {
-    if (shouldRefetch) {
-      refetch();
-    }
-  }, [shouldRefetch]);
+    refetch();
+  }, []);
 
   useEffect(() => {
     if (data) {
-      setMap(data);
-      const sortedLayers = data.layers?.sort((a, b) => a.order - b.order);
-      setLayers(sortedLayers);
-      setShowModalLayer(sortedLayers.length === 0);
+      setLayers(data?.layers);
+
+      const savedLayerId = localStorage.getItem(`selectedLayer_${id}`);
+      const savedLayer = data?.layers?.find(
+        (layer) => layer.id === savedLayerId,
+      );
+
+      if (savedLayer) {
+        setLayerSelected(savedLayer);
+      } else if (data?.layers?.length > 0) {
+        setLayerSelected(data?.layers[0]);
+      } else {
+        setLayerSelected(null);
+        setShowModalLayer(true);
+      }
     }
   }, [data]);
 
-  const handleSaveOrder = () => {
-    setShouldRefetch(false); // Evita que se ejecute el refetch
-  };
+  // Guardar el layer seleccionado en el localStorage cuando cambie
+  useEffect(() => {
+    if (layerSelected?.id) {
+      localStorage.setItem(`selectedLayer_${id}`, layerSelected.id);
+      useGetLayerById(layerSelected.id).then((layer) => {
+        setLayer(layer);
+      });
+    }
+  }, [layerSelected, id]);
 
   return (
     <>
-      <div className="relative w-full h-[100vh] bg-stone-100">
-        {layers && (
-          <Canvas layers={layers} setShowModalLayer={setShowModalLayer} />
+      <div className="relative w-full h-[100dvh] bg-stone-100">
+        {layers && layer && (
+          <Canvas
+            layers={layers}
+            setShowModalLayer={setShowModalLayer}
+            layerSelected={layerSelected}
+            setLayerSelected={setLayerSelected}
+            layer={layer}
+          />
         )}
       </div>
 
@@ -59,7 +79,7 @@ const ViewMap = () => {
           onCloseModal={() => setShowModalLayer(false)}
           title="Administrar capas"
         >
-          <Layers mapId={id} onSaveOrder={handleSaveOrder} />
+          <Layers mapId={id} />
         </ModalViewer>
       )}
     </>

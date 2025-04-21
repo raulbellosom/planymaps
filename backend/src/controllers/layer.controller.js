@@ -75,7 +75,7 @@ export const getLayerById = async (req, res) => {
       where: { id },
       include: {
         image: true,
-        drawings: true, // Incluir los trazos asociados a la capa
+        drawings: true,
       },
     });
 

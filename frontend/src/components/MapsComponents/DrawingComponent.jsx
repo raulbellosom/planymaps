@@ -12,53 +12,62 @@ const DrawingComponent = ({
   setCanvas,
   ereaseDrawsMode,
 }) => {
-  const canvasRef = useRef(null);
-  const fabricCanvasRef = useRef(null); // Nueva referencia para la instancia de fabric.Canvas
+  const canvasRef = useRef(null); // Referencia al elemento <canvas>
+  const fabricCanvasRef = useRef(null); // Referencia a la instancia de Fabric.js
 
+  // Inicializar Fabric.js solo una vez
   useEffect(() => {
-    // Crear el lienzo de Fabric.js
-    const fabricCanvas = new fabric.Canvas(canvasRef.current, {
-      width,
-      height,
-      isDrawingMode: drawingMode,
-    });
+    if (!canvasRef.current) return;
 
-    // Guardar la instancia de fabric.Canvas en la referencia
-    fabricCanvasRef.current = fabricCanvas;
+    // Crear la instancia de Fabric.js si no existe
+    if (!fabricCanvasRef.current) {
+      const fabricCanvas = new fabric.Canvas(canvasRef.current, {
+        width,
+        height,
+        isDrawingMode: drawingMode,
+      });
 
-    // Limitar el área de dibujo al tamaño de la imagen
-    fabricCanvas.clipPath = new fabric.Rect({
-      left: 0,
-      top: 0,
-      width,
-      height,
-      absolutePositioned: true,
-    });
+      // Limitar el área de dibujo al tamaño de la imagen
+      fabricCanvas.clipPath = new fabric.Rect({
+        left: 0,
+        top: 0,
+        width,
+        height,
+        absolutePositioned: true,
+      });
 
-    // Configurar el pincel de dibujo
-    fabricCanvas.freeDrawingBrush = new fabric.PencilBrush(fabricCanvas);
-    fabricCanvas.freeDrawingBrush.color = '#000000';
-    fabricCanvas.freeDrawingBrush.width = 5;
+      // Configurar el pincel de dibujo
+      fabricCanvas.freeDrawingBrush = new fabric.PencilBrush(fabricCanvas);
+      fabricCanvas.freeDrawingBrush.color = '#000000';
+      fabricCanvas.freeDrawingBrush.width = 5;
 
-    // Pasar el lienzo al componente padre
-    setCanvas(fabricCanvas);
+      // Guardar la instancia de Fabric.js
+      fabricCanvasRef.current = fabricCanvas;
 
-    // Cargar los trazos si se proporciona un método onLoad
-    if (onLoad) {
-      onLoad(fabricCanvas);
+      // Pasar el lienzo al componente padre
+      if (setCanvas) {
+        setCanvas(fabricCanvas);
+      }
+
+      // Cargar los trazos si se proporciona un método onLoad
+      if (onLoad) {
+        onLoad(fabricCanvas);
+      }
     }
 
     return () => {
-      if (fabricCanvas) {
-        fabricCanvas.dispose();
+      // Limpiar el canvas al desmontar el componente
+      if (fabricCanvasRef.current) {
+        fabricCanvasRef.current.dispose();
+        fabricCanvasRef.current = null;
       }
     };
-  }, [width, height, setCanvas, onLoad, drawingMode]);
+  }, [onLoad, setCanvas, width, height, drawingMode]);
 
+  // Actualizar el desplazamiento del lienzo
   useEffect(() => {
-    const fabricCanvas = fabricCanvasRef.current; // Usar la referencia correcta
+    const fabricCanvas = fabricCanvasRef.current;
     if (fabricCanvas) {
-      // Ajustar el desplazamiento del lienzo
       const limitedOffsetX = Math.max(
         0,
         Math.min(offsetX, width - fabricCanvas.width),
@@ -71,18 +80,19 @@ const DrawingComponent = ({
     }
   }, [offsetX, offsetY, width, height]);
 
+  // Ajustar el tamaño del pincel según el nivel de zoom
   useEffect(() => {
-    const fabricCanvas = fabricCanvasRef.current; // Usar la referencia correcta
+    const fabricCanvas = fabricCanvasRef.current;
     if (fabricCanvas && fabricCanvas.freeDrawingBrush) {
-      // Ajustar el tamaño del pincel según el nivel de zoom
       fabricCanvas.freeDrawingBrush.width = 5 / scale; // Cambia 5 por el tamaño base del pincel
     }
   }, [scale]);
 
+  // Manejar el modo de borrado
   useEffect(() => {
-    const fabricCanvas = fabricCanvasRef.current; // Usar la referencia correcta
+    const fabricCanvas = fabricCanvasRef.current;
     if (fabricCanvas) {
-      const handleSelection = (event) => {
+      const handleSelection = () => {
         if (ereaseDrawsMode) {
           const selectedObjects = fabricCanvas.getActiveObjects();
           selectedObjects.forEach((obj) => fabricCanvas.remove(obj));

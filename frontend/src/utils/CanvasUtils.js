@@ -31,33 +31,29 @@ export const generateGridWithLabels = (width, height, cellSize, cellColor) => {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
 
-  // Calcular el tamaño ajustado para incluir cuadros adicionales
-  const adjustedWidth = Math.ceil(width / cellSize) * cellSize + cellSize; // Agregar una columna adicional
-  const adjustedHeight = Math.ceil(height / cellSize) * cellSize + cellSize; // Agregar una fila adicional
-
   // Ajustar el tamaño del lienzo para incluir el margen
-  canvas.width = adjustedWidth + margin; // Doble margen para ambos lados
-  canvas.height = adjustedHeight + margin;
+  canvas.width = width + margin * 2; // Doble margen para ambos lados
+  canvas.height = height + margin * 2;
 
-  // Dibujar la cuadrícula desplazada hacia adentro
+  // Dibujar la cuadrícula
   ctx.fillStyle = cellColor;
-  for (let x = 0; x <= adjustedWidth; x += cellSize) {
-    ctx.fillRect(x + margin, margin, 1, adjustedHeight); // Líneas verticales
+  for (let x = 0; x <= width; x += cellSize) {
+    ctx.fillRect(x + margin, margin, 1, height); // Líneas verticales
   }
-  for (let y = 0; y <= adjustedHeight; y += cellSize) {
-    ctx.fillRect(margin, y + margin, adjustedWidth, 1); // Líneas horizontales
+  for (let y = 0; y <= height; y += cellSize) {
+    ctx.fillRect(margin, y + margin, width, 1); // Líneas horizontales
   }
 
-  // Dibujar etiquetas de filas (números) fuera de la cuadrícula
+  // Dibujar etiquetas de filas (números)
   ctx.font = '12px Arial';
-  ctx.fillStyle = 'gray';
+  ctx.fillStyle = cellColor;
   ctx.textAlign = 'right'; // Alinear a la derecha para filas
   ctx.textBaseline = 'middle'; // Centrar verticalmente
-  for (let y = 0; y <= adjustedHeight; y += cellSize) {
+  for (let y = 0; y <= height; y += cellSize) {
     ctx.fillText(y / cellSize, margin - 10, y + margin); // Etiquetas de filas (fuera de la cuadrícula)
   }
 
-  // Dibujar etiquetas de columnas (letras) fuera de la cuadrícula
+  // Dibujar etiquetas de columnas (letras)
   const getColumnLabel = (index) => {
     let label = '';
     while (index >= 0) {
@@ -69,7 +65,7 @@ export const generateGridWithLabels = (width, height, cellSize, cellColor) => {
 
   ctx.textAlign = 'center'; // Centrar horizontalmente para columnas
   ctx.textBaseline = 'top'; // Alinear en la parte superior
-  for (let x = 0; x <= adjustedWidth; x += cellSize) {
+  for (let x = 0; x <= width; x += cellSize) {
     ctx.fillText(getColumnLabel(x / cellSize), x + margin, margin - 15); // Etiquetas de columnas (fuera de la cuadrícula)
   }
 

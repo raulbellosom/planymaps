@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import ActionButtons from '../ActionButtons/ActionButtons';
-import _, { fill, set } from 'lodash';
+import _ from 'lodash';
 import { GoZoomIn, GoZoomOut } from 'react-icons/go';
-import { TbRestore, TbZoomScan } from 'react-icons/tb';
+import { TbZoomScan } from 'react-icons/tb';
 import {
   MdDraw,
   MdGridOff,
@@ -14,140 +14,119 @@ import {
 } from 'react-icons/md';
 import { FormattedUrlImage } from '../../utils/FormattedUrlImage';
 import LoadingModal from '../loadingModal/LoadingModal';
-import ModalViewer from '../Modals/ModalViewer';
 import { BsStack, BsThreeDotsVertical } from 'react-icons/bs';
 import { PiCursorFill } from 'react-icons/pi';
-import {
-  generateGridImage,
-  generateGridWithLabels,
-} from '../../utils/CanvasUtils';
 import { useMapsContext } from '../../context/MapsContext';
 import DrawingComponent from './DrawingComponent';
 import { AiOutlineClear } from 'react-icons/ai';
 import Notifies from '../Notifies/Notifies';
 import { Dropdown } from 'flowbite-react';
 import { FaEraser } from 'react-icons/fa';
+import GridFromCanvas from './GridFromCanvas';
 
-const Canvas = ({ layers, setShowModalLayer }) => {
-  const { useUpdateLayer, useCreateDrawing, useDeleteAllDrawingsByLayer } =
-    useMapsContext();
-  const [allLayers, setAllLayers] = useState([]);
-  const [layerSelected, setLayerSelected] = useState(null);
+const Canvas = ({
+  layers,
+  setShowModalLayer,
+  layerSelected,
+  setLayerSelected,
+  layer,
+}) => {
+  const { useCreateDrawing, useDeleteAllDrawingsByLayer } = useMapsContext();
+  // const [allLayers, setAllLayers] = useState([]);
   const [showGrid, setShowGrid] = useState(true);
-  const [imageDimensions, setImageDimensions] = useState({
-    width: 0,
-    height: 0,
-  });
   const [modalGridConfig, setModalGridConfig] = useState(false);
-  const [cellSize, setCellSize] = useState(50);
-  const [cellColor, setCellColor] = useState('#6b7280');
-  const [prevCellColor, setPrevCellColor] = useState(cellColor);
-  const [prevCellSize, setPrevCellSize] = useState(cellSize);
   const [drawingMode, setDrawingMode] = useState(false);
   const [currentCanvas, setCurrentCanvas] = useState(null);
   const [originalCanvasState, setOriginalCanvasState] = useState(null);
   const [ereaseDrawsMode, setEreaseDrawsMode] = useState(false);
   const [scaledImageUrl, setScaledImageUrl] = useState(null);
+  const [imageDimensions, setImageDimensions] = useState({
+    width: 0,
+    height: 0,
+  });
+
+  // useEffect(() => {
+  //   if (layers && layers.length > 0) {
+  //     const sortedLayers = layers.sort((a, b) => a.order - b.order);
+  //     setAllLayers(sortedLayers);
+  //     setLayerSelected(sortedLayers[0]);
+  //   }
+  // }, [layers]);
 
   useEffect(() => {
-    if (layers && layers.length > 0) {
-      const sortedLayers = layers.sort((a, b) => a.order - b.order);
-      setAllLayers(sortedLayers);
-      setLayerSelected(sortedLayers[0]);
-    }
-  }, [layers]);
-
-  useEffect(() => {
-    if (layerSelected) {
-      setCellSize(layerSelected.cellSize || 50);
-      setCellColor(layerSelected.cellColor || '#6b7280');
-      setPrevCellSize(layerSelected.cellSize || 50);
-      setPrevCellColor(layerSelected.cellColor || '#6b7280');
-
+    if (layer?.id) {
       const img = new Image();
       img.crossOrigin = 'anonymous';
+
       img.onload = () => {
-        // Escalar la imagen
+        const margin = 30;
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
-        const maxWidth = 1920; // Ancho máximo deseado
-        const maxHeight = 1080; // Alto máximo deseado
+        const maxWidth = 1920;
+        const maxHeight = 1080;
 
         let width = img.width;
         let height = img.height;
 
+        // Escalar la imagen si excede las dimensiones máximas
         if (width > maxWidth || height > maxHeight) {
           const scale = Math.min(maxWidth / width, maxHeight / height);
           width = Math.floor(width * scale);
           height = Math.floor(height * scale);
         }
 
-        canvas.width = width;
-        canvas.height = height;
-        ctx.drawImage(img, 0, 0, width, height);
+        // Configurar el tamaño del lienzo
+        canvas.width = width + margin * 2;
+        canvas.height = height + margin * 2;
 
+        // Dibujar la imagen en el lienzo
+        ctx.fillStyle = 'transparent';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, margin, margin, width, height);
+
+        // Actualizar las dimensiones de la imagen
         setImageDimensions({
-          width,
-          height,
+          width: canvas.width,
+          height: canvas.height,
         });
 
-        // Convertir el lienzo a una URL de imagen
+        // Generar la URL de la imagen escalada
         const scaledImageUrl = canvas.toDataURL();
         setScaledImageUrl(scaledImageUrl);
       };
-      img.src = FormattedUrlImage(layerSelected?.image?.[0]?.url);
+
+      // Manejar errores al cargar la imagen
+      img.onerror = () => {
+        console.error('Error al cargar la imagen:', layer?.image?.[0]?.url);
+      };
+
+      // Establecer la URL de la imagen
+      const imageUrl = FormattedUrlImage(layer?.image?.[0]?.url);
+      if (imageUrl) {
+        img.src = imageUrl;
+      } else {
+        console.error('URL de imagen no válida:', layer?.image?.[0]?.url);
+      }
     }
-  }, [layerSelected]);
+  }, [layer]);
 
   useEffect(() => {
-    if (layerSelected && currentCanvas) {
-      loadDrawingsToCanvas(currentCanvas, layerSelected.drawings);
+    if (layer && currentCanvas) {
+      loadDrawingsToCanvas(currentCanvas, layer.drawings);
     }
-  }, [layerSelected, currentCanvas]);
-
-  const gridBackground = useMemo(() => {
-    if (imageDimensions.width && imageDimensions.height) {
-      return generateGridWithLabels(
-        imageDimensions.width,
-        imageDimensions.height,
-        cellSize,
-        cellColor,
-      );
-    }
-    return null;
-  }, [imageDimensions, cellSize, cellColor]);
-
-  const columns = Math.floor(imageDimensions.width / cellSize);
-  const rows = Math.floor(imageDimensions.height / cellSize);
-
-  const getColumnLabel = (index) => {
-    let label = '';
-    while (index >= 0) {
-      label = String.fromCharCode((index % 26) + 65) + label;
-      index = Math.floor(index / 26) - 1;
-    }
-    return label;
-  };
+  }, [layer, currentCanvas]);
 
   useEffect(() => {
     return () => {
       if (currentCanvas) {
-        currentCanvas.dispose(); // Libera los recursos del lienzo
+        currentCanvas.dispose();
       }
     };
   }, []);
 
-  if (!allLayers) {
+  if (!layers) {
     return <LoadingModal loading={true} />;
   }
-
-  const handleUpdateLayer = async (values) => {
-    try {
-      await useUpdateLayer(values);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const handleLayerChange = (newLayer) => {
     setLayerSelected(newLayer);
@@ -155,29 +134,29 @@ const Canvas = ({ layers, setShowModalLayer }) => {
     if (currentCanvas) {
       currentCanvas.clear();
 
-      const existingDrawing = newLayer.drawings;
-      if (existingDrawing) {
-        currentCanvas.loadFromJSON(existingDrawing, () => {
-          currentCanvas.renderAll();
-        });
-      }
+      // const existingDrawing = newLayer.drawings;
+      // if (existingDrawing) {
+      //   currentCanvas.loadFromJSON(existingDrawing, () => {
+      //     currentCanvas.renderAll();
+      //   });
+      // }
     }
   };
 
   const handleSaveDrawing = useCallback(
     async (canvas) => {
-      if (canvas && layerSelected) {
+      if (canvas && layer) {
         const json = canvas.toJSON();
         try {
           const res = await useCreateDrawing({
-            layerId: layerSelected.id,
+            layerId: layer.id,
             type: 'drawing',
             data: json,
           });
-          setLayerSelected((prev) => ({
-            ...prev,
-            drawings: res.drawings,
-          }));
+          // setLayerSelected((prev) => ({
+          //   ...prev,
+          //   drawings: res.drawings,
+          // }));
           setDrawingMode(false);
           setEreaseDrawsMode(false);
         } catch (error) {
@@ -186,19 +165,19 @@ const Canvas = ({ layers, setShowModalLayer }) => {
         }
       }
     },
-    [layerSelected, useCreateDrawing],
+    [layer, useCreateDrawing],
   );
 
   const handleLoadDrawing = useCallback(
     (canvas) => {
       if (canvas) {
         setCurrentCanvas(canvas);
-        if (layerSelected) {
-          loadDrawingsToCanvas(canvas, layerSelected.drawings);
+        if (layer) {
+          loadDrawingsToCanvas(canvas, layer.drawings);
         }
       }
     },
-    [layerSelected],
+    [layer],
   );
 
   const toggleDrawingMode = () => {
@@ -255,7 +234,7 @@ const Canvas = ({ layers, setShowModalLayer }) => {
   };
 
   const handleSelectDrawingToDelete = (drawingId) => {
-    const drawingToDelete = layerSelected.drawings.find(
+    const drawingToDelete = layer.drawings.find(
       (drawing) => drawing.id === drawingId,
     );
     if (drawingToDelete) {
@@ -274,7 +253,7 @@ const Canvas = ({ layers, setShowModalLayer }) => {
 
   const handleDeleteAllDrawings = async () => {
     try {
-      await useDeleteAllDrawingsByLayer(layerSelected.id);
+      await useDeleteAllDrawingsByLayer(layer.id);
     } catch (error) {
       console.error('Error al eliminar todos los trazos:', error);
     }
@@ -378,7 +357,7 @@ const Canvas = ({ layers, setShowModalLayer }) => {
                     height: '100%',
                   }}
                 >
-                  {layerSelected && scaledImageUrl && (
+                  {layer && scaledImageUrl && (
                     <img
                       src={scaledImageUrl}
                       alt="Canvas"
@@ -392,34 +371,46 @@ const Canvas = ({ layers, setShowModalLayer }) => {
                     />
                   )}
 
-                  {showGrid && (
-                    <img
-                      src={gridBackground}
-                      alt="Grid"
-                      className="absolute -top-6 -left-6"
+                  {showGrid && layer && scaledImageUrl && (
+                    <GridFromCanvas
+                      imageDimensions={imageDimensions}
+                      layerProps={layer}
+                      showGrid={showGrid}
+                      initialCellColor={layer.cellColor}
+                      initialCellSize={layer.cellSize}
+                      modalGridConfig={modalGridConfig}
+                      setModalGridConfig={setModalGridConfig}
                     />
                   )}
+
                   {/* Componente de dibujo */}
-                  {layerSelected && (
-                    <div
-                      style={{
-                        backgroundColor: 'transparent',
-                      }}
-                      className="absolute top-0 left-0 overflow-hidden w-full h-full"
-                    >
-                      <DrawingComponent
-                        width={imageDimensions.width}
-                        height={imageDimensions.height}
-                        scale={rest?.instance?.transformState?.scale}
-                        offsetX={rest?.instance?.transformState?.positionX}
-                        offsetY={rest?.instance?.transformState?.positionY}
-                        drawingMode={drawingMode}
-                        onLoad={handleLoadDrawing}
-                        setCanvas={setCurrentCanvas}
-                        ereaseDrawsMode={ereaseDrawsMode}
-                      />
-                    </div>
-                  )}
+                  {layer &&
+                    scaledImageUrl &&
+                    imageDimensions.width > 0 &&
+                    imageDimensions.height > 0 && (
+                      <div
+                        style={{
+                          backgroundColor: 'transparent',
+                        }}
+                        className="absolute top-0 left-0 overflow-hidden w-full h-full"
+                      >
+                        <DrawingComponent
+                          width={imageDimensions.width}
+                          height={imageDimensions.height}
+                          scale={rest?.instance?.transformState?.scale || 1}
+                          offsetX={
+                            rest?.instance?.transformState?.positionX || 0
+                          }
+                          offsetY={
+                            rest?.instance?.transformState?.positionY || 0
+                          }
+                          drawingMode={drawingMode}
+                          onLoad={handleLoadDrawing}
+                          setCanvas={setCurrentCanvas}
+                          ereaseDrawsMode={ereaseDrawsMode}
+                        />
+                      </div>
+                    )}
                 </TransformComponent>
                 <div className="fixed bottom-3 right-3 flex gap-2 z-50 text-nowrap max-w-[100vw] md:max-w-full">
                   {!(drawingMode || ereaseDrawsMode) ? (
@@ -427,7 +418,7 @@ const Canvas = ({ layers, setShowModalLayer }) => {
                       <ActionButtons
                         extraActions={[
                           {
-                            label: layerSelected?.name,
+                            label: layer?.name,
                             action: () => resetTransform(),
                             color: 'primary',
                             blured: true,
@@ -446,7 +437,7 @@ const Canvas = ({ layers, setShowModalLayer }) => {
                         placement="right"
                         className="md:w-52"
                       >
-                        {allLayers?.map((layer, index) => (
+                        {layers?.map((layer, index) => (
                           <Dropdown.Item
                             key={index}
                             className="min-w-36 min-h-12 text-planymaps-primary backdrop-blur-lg"
@@ -478,10 +469,7 @@ const Canvas = ({ layers, setShowModalLayer }) => {
                           label: '',
                           icon: MdOutlineSettingsBackupRestore,
                           action: () =>
-                            handleLoadDrawing(
-                              currentCanvas,
-                              layerSelected.drawings,
-                            ),
+                            handleLoadDrawing(currentCanvas, layer.drawings),
                           color: 'primary',
                           blured: true,
                         },
@@ -516,83 +504,6 @@ const Canvas = ({ layers, setShowModalLayer }) => {
           )}
         </TransformWrapper>
       </div>
-      {modalGridConfig && (
-        <ModalViewer
-          size="3xl"
-          isOpenModal={modalGridConfig}
-          setIsOpenModal={setModalGridConfig}
-          dismissible={false}
-          onCloseModal={() => setModalGridConfig(false)}
-          title="Color de la cuadrícula"
-        >
-          <div className="flex flex-col gap-4 w-full">
-            <div className="flex flex-col gap-4">
-              <div className="flex flex-col">
-                <div>
-                  <label htmlFor="cell-color">Color de la cuadrícula</label>
-                  <p className="text-sm text-gray-500">
-                    Has clic en el color para seleccionar uno nuevo.
-                  </p>
-                </div>
-                <input
-                  name="cell-color"
-                  id="cell-color"
-                  type="color"
-                  className="w-full h-24"
-                  value={prevCellColor}
-                  onChange={(e) => {
-                    setPrevCellColor(e.target.value);
-                  }}
-                />
-              </div>
-              <div className="flex flex-col">
-                <label htmlFor="cell-size">Tamaño de la celda (px)</label>
-                <input
-                  name="cell-size"
-                  id="cell-size"
-                  type="number"
-                  className="w-full"
-                  min="1"
-                  step="1"
-                  value={prevCellSize}
-                  onChange={(e) => {
-                    setPrevCellSize(e.target.value);
-                  }}
-                />
-              </div>
-            </div>
-            <div className="flex flex-col md:flex-row gap-4 justify-end text-nowrap">
-              <ActionButtons
-                extraActions={[
-                  {
-                    icon: TbRestore,
-                    label: 'Reestablecer cuadrícula',
-                    action: () => {
-                      setCellColor('#6b7280');
-                      setCellSize(50);
-                    },
-                    color: 'info',
-                  },
-                  {
-                    icon: MdOutlineFormatColorFill,
-                    label: 'Guardar cuadrícula',
-                    action: () => {
-                      handleUpdateLayer({
-                        ...layerSelected,
-                        cellColor: prevCellColor,
-                        cellSize: prevCellSize,
-                      });
-                      setModalGridConfig(false);
-                    },
-                    color: 'primary',
-                    filled: true,
-                  },
-                ]}
-              />
-            </div>
-          </div>
-        </ModalViewer>
-      )}
     </>
   );
 };

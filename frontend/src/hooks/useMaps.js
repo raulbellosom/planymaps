@@ -5,6 +5,7 @@ import {
   createLayer,
   updateLayer,
   deleteLayer,
+  getLayerById,
   updateLayersOrder,
   getDrawingsByLayerId,
   deleteAllDrawingsByLayer,
@@ -51,6 +52,7 @@ const useMaps = (dispatch) => {
     },
     onError: (error) => {
       Notifies('error', 'Hubo un error al actualizar el mapa');
+      console.log(error);
     },
     onSettled: () => setLoading(false),
   });
@@ -67,6 +69,22 @@ const useMaps = (dispatch) => {
     },
     onError: (error) => {
       Notifies('error', 'Hubo un error al eliminar el mapa');
+      console.log(error);
+    },
+    onSettled: () => setLoading(false),
+  });
+
+  const useGetLayerById = useMutation({
+    mutationFn: getLayerById,
+    onMutate: () => setLoading(true),
+    onSuccess: (data) => {
+      queryClient.setQueryData('layer', data);
+      queryClient.invalidateQueries(['layers']);
+      return data;
+    },
+    onError: (error) => {
+      Notifies('error', 'Hubo un error al obtener la capa');
+      console.log(error);
     },
     onSettled: () => setLoading(false),
   });
@@ -211,6 +229,9 @@ const useMaps = (dispatch) => {
     },
     useDeleteMap: (id) => {
       return useDeleteMap.mutateAsync(id);
+    },
+    useGetLayerById: (id) => {
+      return useGetLayerById.mutateAsync(id);
     },
     useCreateLayer: (values) => {
       return useCreateLayer.mutateAsync(values);

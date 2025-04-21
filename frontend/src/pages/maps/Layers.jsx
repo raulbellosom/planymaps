@@ -90,7 +90,7 @@ const LayerItem = ({
   );
 };
 
-const Layers = ({ mapId, onSaveOrder }) => {
+const Layers = ({ mapId }) => {
   const {
     useCreateLayer,
     useUpdateLayer,
@@ -146,9 +146,6 @@ const Layers = ({ mapId, onSaveOrder }) => {
       await useUpdateLayersOrder(
         layers.map((layer, index) => ({ id: layer.id, order: index })),
       );
-      if (onSaveOrder) {
-        onSaveOrder(); // Llama a la función para evitar el refetch
-      }
     } catch (error) {
       console.error('Error saving layer order:', error);
     }

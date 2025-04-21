@@ -34,6 +34,12 @@ const MapsReducer = (state, action) => {
         maps: action.payload,
         loading: false,
       };
+    case 'GET_LAYER':
+      return {
+        ...state,
+        layer: action.payload,
+        loading: false,
+      };
     case 'CREATE_LAYER':
       return {
         ...state,
