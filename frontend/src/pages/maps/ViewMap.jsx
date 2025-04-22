@@ -8,7 +8,7 @@ import Canvas from '../../components/MapsComponents/Canvas';
 import useMaps from '../../hooks/useMaps';
 
 const ViewMap = () => {
-  const id = useParams().id; // ID del mapa actual
+  const id = useParams().id;
   const { useGetLayerById } = useMaps();
   const [showModalLayer, setShowModalLayer] = useState(false);
   const [layers, setLayers] = useState([]);
@@ -46,21 +46,25 @@ const ViewMap = () => {
     }
   }, [data]);
 
-  // Guardar el layer seleccionado en el localStorage cuando cambie
   useEffect(() => {
     if (layerSelected?.id) {
       localStorage.setItem(`selectedLayer_${id}`, layerSelected.id);
-      useGetLayerById(layerSelected.id).then((layer) => {
-        setLayer(layer);
-      });
+      useGetLayerById(layerSelected.id)
+        .then((layer) => {
+          setLayer(layer);
+        })
+        .catch((error) => {
+          console.error('Error al obtener la capa:', error);
+        });
     }
   }, [layerSelected, id]);
 
   return (
     <>
-      <div className="relative w-full h-[100dvh] bg-stone-100">
+      <div className="relative w-full h-full bg-stone-100">
         {layers && layer && (
           <Canvas
+            key={layer?.id ?? layerSelected?.id}
             layers={layers}
             setShowModalLayer={setShowModalLayer}
             layerSelected={layerSelected}
