@@ -245,10 +245,10 @@ const Canvas = ({
         const json = canvas.toJSON();
         const normalizedObjects = json.objects.map((obj) => ({
           ...obj,
-          left: obj.left / fabricCanvas.getWidth(),
-          top: obj.top / fabricCanvas.getHeight(),
-          scaleX: obj.scaleX / fabricCanvas.getWidth(),
-          scaleY: obj.scaleY / fabricCanvas.getHeight(),
+          left: obj.left / canvas.width,
+          top: obj.top / canvas.height,
+          scaleX: obj.scaleX / canvas.width,
+          scaleY: obj.scaleY / canvas.height,
         }));
 
         const normalizedJson = {
