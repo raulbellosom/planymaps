@@ -112,6 +112,22 @@ const Canvas = ({
   }, [layer]);
 
   useEffect(() => {
+    if (currentCanvas) {
+      const isSelectable = activeMode !== MODES.DEFAULT;
+
+      // Actualizar la propiedad `selectable` de todos los objetos
+      currentCanvas.getObjects().forEach((obj) => {
+        obj.selectable = isSelectable;
+      });
+
+      // Deshabilitar la selección en el lienzo si no es seleccionable
+      currentCanvas.selection = isSelectable;
+
+      currentCanvas.renderAll();
+    }
+  }, [activeMode, currentCanvas]);
+
+  useEffect(() => {
     return () => {
       if (currentCanvas) {
         currentCanvas.dispose();
@@ -126,6 +142,7 @@ const Canvas = ({
         setHasUnsavedChanges(false);
       } else {
         loadDrawingsToCanvas(currentCanvas, layer.drawings);
+        setHasUnsavedChanges(false);
       }
     }
   }, [layer, currentCanvas]);
@@ -133,6 +150,11 @@ const Canvas = ({
   useEffect(() => {
     if (currentCanvas) {
       const handleCanvasChange = () => {
+        if (activeMode === MODES.DEFAULT) {
+          // No debería haber cambios en el defaultMode
+          return;
+        }
+
         const currentCanvasState = currentCanvas.toJSON();
 
         if (!originalCanvasState || !originalCanvasState.objects) {
@@ -166,7 +188,7 @@ const Canvas = ({
         currentCanvas.off('object:removed', handleCanvasChange);
       };
     }
-  }, [currentCanvas, originalCanvasState]);
+  }, [currentCanvas, originalCanvasState, activeMode]);
 
   useEffect(() => {
     if (currentCanvas) {
