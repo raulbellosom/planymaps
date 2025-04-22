@@ -278,13 +278,13 @@ const Canvas = ({
           objects: normalizedObjects,
         };
         try {
-          await useCreateDrawing({
+          const res = await useCreateDrawing({
             layerId: layer.id,
             type: 'drawing',
             data: normalizedJson,
           });
-
           setOriginalCanvasState(normalizedJson);
+
           setHasUnsavedChanges(false);
         } catch (error) {
           console.error('Error al guardar el trazo:', error);
