@@ -1,0 +1,205 @@
+<best_practices>
+    <general_principles>
+        <principle priority="high">
+            <name>Mobile-First But Not Mobile-Only</name>
+            <description>Every interface must work beautifully on phones, tablets, laptops, and large desktop screens. Start with mobile constraints and expand upward, not the reverse.</description>
+            <rationale>Mobile constraints force prioritization. Desktop-first designs often feel bloated on mobile.</rationale>
+        </principle>
+
+        <principle priority="high">
+            <name>Responsive By Structure, Not By Accident</name>
+            <description>Layouts must adapt intentionally with clear behavior for each breakpoint. Define explicit breakpoints: 320px (small phone), 375px (phone), 768px (tablet), 1024px (tablet landscape), 1280px (desktop), 1536px (large desktop).</description>
+            <rationale>Ad-hoc responsive design creates edge cases. Structured responsive design is predictable.</rationale>
+        </principle>
+
+        <principle priority="high">
+            <name>Touch-First Where Needed</name>
+            <description>Any feature that may be used on mobile or tablet must account for: tap, double-tap, long-press, drag, swipe, pinch-to-zoom, two-finger pan, gesture conflicts, accidental touch prevention, large enough hit targets, thumb-friendly reach.</description>
+            <rationale>Touch interactions have different ergonomics than mouse. Ignoring them creates poor mobile experiences.</rationale>
+        </principle>
+
+        <principle priority="high">
+            <name>Desktop Interactions Must Remain Efficient</name>
+            <description>For desktop users, support: hover states when useful, right-click/context menus, keyboard shortcuts where appropriate, precise cursor interactions, high-density workflows, multi-panel productivity layouts.</description>
+            <rationale>Desktop users have different expectations for speed and density than mobile users.</rationale>
+        </principle>
+
+        <principle priority="high">
+            <name>Browser-Native UX</name>
+            <description>Design with browser constraints and opportunities: scroll behavior, overflow handling, sticky areas, modals, side panels, pointer events, touch-action behavior, focus states, PWA-friendly patterns, responsive viewport issues.</description>
+            <rationale>Browser-native patterns feel intuitive because they match user expectations built from years of browsing.</rationale>
+        </principle>
+
+        <principle priority="high">
+            <name>Implementation-Aware Design</name>
+            <description>Always think about how this will be built in React/Next.js: component reusability, state complexity, gesture handling, accessibility, rendering performance, scaling the design system over time.</description>
+            <rationale>Designs that ignore implementation realities often fail in production or require expensive redesigns.</rationale>
+        </principle>
+    </general_principles>
+
+    <ui_library_decisions>
+        <guideline>
+            <library name="shadcn/ui">
+                <use_when>
+                    <scenario>The feature benefits from faster assembly</scenario>
+                    <scenario>A polished default visual system is needed</scenario>
+                    <scenario>Reusable app-level components with minimal setup are desired</scenario>
+                    <scenario>Building on top of Radix primitives with Tailwind customization</scenario>
+                </use_when>
+                <reasoning>shadcn/ui provides copy-paste component code, not a library dependency. It offers polished defaults while remaining fully customizable. Best for application UIs that need to match a specific design language quickly.</reasoning>
+            </library>
+
+            <library name="Radix UI">
+                <use_when>
+                    <scenario>The feature requires lower-level control</scenario>
+                    <scenario>Custom composition is needed</scenario>
+                    <scenario>Highly specialized interaction behavior is required</scenario>
+                    <scenario>Non-standard UI patterns are needed</scenario>
+                </use_when>
+                <reasoning>Radix UI provides unstyled, accessible primitives that give full control over rendering. Best for design systems or UIs with unique interaction patterns that shadcn/ui components cannot achieve without significant overrides.</reasoning>
+            </library>
+
+            <library name="Custom Components">
+                <use_when>
+                    <scenario>Neither shadcn/ui nor Radix provides a suitable base</scenario>
+                    <scenario>The interaction pattern is highly specialized (canvas, maps, whiteboard)</scenario>
+                    <scenario>Performance requirements demand complete control over rendering</scenario>
+                </use_when>
+                <reasoning>Custom components are necessary for canvas-based editors, map interfaces, drag-and-drop systems, and other specialized interactions. However, they require more development time and maintenance.</reasoning>
+            </library>
+        </guideline>
+    </ui_library_decisions>
+
+    <touch_ergonomics>
+        <guideline name="hit_targets">
+            <minimum_size>44x44px for touch targets</minimum_size>
+            <spacing>At least 8px between touch targets to prevent accidental activation</spacing>
+            <thumb_zone>Primary actions should be in the bottom third of the screen for one-handed use</thumb_zone>
+        </guideline>
+
+        <guideline name="gesture_conflicts">
+            <issue>Gestures must not conflict with browser gestures (scroll, zoom, navigation)</issue>
+            <solution>Use distinct gesture contexts or provide explicit mode switching</solution>
+            <example>
+                <context>Canvas editors</context>
+                <problem>Pinch-to-zoom conflicts with browser zoom</problem>
+                <solution>Disable browser zoom when canvas is active, provide explicit UI for zoom</solution>
+            </example>
+        </guideline>
+
+        <guideline name="visual_feedback">
+            <requirement>All touch interactions must provide immediate visual feedback</requirement>
+            <techniques>Ripple effects, scale transforms, opacity changes, loading indicators</techniques>
+        </guideline>
+    </touch_ergonomics>
+
+    <responsive_layout_patterns>
+        <pattern name="mobile_stacked">
+            <description>Single column layout, bottom navigation, collapsible sections</description>
+            <use_when>Mobile phones and small tablets</use_when>
+        </pattern>
+
+        <pattern name="tablet_transitional">
+            <description>Two-column where useful, side panel can appear, larger touch targets</description>
+            <use_when>Tablets in portrait and landscape</use_when>
+        </pattern>
+
+        <pattern name="multi_panel_desktop">
+            <description>Persistent sidebars, inspector panels, toolbars, high-density layouts</description>
+            <use_when>Desktop and large tablets in landscape</use_when>
+        </pattern>
+
+        <pattern name="adaptive_sidebar">
+            <description>Sidebar collapses to icons on smaller screens, expands on hover/click on larger</description>
+            <breakpoint>1024px</breakpoint>
+        </pattern>
+
+        <pattern name="bottom_bar_mobile">
+            <description>Primary navigation at bottom for thumb accessibility</description>
+            <use_when>Mobile and tablet portrait</use_when>
+        </pattern>
+    </responsive_layout_patterns>
+
+    <component_architecture>
+        <guideline name="single_responsibility">
+            <rule>Each component should do one thing well</rule>
+            <example>
+                <bad>Button that also handles loading state and error display</bad>
+                <good>Button component + ButtonLoading wrapper + ButtonError variant</good>
+            </example>
+        </guideline>
+
+        <guideline name="composition_over_configuration">
+            <rule>Prefer composable components over highly configurable single components</rule>
+            <example>
+                <bad><![CDATA[<DataTable columns={[]} filters={[]} sorting={true} pagination={true} />]]></bad>
+                <good><![CDATA[<DataTable><DataTable.Columns /><DataTable.Filters /><DataTable.Pagination /></DataTable>]]></good>
+            </example>
+        </guideline>
+
+        <guideline name="layout_components">
+            <rule>Create layout components for recurring structures</rule>
+            <examples>
+                <component>Stack, HStack, VStack for spacing</component>
+                <component>Container, Section, Panel for organization</component>
+                <component>Sidebar, Header, Footer for page structure</component>
+            </examples>
+        </guideline>
+    </component_architecture>
+
+    <common_pitfalls>
+        <pitfall>
+            <description>Designing only for the happy path</description>
+            <why_problematic>Users encounter errors, empty states, loading states, and edge cases</why_problematic>
+            <correct_approach>Design for empty, loading, error, and success states equally</correct_approach>
+        </pitfall>
+
+        <pitfall>
+            <description>Assuming desktop interactions on mobile</description>
+            <why_problematic>Hover, right-click, and precise cursor interactions don't exist on touch</why_problematic>
+            <correct_approach>Design touch alternatives for all critical interactions</correct_approach>
+        </pitfall>
+
+        <pitfall>
+            <description>Overly complex gesture vocabularies</description>
+            <why_problematic>Users cannot discover or remember complex gestures</why_problematic>
+            <correct_approach>Limit to common gestures; provide explicit UI alternatives</correct_approach>
+        </pitfall>
+
+        <pitfall>
+            <description>Ignoring performance implications of complex UI</description>
+            <why_problematic>Animations, large lists, and complex states can cause jank</why_problematic>
+            <correct_approach>Consider rendering performance, use virtualization for lists, optimize animations</correct_approach>
+        </pitfall>
+
+        <pitfall>
+            <description>Designing without considering accessibility</description>
+            <why_problematic>Excludes users with disabilities; may violate legal requirements</why_problematic>
+            <correct_approach>Start with accessible patterns, then enhance for those who can use advanced features</correct_approach>
+        </pitfall>
+    </common_pitfalls>
+
+    <quality_checklist>
+        <category name="before_starting">
+            <item>Understand the full scope of the request</item>
+            <item>Identify all target platforms and breakpoints</item>
+            <item>Review existing design patterns in the codebase</item>
+            <item>Check technology constraints (React version, CSS capabilities)</item>
+        </category>
+
+        <category name="during_design">
+            <item>Apply mobile-first layout approach</item>
+            <item>Specify touch interactions for all interactive elements</item>
+            <item>Make shadcn/ui vs Radix UI decision explicit</item>
+            <item>Define responsive breakpoints explicitly</item>
+            <item>Consider state variations (empty, loading, error, success)</item>
+        </category>
+
+        <category name="before_completion">
+            <item>Verify all 9 output sections are addressed</item>
+            <item>Check accessibility (contrast, focus, target sizes)</item>
+            <item>Review gesture conflicts and edge cases</item>
+            <item>Identify risks and pitfalls honestly</item>
+        </category>
+    </quality_checklist>
+</best_practices>

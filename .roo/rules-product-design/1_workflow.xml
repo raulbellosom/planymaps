@@ -1,0 +1,136 @@
+<workflow_instructions>
+    <mode_overview>
+    This mode provides comprehensive product design and frontend UX/UI architecture guidance for web applications.
+    It focuses on responsive, implementation-aware design that balances mobile-first principles with desktop efficiency.
+    </mode_overview>
+
+    <initialization_steps>
+        <step number="1">
+            <action>Understand the user's request</action>
+            <details>
+        Parse the user's input to identify:
+        - What type of UI/UX task is requested (new screen, redesign, component, flow)
+        - What platforms are targeted (mobile, tablet, desktop)
+        - What interaction requirements exist (touch, gestures, keyboard)
+        - What constraints are defined (existing patterns, tech stack, accessibility)
+            </details>
+        </step>
+
+        <step number="2">
+            <action>Assess the project context</action>
+            <details>
+        Review the minimal set of repository materials needed to act safely:
+        - Technology stack (React/Next.js/Vue/etc.)
+        - Existing component library patterns
+        - Design system conventions
+        - UI library in use (shadcn/ui, Radix, custom)
+            </details>
+        </step>
+    </initialization_steps>
+
+    <main_workflow>
+        <phase name="product_understanding">
+            <description>Analyze the product context deeply</description>
+            <steps>
+                <step>Summarize the goal and success criteria</step>
+                <step>Identify primary users and their context (office, field, mobile, desktop)</step>
+                <step>Identify usage environments and constraints</step>
+                <step>Identify interaction constraints (touch-only, mouse-only, hybrid)</step>
+            </steps>
+        </phase>
+
+        <phase name="ux_strategy">
+            <description>Define the interaction model and navigation logic</description>
+            <steps>
+                <step>Define the main interaction model</step>
+                <step>Explain navigation logic and information architecture</step>
+                <step>Justify why the interface should be structured that way</step>
+            </steps>
+        </phase>
+
+        <phase name="layout_system">
+            <description>Design responsive layouts for all breakpoints</description>
+            <steps>
+                <step>Define mobile layout behavior</step>
+                <step>Define tablet layout behavior</step>
+                <step>Define desktop layout behavior</step>
+                <step>Specify sidebars, toolbars, inspectors, floating actions, and panels</step>
+            </steps>
+        </phase>
+
+        <phase name="interaction_design">
+            <description>Define all interaction behaviors</description>
+            <steps>
+                <step>Define mouse behavior (hover, click, right-click)</step>
+                <step>Define touch behavior (tap, double-tap, long-press, swipe)</step>
+                <step>Define gesture behavior (pinch, pan, drag, drop)</step>
+                <step>Define keyboard support and shortcuts</step>
+                <step>Define context menu behavior</step>
+                <step>Define selection model</step>
+            </steps>
+        </phase>
+
+        <phase name="component_recommendations">
+            <description>Specify UI component architecture</description>
+            <steps>
+                <step>Identify major UI components needed</step>
+                <step>Specify state variations for each component</step>
+                <step>Identify reusable patterns</step>
+                <step>Determine what should be sticky, collapsible, modal, inline, or docked</step>
+                <step>Decide between shadcn/ui or Radix UI with explicit reasoning</step>
+            </steps>
+        </phase>
+
+        <phase name="visual_design">
+            <description>Define visual hierarchy and design language</description>
+            <steps>
+                <step>Define hierarchy, spacing rhythm, and typography</step>
+                <step>Define density approach (compact vs comfortable)</step>
+                <step>Define color usage and accessibility requirements</step>
+                <step>Define icon usage and affordances</step>
+            </steps>
+        </phase>
+
+        <phase name="accessibility_usability">
+            <description>Ensure accessibility and usability</description>
+            <steps>
+                <step>Define focus states and keyboard navigation</step>
+                <step>Verify contrast ratios and WCAG compliance</step>
+                <step>Specify target sizes for touch and mouse</step>
+                <step>Define fallback interactions and error prevention</step>
+                <step>Address discoverability of gesture-based features</step>
+            </steps>
+        </phase>
+
+        <phase name="implementation_guidance">
+            <description>Provide frontend implementation guidance</description>
+            <steps>
+                <step>Specify React/Next.js component boundaries</step>
+                <step>Identify state management concerns</step>
+                <step>Address performance considerations</step>
+                <step>Specify gesture handling approach</step>
+                <step>Define responsive architecture</step>
+                <step>Identify where shadcn/ui, Radix UI, or custom components are needed</step>
+            </steps>
+        </phase>
+
+        <phase name="risks_pitfalls">
+            <description>Identify potential issues</description>
+            <steps>
+                <step>Identify likely UX problems in the proposed design</step>
+                <step>Identify gesture conflicts</step>
+                <step>Identify layout issues at specific breakpoints</step>
+                <step>Identify performance or usability mistakes to avoid</step>
+            </steps>
+        </phase>
+    </main_workflow>
+
+    <completion_criteria>
+        <criterion>All 9 sections of the response structure are addressed</criterion>
+        <criterion>shadcn/ui vs Radix UI decision is explicit with reasoning</criterion>
+        <criterion>Mobile-first principles are applied with desktop efficiency preserved</criterion>
+        <criterion>Touch and mouse interactions are both specified</criterion>
+        <criterion>Implementation guidance is React/Next.js-aware</criterion>
+        <criterion>Risks and pitfalls are honestly identified</criterion>
+    </completion_criteria>
+</workflow_instructions>

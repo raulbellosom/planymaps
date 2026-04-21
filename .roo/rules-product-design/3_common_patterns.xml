@@ -1,0 +1,270 @@
+<common_patterns>
+    <layout_patterns>
+        <pattern name="mobile_bottom_navigation">
+            <description>Bottom tab bar for primary navigation on mobile</description>
+            <structure>
+                <item>Fixed to bottom of viewport</item>
+                <item>4-5 primary destinations maximum</item>
+                <item>Active state with filled icon + label</item>
+                <item>Inactive states with outline icon only</item>
+                <item>Safe area padding for notched devices</item>
+            </structure>
+            <breakpoints>
+                <mobile>Always visible</mobile>
+                <tablet>May hide labels, show icons only</tablet>
+                <desktop>Transforms to sidebar or hide (if secondary nav exists)</desktop>
+            </breakpoints>
+            <code_example><![CDATA[
+<nav className="fixed bottom-0 left-0 right-0 h-16 bg-white border-t flex items-center justify-around px-4 pb-safe">
+  {navItems.map((item) => (
+    <NavItem key={item.href} href={item.href} icon={item.icon} label={item.label} />
+  ))}
+</nav>
+]]>            </code_example>
+        </pattern>
+
+        <pattern name="collapsible_sidebar">
+            <description>Sidebar that can collapse to icon-only mode</description>
+            <structure>
+                <item>Expanded: 240px width with icon + label</item>
+                <item>Collapsed: 64px width with icon only</item>
+                <item>Toggle button at top or bottom</item>
+                <item>Hover to preview labels when collapsed (desktop)</item>
+                <item>Overlay mode on mobile when expanded</item>
+            </structure>
+            <breakpoints>
+                <mobile>Hidden by default, slide-in overlay when opened</mobile>
+                <tablet>Icon-only default, expand on hover/click</tablet>
+                <desktop>User preference, persistent or collapsible</desktop>
+            </breakpoints>
+        </pattern>
+
+        <pattern name="sticky_header">
+            <description>Header that stays visible while content scrolls</description>
+            <structure>
+                <item>Fixed height (56px-64px typical)</item>
+                <item>Z-index above content, below modals</item>
+                <item>May contain search, actions, breadcrumbs</item>
+                <item>Can collapse to smaller height on scroll</item>
+            </structure>
+            <code_example><![CDATA[
+<header className="sticky top-0 z-40 h-14 bg-white/80 backdrop-blur-md border-b">
+  <div className="h-full px-4 flex items-center justify-between">
+    {children}
+  </div>
+</header>
+]]>            </code_example>
+        </pattern>
+
+        <pattern name="inspector_panel">
+            <description>Right-side panel for object properties and controls</description>
+            <structure>
+                <item>Fixed width (280px-320px)</item>
+                <item>Slides in from right</item>
+                <item>Can be pinned or floating on desktop</item>
+                <item>Header with close button and panel title</item>
+                <item>Scrollable content area</item>
+                <item>Optional footer with primary actions</item>
+            </structure>
+            <breakpoints>
+                <mobile>Full-screen modal or slide-up sheet</mobile>
+                <tablet>Overlay panel or split view</tablet>
+                <desktop>Docked or floating with resize handle</desktop>
+            </breakpoints>
+        </pattern>
+    </layout_patterns>
+
+    <component_patterns>
+        <pattern name="touch_friendly_button">
+            <description>Button sized for comfortable touch interaction</description>
+            <specifications>
+                <size>Minimum 44x44px touch target</size>
+                <spacing>8px minimum between adjacent targets</spacing>
+                <padding>12px-16px horizontal, 8px-12px vertical for padding</padding>
+            </specifications>
+            <code_example><![CDATA[
+<button className="min-h-[44px] min-w-[44px] px-4 py-2 rounded-lg font-medium transition-colors active:scale-95">
+  {children}
+</button>
+]]>            </code_example>
+        </pattern>
+
+        <pattern name="pull_to_refresh">
+            <description>Mobile pattern for refreshing content</description>
+            <structure>
+                <item>Hidden indicator at top of scrollable area</item>
+                <item>Pull down to reveal refresh indicator</item>
+                <item>Threshold: 60-80px pull distance</item>
+                <item>Visual states: idle, pulling, ready-to-refresh, refreshing</item>
+                <item>Haptic feedback when threshold reached</item>
+            </structure>
+            <considerations>
+                <item>Does not conflict with vertical scroll</item>
+                <item>Disabled when no refresh action available</item>
+                <item>Animation completes even if network is slow</item>
+            </considerations>
+        </pattern>
+
+        <pattern name="swipe_to_delete">
+            <description>Swipe gesture for revealing destructive actions</description>
+            <structure>
+                <item>Swipe left reveals red delete zone</item>
+                <item>Swipe right reveals edit or archive zone</item>
+                <item>Threshold: 30-40% of item width</item>
+                <item>Rubber-band effect beyond threshold</item>
+                <item>Snap back or execute on release</item>
+            </structure>
+            <alternatives>
+                <item>Long-press to enter selection mode (iOS style)</item>
+                <item>Selection checkboxes in list header (Android style)</item>
+            </alternatives>
+        </pattern>
+
+        <pattern name="skeleton_loading">
+            <description>Placeholder loading states that match content shape</description>
+            <structure>
+                <item>Gray animated shimmer effect</item>
+                <item>Shape matches actual content (text lines, cards, avatars)</item>
+                <item>Staggered animation for multiple items</item>
+                <item>No layout shift when content loads</item>
+            </structure>
+            <code_example><![CDATA[
+<div className="animate-pulse space-y-4">
+  <div className="h-4 bg-gray-200 rounded w-3/4" />
+  <div className="h-4 bg-gray-200 rounded" />
+  <div className="h-4 bg-gray-200 rounded w-5/6" />
+</div>
+]]>            </code_example>
+        </pattern>
+
+        <pattern name="empty_state">
+            <description>Placeholder when no content exists</description>
+            <structure>
+                <item>Centered illustration or icon</item>
+                <item>Clear headline explaining the empty state</item>
+                <item>Brief description of why it's empty</item>
+                <item>Primary action button to create content</item>
+                <item>Optional secondary action for help</item>
+            </structure>
+        </pattern>
+
+        <pattern name="modal_bottom_sheet">
+            <description>Mobile-first modal that slides up from bottom</description>
+            <structure>
+                <item>Appears from bottom of screen</item>
+                <item>Drag handle at top for dismissal</item>
+                <item>Swipe down to dismiss (with rubber-band)</item>
+                <item>Backdrop blur behind sheet</item>
+                <item>Rounded top corners (16px-24px radius)</item>
+                <item>Max height: 90vh with scroll</item>
+            </structure>
+            <breakpoints>
+                <mobile>Bottom sheet default</mobile>
+                <tablet>Bottom sheet or centered modal</tablet>
+                <desktop>Centered modal (larger width)</desktop>
+            </breakpoints>
+        </pattern>
+    </component_patterns>
+
+    <interaction_patterns>
+        <pattern name="debounced_search">
+            <description>Search input with delayed execution</description>
+            <specifications>
+                <debounce_ms>300ms typical, 500ms for slow APIs</debounce_ms>
+                <min_chars>2-3 characters before searching</min_chars>
+                <show_loading>After debounce, before results</show_loading>
+            </specifications>
+            <flow>
+                <step>User types in search input</step>
+                <step>Input shows typing indicator</step>
+                <step>After debounce, execute search</step>
+                <step>Show skeleton loading</step>
+                <step>Replace with results or empty state</step>
+            </flow>
+        </pattern>
+
+        <pattern name="optimistic_update">
+            <description>Update UI immediately, sync in background</description>
+            <flow>
+                <step>User triggers action</step>
+                <step>UI updates immediately</step>
+                <step>Request sent to server</step>
+                <step>On success: no change needed</step>
+                <step>On failure: revert UI, show error toast</step>
+            </flow>
+            <use_when>
+                <scenario>Non-critical updates (likes, follows, read status)</scenario>
+                <scenario>High-frequency actions (typing, scrolling position)</scenario>
+                <scenario>Offline-capable features</scenario>
+            </use_when>
+        </pattern>
+
+        <pattern name="context_menu">
+            <description>Right-click or long-press menu</description>
+            <structure>
+                <item>Menu appears at cursor/touch position</item>
+                <item>Auto-positions to stay in viewport</item>
+                <item>Backdrop closes menu on click/tap outside</item>
+                <item>Keyboard navigation with arrow keys</item>
+                <item>Destructive actions in red at bottom</item>
+            </structure>
+            <accessibility>
+                <item>Esc key closes menu</item>
+                <item>Focus returns to trigger element</item>
+                <item>Screen reader announces menu options</item>
+            </accessibility>
+        </pattern>
+    </interaction_patterns>
+
+    <gesture_patterns>
+        <pattern name="pinch_to_zoom">
+            <description>Two-finger gesture for zooming content</description>
+            <specifications>
+                <min_zoom>0.5x or fit-to-container</min_zoom>
+                <max_zoom>4x or 5x maximum</max_zoom>
+                <double_tap>Toggle between fit and 2x zoom</double_tap>
+            </specifications>
+            <implementation>
+                <item>Disable browser zoom (touch-action: pinch-zoom)</item>
+                <item>Use transform: scale() for zoom</item>
+                <item>Pan to navigate while zoomed</item>
+                <item>Zoom controls UI as fallback</item>
+            </implementation>
+        </pattern>
+
+        <pattern name="drag_and_drop">
+            <description>Touch and mouse drag interaction</description>
+            <phases>
+                <phase name="initiation">
+                    <trigger>Long-press on mobile (300ms), mousedown on desktop</trigger>
+                    <visual>Item scales up slightly, shadow appears</visual>
+                </phase>
+                <phase name="dragging">
+                    <visual>Item follows finger/cursor</visual>
+                    <feedback>Drop zones highlight when item enters</feedback>
+                </phase>
+                <phase name="drop">
+                    <visual>Item animates to final position</visual>
+                    <cancel>Drag outside valid zones returns item</cancel>
+                </phase>
+            </phases>
+            <accessibility>
+                <item>Keyboard alternative: select, then arrow keys + Enter</item>
+                <item>Announce drag start and drop target to screen readers</item>
+            </accessibility>
+        </pattern>
+
+        <pattern name="two_finger_pan">
+            <description>Two-finger drag for panning canvas or map</description>
+            <specifications>
+                <fingers>Always exactly two fingers</fingers>
+                <direction>Any direction</direction>
+                <momentum>Optional momentum after release</momentum>
+            </specifications>
+            <conflict_resolution>
+                <issue>Conflicts with two-finger swipe navigation</issue>
+                <solution>Use within bounded container (canvas, map) not full page</solution>
+            </conflict_resolution>
+        </pattern>
+    </gesture_patterns>
+</common_patterns>

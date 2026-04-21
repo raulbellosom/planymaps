@@ -1,0 +1,12 @@
+{
+  "name": "bootstrap-admin",
+  "version": "1.0.0",
+  "description": "Appwrite Function to assign admin label to the first registered user",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "appwrite functions deploy"
+  },
+  "dependencies": {
+    "node-appwrite": "^24.0.0"
+  }
+}

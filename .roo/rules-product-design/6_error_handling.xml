@@ -1,0 +1,137 @@
+<error_handling>
+    <common_issues>
+        <issue type="ambiguous_request">
+            <problem>The user request is vague or missing key information</problem>
+            <symptoms>
+                <symptom>No mention of target platforms</symptom>
+                <symptom>No mention of existing design patterns or tech stack</symptom>
+                <symptom>Vague requirement ("make it look better")</symptom>
+            </symptoms>
+            <resolution>
+                <question>Ask a focused clarifying question before proceeding</question>
+                <options>
+                    <option>What platforms does this need to support (mobile, tablet, desktop)?</option>
+                    <option>What is the existing tech stack (React, Vue, specific UI library)?</option>
+                    <option>What specific problems are you trying to solve?</option>
+                </options>
+            </resolution>
+        </issue>
+
+        <issue type="contradictory_requirements">
+            <problem>User requests conflicting requirements</problem>
+            <symptoms>
+                <symptom>"Must work on mobile" but "needs complex hover interactions"</symptom>
+                <symptom>"Simple interface" but "show all data at once"</symptom>
+            </symptoms>
+            <resolution>
+                <question>Identify the conflict and ask which takes priority</question>
+                <example>
+          "You mentioned simple mobile-first design but also need complex hover interactions.
+          Hover doesn't work on touch devices. Which approach would you prefer:
+          1) Design touch-first with alternative controls for complex interactions
+          2) Desktop-primary with limited mobile support
+          3) Different interfaces for different platforms"
+                </example>
+            </resolution>
+        </issue>
+
+        <issue type="scope_creep">
+            <problem>Request keeps expanding beyond initial scope</problem>
+            <symptoms>
+                <symptom>New requirements added mid-design</symptom>
+                <symptom>"While you're at it, could you also..."</symptom>
+            </symptoms>
+            <resolution>
+                <question>Re-affirm scope and suggest tracking additions</question>
+                <example>
+          "I've noted this additional request. Should I:
+          1) Include it in the current design (may extend timeline)
+          2) Add it to the backlog for a follow-up session
+          3) Create a separate design spec for it"
+                </example>
+            </resolution>
+        </issue>
+
+        <issue type="implementation_agnostic">
+            <problem>User requests design without considering implementation</problem>
+            <symptoms>
+                <symptom>Design assumes non-existent browser capabilities</symptom>
+                <symptom>Interactions that would require significant custom development</symptom>
+            </symptoms>
+            <resolution>
+                <approach>Flag implementation concerns while still providing the requested design</approach>
+                <example>
+          "I've designed X, but note that it requires Y browser capability.
+          A more widely compatible alternative would be Z. Should I proceed with
+          the ideal design or the compatible one?"
+                </example>
+            </resolution>
+        </issue>
+
+        <issue type="design_by_implementer">
+            <problem>User is trying to implement rather than design</problem>
+            <symptoms>
+                <symptom>Requests focus on CSS properties or component names</symptom>
+                <symptom>"Just use flexbox" or "use that button component"</symptom>
+            </symptoms>
+            <resolution>
+                <approach>Redirect to design intent while acknowledging constraints</approach>
+                <example>
+          "I understand you have specific implementation preferences. Let me
+          first ensure I understand the design intent, then I can incorporate
+          those constraints into the recommendations."
+                </example>
+            </resolution>
+        </issue>
+    </common_issues>
+
+    <edge_cases>
+        <edge_case type="empty_state">
+            <description>Designing for screens with no data yet</description>
+            <approach>
+                <item>Always design empty states alongside populated states</item>
+                <item>Include clear call-to-action to add first item</item>
+                <item>Explain why the state is empty (first-time user vs filtered to nothing)</item>
+            </approach>
+        </edge_case>
+
+        <edge_case type="loading_state">
+            <description>Managing perceived performance during data fetch</description>
+            <approach>
+                <item>Skeleton loading screens matching content shape</item>
+                <item>Progress indicators for known-duration operations</item>
+                <item>Optimistic updates where possible</item>
+                <item>Never leave user staring at blank screen</item>
+            </approach>
+        </edge_case>
+
+        <edge_case type="error_state">
+            <description>Graceful handling of failures</description>
+            <approach>
+                <item>Inline errors near the source (not modal popups)</item>
+                <item>Clear, actionable error messages (what happened + how to fix)</item>
+                <item>Preserve user input when possible</item>
+                <item>Retry mechanisms for transient failures</item>
+            </approach>
+        </edge_case>
+
+        <edge_case type="offline_state">
+            <description>Handling network unavailability</description>
+            <approach>
+                <item>Detect offline state and notify user</item>
+                <item>Show cached data when available</item>
+                <item>Queue actions for sync when online</item>
+                <item>Visual indicator of stale vs fresh data</item>
+            </approach>
+        </edge_case>
+
+        <edge_case type="breakpoint_edge">
+            <description>Device widths that fall between defined breakpoints</description>
+            <approach>
+                <item>Use fluid scaling, not fixed breakpoints where possible</item>
+                <item>Test at common device widths: 375px, 390px, 414px, 768px, 834px, 1024px</item>
+                <item>Define behavior for "in-between" widths (smaller layout wins)</item>
+            </approach>
+        </edge_case>
+    </edge_cases>
+</error_handling>

@@ -1,0 +1,321 @@
+<complete_examples>
+    <example name="responsive_dashboard_redesign">
+        <scenario>
+      Redesign a dense analytics dashboard for both mobile field workers and desktop analysts.
+      The dashboard shows KPIs, charts, and data tables. Field workers need quick scans on mobile;
+      analysts need deep-dive capability on desktop.
+        </scenario>
+
+        <user_request>
+      "Our analytics dashboard is unusable on mobile. We need a redesign that works for both
+      field workers checking numbers on phones and analysts doing deep-dive on desktop."
+        </user_request>
+
+        <workflow>
+            <step number="1">
+                <description>Product Understanding</description>
+                <approach>
+          - Primary users: Field workers (mobile-first, quick scans) and Analysts (desktop, deep analysis)
+          - Environment: Field workers use phones outdoors; analysts use desktops in office
+          - Key metrics: Time-to-insight for field workers; flexibility for analysts
+          - Constraint: Existing data API cannot change
+                </approach>
+                <expected_outcome>
+          Clear user personas and their distinct needs defined
+                </expected_outcome>
+            </step>
+
+            <step number="2">
+                <description>UX Strategy</description>
+                <approach>
+          - Mobile: Card-based KPI summary with drill-down on tap
+          - Desktop: Multi-panel with persistent filters and expandable charts
+          - Navigation: Bottom tab bar (mobile) → Top nav with dropdowns (desktop)
+          - Information architecture based on user task frequency
+                </approach>
+                <expected_outcome>
+          Interaction model and navigation logic documented
+                </expected_outcome>
+            </step>
+
+            <step number="3">
+                <description>Layout System Design</description>
+                <approach>
+          Mobile (under 768px):
+            - Single column, stacked cards
+            - Each KPI card shows primary metric + sparkline
+            - Tap card to expand details (bottom sheet)
+            - Sticky header with date range selector
+          
+          Tablet (768px - 1024px):
+            - Two-column grid for KPIs
+            - Charts can be expanded to full-width
+            - Collapsible filter sidebar
+          
+          Desktop (1024px and above):
+            - Persistent left sidebar with filter tree
+            - Main area: 3-column KPI grid
+            - Right panel: Detail inspector (can be pinned)
+            - Multi-window support for analysts
+                </approach>
+                <expected_outcome>
+          Breakpoint-specific layouts documented
+                </expected_outcome>
+            </step>
+
+            <step number="4">
+                <description>Interaction Design</description>
+                <approach>
+          Touch (Mobile):
+            - Tap KPI card → Expand bottom sheet with chart + breakdown
+            - Swipe between time periods
+            - Long-press for quick actions (share, annotate)
+            - Pull to refresh data
+          
+          Mouse (Desktop):
+            - Hover on KPI → Tooltip with comparison period
+            - Click → Expand in right inspector panel
+            - Right-click → Context menu (export, annotate, compare)
+            - Keyboard: Arrow keys navigate KPIs, Enter expands
+          
+          Gestures:
+            - No complex gestures; simple tap/click suffices
+            - Pinch-to-zoom on charts (desktop)
+                </approach>
+                <expected_outcome>
+          Touch and mouse interaction models defined
+                </expected_outcome>
+            </step>
+
+            <step number="5">
+                <description>Component Recommendations</description>
+                <approach>
+          UI Library Decision: shadcn/ui with custom chart wrappers
+          Reasoning: Standard table, card, and dialog patterns from shadcn/ui work well.
+          Charts need custom wrappers for the existing charting library.
+          
+          Components:
+            - KPICard: Custom component with loading skeleton
+            - DataTable: shadcn/ui Table with virtual scrolling for large datasets
+            - FilterPanel: Collapsible accordion using shadcn/ui
+            - Chart: Custom wrapper around chart library
+            - BottomSheet: shadcn/ui Dialog customized for mobile
+            - InspectorPanel: Custom resizeable panel component
+          
+          State Management:
+            - URL state for filters (shareable, bookmarkable)
+            - Local state for panel open/closed
+            - Server state with React Query for data
+                </approach>
+                <expected_outcome>
+          Component architecture with UI library decisions
+                </expected_outcome>
+            </step>
+
+            <step number="6">
+                <description>Visual Design Direction</description>
+                <approach>
+          - Typography: System font stack, 14px base on desktop, 16px on mobile
+          - Spacing: 4px grid, 8px base unit
+          - Density: Comfortable on mobile, compact on desktop
+          - Colors: High contrast for outdoor visibility (field workers)
+          - Charts: Color-blind safe palette
+          - Icons: Lucide icons, 20px on mobile, 16px on desktop
+                </approach>
+                <expected_outcome>
+          Visual design language specified
+                </expected_outcome>
+            </step>
+
+            <step number="7">
+                <description>Accessibility and Usability</description>
+                <approach>
+          - WCAG AA contrast for all text
+          - Focus visible states on all interactive elements
+          - Screen reader announcements for data updates
+          - Keyboard navigation complete on desktop
+          - Touch targets: 48x48px minimum on mobile
+          - Error states: Inline validation with clear messages
+                </approach>
+                <expected_outcome>
+          Accessibility requirements documented
+                </expected_outcome>
+            </step>
+
+            <step number="8">
+                <description>Implementation Guidance</description>
+                <approach>
+          - Use CSS Grid for main layout, Flexbox for components
+          - Implement responsive layout with CSS container queries where possible
+          - Virtual scrolling for tables with 100+ rows
+          - React Suspense boundaries around chart components
+          - Mobile: Prevent body scroll when bottom sheet is open
+          - Performance: Lazy load charts below the fold
+                </approach>
+                <expected_outcome>
+          Technical implementation notes provided
+                </expected_outcome>
+            </step>
+
+            <step number="9">
+                <description>Risks and Design Pitfalls</description>
+                <approach>
+          Risk 1: Dense desktop view may not translate well to tablet
+            Mitigation: Test tablet layout early; consider tablet-specific optimizations
+          
+          Risk 2: Field workers may need offline capability
+            Mitigation: Add PWA service worker for read-only offline mode
+          
+          Risk 3: Chart library may not be responsive
+            Mitigation: Wrap in custom responsive container with ResizeObserver
+          
+          Risk 4: Complex filters may overwhelm field workers
+            Mitigation: Show essential filters on mobile, full filter panel on desktop
+                </approach>
+                <expected_outcome>
+          Risks identified with mitigations
+                </expected_outcome>
+            </step>
+        </workflow>
+
+        <completion>
+      Designed a responsive analytics dashboard that serves both mobile field workers (card-based quick scans)
+      and desktop analysts (dense multi-panel interface). Provided breakpoint-specific layouts, interaction
+      models for touch and mouse, component architecture using shadcn/ui with custom chart wrappers,
+      and identified risks around tablet layout and offline capability.
+        </completion>
+
+        <key_takeaways>
+            <takeaway>Mobile-first forces prioritization; start with what field workers need most</takeaway>
+            <takeaway>Breakpoints should be defined by content needs, not device categories</takeaway>
+            <takeaway>UI library decision should be explicit and based on specific needs</takeaway>
+        </key_takeaways>
+    </example>
+
+    <example name="touch_friendly_canvas_editor">
+        <scenario>
+      Design a touch-friendly canvas editor for creating floor plans on tablets.
+      Users draw rectangles, place pins, and connect elements with lines.
+      Must work on iPad Pro with Apple Pencil and keyboard accessories.
+        </scenario>
+
+        <user_request>
+      "We need a canvas editor that lets users draw floor plans on tablets.
+      It needs to be touch-first but also support keyboard shortcuts for power users."
+        </user_request>
+
+        <workflow>
+            <step number="1">
+                <description>Product Understanding</description>
+                <approach>
+          - Primary users: Facility managers creating floor plans on tablets
+          - Environment: Office or on-site with tablet (iPad Pro focus)
+          - Key interactions: Draw shapes, move elements, connect with lines, annotate
+          - Constraints: Must work with Apple Pencil, keyboard accessories
+                </approach>
+            </step>
+
+            <step number="2">
+                <description>UX Strategy</description>
+                <approach>
+          - Canvas-first interaction model (canvas takes full screen)
+          - Floating toolbar appears on selection or long-press
+          - Bottom tool palette for drawing tools (thumb reachable)
+          - Gesture-based manipulation (direct manipulation paradigm)
+                </approach>
+            </step>
+
+            <step number="3">
+                <description>Layout System</description>
+                <approach>
+          Mobile/Tablet (under 1024px):
+            - Full-bleed canvas
+            - Floating bottom tool palette (48px height)
+            - Top-right: Undo/Redo + Menu
+            - Selection shows floating inspector
+          
+          Desktop (1024px and above):
+            - Left sidebar: Layer panel (collapsible)
+            - Right sidebar: Properties inspector (collapsible)
+            - Bottom: Timeline/tool palette
+            - Canvas fills remaining space
+                </approach>
+            </step>
+
+            <step number="4">
+                <description>Interaction Design</description>
+                <approach>
+          Touch Interactions:
+            - Single tap: Select element
+            - Double tap: Edit element text
+            - Long press (500ms): Show context menu
+            - Drag: Move selected or draw (depending on tool)
+            - Two-finger pan: Pan canvas
+            - Pinch: Zoom canvas
+            - Two-finger rotate: Rotate selected element (when supported)
+          
+          Mouse Interactions:
+            - Click: Select
+            - Right-click: Context menu
+            - Drag: Move or draw
+            - Scroll wheel: Zoom
+            - Middle-click drag: Pan
+            - Hover: Show resize handles on selected element
+          
+          Keyboard Shortcuts:
+            - Arrow keys: Nudge selected element (1px, Shift = 10px)
+            - Delete/Backspace: Delete selected
+            - Cmd/Ctrl+D: Duplicate
+            - Cmd/Ctrl+Z: Undo
+            - Space+Drag: Pan
+            - V: Select tool
+            - R: Rectangle tool
+            - P: Pin tool
+                </approach>
+            </step>
+
+            <step number="5">
+                <description>Component Recommendations</description>
+                <approach>
+          UI Library Decision: Custom + Radix UI primitives
+          Reasoning: Canvas-based editors require complete custom rendering control.
+          Radix UI for tool palette, menus, and dialogs (not canvas elements).
+          
+          Components:
+            - Canvas: Custom React component with Konva or custom canvas
+            - ToolPalette: Radix UI Toolbar customized
+            - ContextMenu: Radix UI ContextMenu
+            - PropertiesPanel: Custom component
+            - LayerPanel: Custom component with drag reordering
+            - FloatingInspector: Custom animated component
+                </approach>
+            </step>
+
+            <step number="6">
+                <description>Gesture Conflict Resolution</description>
+                <approach>
+          Critical Issue: Pinch-to-zoom conflicts with browser zoom and two-finger swipe navigation
+          
+          Resolution:
+            - Canvas captures all touch events when in edit mode
+            - Disable browser gestures when canvas is active
+            - Provide explicit zoom UI controls as alternative
+            - Clear visual feedback when gesture mode changes
+            - Escape hatch: Button to exit edit mode and restore browser gestures
+                </approach>
+            </step>
+        </workflow>
+
+        <completion>
+      Designed a touch-first canvas editor for floor plans with gesture support (pan, zoom, draw),
+      keyboard shortcuts for power users, and explicit conflict resolution for gesture overlap.
+      Used custom canvas rendering with Radix UI for tool chrome.
+        </completion>
+
+        <key_takeaways>
+            <takeaway>Canvas editors require explicit gesture mode management</takeaway>
+            <takeaway>Provide both gesture AND explicit UI controls for critical actions</takeaway>
+            <takeaway>Consider Apple Pencil + keyboard simultaneously on tablets</takeaway>
+        </key_takeaways>
+    </example>
+</complete_examples>

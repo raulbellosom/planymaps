@@ -1,0 +1,1094 @@
+﻿[
+    {
+        "relativePath":  ".env",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\.env",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\7be2b598\\qkYX",
+        "timestamp":  1776579263385
+    },
+    {
+        "relativePath":  ".env.example",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\.env.example",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\409abf14\\iMNI.example",
+        "timestamp":  1776579258411
+    },
+    {
+        "relativePath":  ".github\\instructions\\editor.instructions.md",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\.github\\instructions\\editor.instructions.md",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-1b34d78e\\EUR6.md",
+        "timestamp":  1776721561101
+    },
+    {
+        "relativePath":  ".github\\prompts\\new-task.prompt.md",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\.github\\prompts\\new-task.prompt.md",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\1127c9c\\ssqN.md",
+        "timestamp":  1776721576760
+    },
+    {
+        "relativePath":  ".roo\\rules-product-design\\1_workflow.xml",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\.roo\\rules-product-design\\1_workflow.xml",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-307e3c1f\\XL4g.xml",
+        "timestamp":  1776564588878
+    },
+    {
+        "relativePath":  ".roo\\rules-product-design\\2_best_practices.xml",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\.roo\\rules-product-design\\2_best_practices.xml",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\45419ebe\\FAZ6.xml",
+        "timestamp":  1776564656742
+    },
+    {
+        "relativePath":  ".roo\\rules-product-design\\3_common_patterns.xml",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\.roo\\rules-product-design\\3_common_patterns.xml",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\2557c2c9\\wb2z.xml",
+        "timestamp":  1776564719564
+    },
+    {
+        "relativePath":  ".roo\\rules-product-design\\4_decision_guidance.xml",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\.roo\\rules-product-design\\4_decision_guidance.xml",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\265f716e\\2dzk.xml",
+        "timestamp":  1776564767626
+    },
+    {
+        "relativePath":  ".roo\\rules-product-design\\5_examples.xml",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\.roo\\rules-product-design\\5_examples.xml",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-a4f2619\\S32c.xml",
+        "timestamp":  1776564853652
+    },
+    {
+        "relativePath":  ".roo\\rules-product-design\\6_error_handling.xml",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\.roo\\rules-product-design\\6_error_handling.xml",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\5b25ff9\\HkNr.xml",
+        "timestamp":  1776564887017
+    },
+    {
+        "relativePath":  ".roo\\rules-product-design\\7_communication.xml",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\.roo\\rules-product-design\\7_communication.xml",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\18fd71ac\\b9AE.xml",
+        "timestamp":  1776564925914
+    },
+    {
+        "relativePath":  ".roo\\rules-product-design\\8_skills.xml",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\.roo\\rules-product-design\\8_skills.xml",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\69c042bd\\f4Yd.xml",
+        "timestamp":  1776565277900
+    },
+    {
+        "relativePath":  ".roomodes",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\.roomodes",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-881652d\\U1Cy",
+        "timestamp":  1776564559503
+    },
+    {
+        "relativePath":  "AGENTS.md",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\AGENTS.md",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-61c32682\\iXY7.md",
+        "timestamp":  1776721608783
+    },
+    {
+        "relativePath":  "appwrite.cli.json",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\appwrite.cli.json",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-4a7bd873\\YNWB.json",
+        "timestamp":  1776579380935
+    },
+    {
+        "relativePath":  "appwrite.config.json",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\appwrite.config.json",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\6c76721d\\rrFz.json",
+        "timestamp":  1776723154216
+    },
+    {
+        "relativePath":  "docs\\01-product-overview.md",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\docs\\01-product-overview.md",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-7a648e3\\YRO4.md",
+        "timestamp":  1776608686480
+    },
+    {
+        "relativePath":  "docs\\04-data-model.md",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\docs\\04-data-model.md",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\795f411\\bN7X.md",
+        "timestamp":  1776603070311
+    },
+    {
+        "relativePath":  "docs\\07-appwrite-backend.md",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\docs\\07-appwrite-backend.md",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\7c91efd5\\TQoO.md",
+        "timestamp":  1776603070455
+    },
+    {
+        "relativePath":  "docs\\11-authorization-system.md",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\docs\\11-authorization-system.md",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-52f8ee30\\7i1M.md",
+        "timestamp":  1776603070387
+    },
+    {
+        "relativePath":  "docs\\RELEASE-CANDIDATE.md",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\docs\\RELEASE-CANDIDATE.md",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-75a9707d\\uJqE.md",
+        "timestamp":  1776608672261
+    },
+    {
+        "relativePath":  "functions\\bootstrap-admin\\appwrite.json",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\functions\\bootstrap-admin\\appwrite.json",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-106877d4\\VanS.json",
+        "timestamp":  1776572950760
+    },
+    {
+        "relativePath":  "functions\\bootstrap-admin\\index.js",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\functions\\bootstrap-admin\\index.js",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-1731da4f\\qEFl.js",
+        "timestamp":  1776572942982
+    },
+    {
+        "relativePath":  "functions\\bootstrap-admin\\package.json",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\functions\\bootstrap-admin\\package.json",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\7667055c\\EeFw.json",
+        "timestamp":  1776572925502
+    },
+    {
+        "relativePath":  "package.json",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\package.json",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\3284829\\ZMUG.json",
+        "timestamp":  1776549109926
+    },
+    {
+        "relativePath":  "plans\\execution-plan.md",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\plans\\execution-plan.md",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-c3c63d7\\h3qS.md",
+        "timestamp":  1776608686528
+    },
+    {
+        "relativePath":  "plans\\keyboard-shortcuts-tooltip-system.md",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\plans\\keyboard-shortcuts-tooltip-system.md",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\667e6804\\jFu2.md",
+        "timestamp":  1776709375535
+    },
+    {
+        "relativePath":  "plans\\layer-management-system.md",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\plans\\layer-management-system.md",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\2ffe6286\\qWNl.md",
+        "timestamp":  1776613372481
+    },
+    {
+        "relativePath":  "plans\\layer-panel-reorder-rename.md",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\plans\\layer-panel-reorder-rename.md",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\16824852\\oLBh.md",
+        "timestamp":  1776721980616
+    },
+    {
+        "relativePath":  "planymaps\\.gitignore",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\planymaps\\.gitignore",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-3fa744a9\\F2z1",
+        "timestamp":  1776548758564
+    },
+    {
+        "relativePath":  "public\\.gitkeep",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\public\\.gitkeep",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\b3b9a16\\bpsY",
+        "timestamp":  1776608686482
+    },
+    {
+        "relativePath":  "README.md",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\README.md",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-3e0c8622\\QdI9.md",
+        "timestamp":  1776608672259
+    },
+    {
+        "relativePath":  "scripts\\fix-asset-permissions.js",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\scripts\\fix-asset-permissions.js",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-53abe298\\VPz5.js",
+        "timestamp":  1776790159922
+    },
+    {
+        "relativePath":  "scripts\\migrate-workspace-invitations.js",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\scripts\\migrate-workspace-invitations.js",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\63ae917\\xCcX.js",
+        "timestamp":  1776729963102
+    },
+    {
+        "relativePath":  "scripts\\setup-appwrite.js",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\scripts\\setup-appwrite.js",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\1c236449\\eoG3.js",
+        "timestamp":  1776610098708
+    },
+    {
+        "relativePath":  "scripts\\setup-authorization.js",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\scripts\\setup-authorization.js",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-67cf892\\oBVj.js",
+        "timestamp":  1776577471901
+    },
+    {
+        "relativePath":  "src\\app\\(auth)\\forgot-password\\page.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\app\\(auth)\\forgot-password\\page.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\43adf148\\sAVA.tsx",
+        "timestamp":  1776569446862
+    },
+    {
+        "relativePath":  "src\\app\\(auth)\\layout.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\app\\(auth)\\layout.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\626a1699\\d8WP.tsx",
+        "timestamp":  1776571248786
+    },
+    {
+        "relativePath":  "src\\app\\(auth)\\login\\page.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\app\\(auth)\\login\\page.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-7fc0669c\\gh0R.tsx",
+        "timestamp":  1776722943856
+    },
+    {
+        "relativePath":  "src\\app\\(auth)\\register\\page.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\app\\(auth)\\register\\page.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-79a06a1e\\2jVa.tsx",
+        "timestamp":  1776722955757
+    },
+    {
+        "relativePath":  "src\\app\\(auth)\\reset-password\\page.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\app\\(auth)\\reset-password\\page.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-6c3da514\\Yxoq.tsx",
+        "timestamp":  1776569437935
+    },
+    {
+        "relativePath":  "src\\app\\(auth)\\verify\\page.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\app\\(auth)\\verify\\page.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-58f0c434\\snIM.tsx",
+        "timestamp":  1776569472905
+    },
+    {
+        "relativePath":  "src\\app\\admin\\page.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\app\\admin\\page.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-c19d834\\iF2G.tsx",
+        "timestamp":  1776574706305
+    },
+    {
+        "relativePath":  "src\\app\\api\\invitations\\accept\\route.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\app\\api\\invitations\\accept\\route.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\3806ce0f\\rGTZ.ts",
+        "timestamp":  1776785879392
+    },
+    {
+        "relativePath":  "src\\app\\api\\notifications\\create\\route.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\app\\api\\notifications\\create\\route.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\cd84749\\5lAb.ts",
+        "timestamp":  1776731631295
+    },
+    {
+        "relativePath":  "src\\app\\api\\share\\[token]\\asset\\[fileId]\\route.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\app\\api\\share\\[token]\\asset\\[fileId]\\route.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\1e808a90\\qVmb.ts",
+        "timestamp":  1776602048866
+    },
+    {
+        "relativePath":  "src\\app\\api\\share\\[token]\\route.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\app\\api\\share\\[token]\\route.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\a101bdd\\mGd7.ts",
+        "timestamp":  1776602048860
+    },
+    {
+        "relativePath":  "src\\app\\api\\users\\[id]\\route.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\app\\api\\users\\[id]\\route.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-39d2a02\\XTAy.ts",
+        "timestamp":  1776781697568
+    },
+    {
+        "relativePath":  "src\\app\\api\\users\\find-by-email\\route.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\app\\api\\users\\find-by-email\\route.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\3891e4c7\\Rhin.ts",
+        "timestamp":  1776781717077
+    },
+    {
+        "relativePath":  "src\\app\\board\\page.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\app\\board\\page.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\6a3d5615\\mrEZ.tsx",
+        "timestamp":  1776799711344
+    },
+    {
+        "relativePath":  "src\\app\\global-error.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\app\\global-error.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-937fa25\\K89D.tsx",
+        "timestamp":  1776571752863
+    },
+    {
+        "relativePath":  "src\\app\\globals.css",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\app\\globals.css",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-1926658d\\YBLs.css",
+        "timestamp":  1776785363752
+    },
+    {
+        "relativePath":  "src\\app\\layout.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\app\\layout.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-4e0652d9\\K96D.tsx",
+        "timestamp":  1776722900225
+    },
+    {
+        "relativePath":  "src\\app\\login\\page.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\app\\login\\page.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-461ac70e\\oNlQ.tsx",
+        "timestamp":  1776558929708
+    },
+    {
+        "relativePath":  "src\\app\\not-found.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\app\\not-found.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\7cb515a1\\7RV7.tsx",
+        "timestamp":  1776571791612
+    },
+    {
+        "relativePath":  "src\\app\\page.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\app\\page.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-29e94974\\QGqn.tsx",
+        "timestamp":  1776609205959
+    },
+    {
+        "relativePath":  "src\\app\\profile\\page.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\app\\profile\\page.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-402255ce\\b998.tsx",
+        "timestamp":  1776610495773
+    },
+    {
+        "relativePath":  "src\\app\\register\\page.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\app\\register\\page.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-8dddc6c\\JGCh.tsx",
+        "timestamp":  1776558955961
+    },
+    {
+        "relativePath":  "src\\app\\share\\[token]\\not-found.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\app\\share\\[token]\\not-found.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-5635be11\\eEyk.tsx",
+        "timestamp":  1776601605644
+    },
+    {
+        "relativePath":  "src\\app\\share\\[token]\\page.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\app\\share\\[token]\\page.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\60ce917e\\R088.tsx",
+        "timestamp":  1776722979622
+    },
+    {
+        "relativePath":  "src\\app\\share\\[token]\\share-canvas.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\app\\share\\[token]\\share-canvas.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-2fa7e18b\\bYyE.tsx",
+        "timestamp":  1776709814541
+    },
+    {
+        "relativePath":  "src\\app\\workspace\\page.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\app\\workspace\\page.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\7e9b7446\\OKTD.tsx",
+        "timestamp":  1776781671386
+    },
+    {
+        "relativePath":  "src\\components\\auth\\auth-page-wrapper.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\auth\\auth-page-wrapper.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-543b9d2d\\MhGl.tsx",
+        "timestamp":  1776567562289
+    },
+    {
+        "relativePath":  "src\\components\\auth\\blueprint-alert.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\auth\\blueprint-alert.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\6a04549b\\VOiS.tsx",
+        "timestamp":  1776567552843
+    },
+    {
+        "relativePath":  "src\\components\\auth\\blueprint-auth-card.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\auth\\blueprint-auth-card.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\56de84d4\\HPTO.tsx",
+        "timestamp":  1776610387929
+    },
+    {
+        "relativePath":  "src\\components\\auth\\blueprint-background.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\auth\\blueprint-background.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\6a085f45\\eivM.tsx",
+        "timestamp":  1776567042894
+    },
+    {
+        "relativePath":  "src\\components\\auth\\blueprint-button.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\auth\\blueprint-button.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\7c138549\\Z5x0.tsx",
+        "timestamp":  1776566935625
+    },
+    {
+        "relativePath":  "src\\components\\auth\\blueprint-input.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\auth\\blueprint-input.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\26ed3c09\\0xcs.tsx",
+        "timestamp":  1776569194678
+    },
+    {
+        "relativePath":  "src\\components\\auth\\blueprint-password-input.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\auth\\blueprint-password-input.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-669bead1\\t9T7.tsx",
+        "timestamp":  1776568129521
+    },
+    {
+        "relativePath":  "src\\components\\auth\\blueprint-strength-meter.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\auth\\blueprint-strength-meter.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\788baf94\\wqs8.tsx",
+        "timestamp":  1776566896785
+    },
+    {
+        "relativePath":  "src\\components\\auth\\index.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\auth\\index.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\7f9228cd\\6RI6.ts",
+        "timestamp":  1776567629016
+    },
+    {
+        "relativePath":  "src\\components\\board\\create-board-wizard.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\board\\create-board-wizard.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-251d0e30\\ekNN.tsx",
+        "timestamp":  1776619738075
+    },
+    {
+        "relativePath":  "src\\components\\editor\\background-renderer.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\editor\\background-renderer.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-5e06c200\\IPNK.tsx",
+        "timestamp":  1776632161657
+    },
+    {
+        "relativePath":  "src\\components\\editor\\context-menu.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\editor\\context-menu.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-3a8eb70b\\HJnW.tsx",
+        "timestamp":  1776647556537
+    },
+    {
+        "relativePath":  "src\\components\\editor\\editor-canvas.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\editor\\editor-canvas.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-4d0a8b8a\\iAyE.tsx",
+        "timestamp":  1776729670783
+    },
+    {
+        "relativePath":  "src\\components\\editor\\image-upload-modal.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\editor\\image-upload-modal.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\3aee488b\\4Jf6.tsx",
+        "timestamp":  1776729062596
+    },
+    {
+        "relativePath":  "src\\components\\editor\\item-renderers\\arrow-renderer.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\editor\\item-renderers\\arrow-renderer.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-190973e2\\GWh9.tsx",
+        "timestamp":  1776720025476
+    },
+    {
+        "relativePath":  "src\\components\\editor\\item-renderers\\ellipse-renderer.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\editor\\item-renderers\\ellipse-renderer.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-6122f497\\OZCo.tsx",
+        "timestamp":  1776720025496
+    },
+    {
+        "relativePath":  "src\\components\\editor\\item-renderers\\image-renderer.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\editor\\item-renderers\\image-renderer.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-32eef3f4\\Twxh.tsx",
+        "timestamp":  1776719985623
+    },
+    {
+        "relativePath":  "src\\components\\editor\\item-renderers\\index.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\editor\\item-renderers\\index.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\5495a2c7\\emBV.ts",
+        "timestamp":  1776551090500
+    },
+    {
+        "relativePath":  "src\\components\\editor\\item-renderers\\item-renderer.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\editor\\item-renderers\\item-renderer.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-184d2584\\VqPL.tsx",
+        "timestamp":  1776710222742
+    },
+    {
+        "relativePath":  "src\\components\\editor\\item-renderers\\line-renderer.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\editor\\item-renderers\\line-renderer.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\42345b3b\\Ko22.tsx",
+        "timestamp":  1776720025425
+    },
+    {
+        "relativePath":  "src\\components\\editor\\item-renderers\\pin-renderer.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\editor\\item-renderers\\pin-renderer.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\310b6d12\\uKYa.tsx",
+        "timestamp":  1776731494492
+    },
+    {
+        "relativePath":  "src\\components\\editor\\item-renderers\\placeholder-renderer.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\editor\\item-renderers\\placeholder-renderer.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\1925e5f4\\0S4T.tsx",
+        "timestamp":  1776718999058
+    },
+    {
+        "relativePath":  "src\\components\\editor\\item-renderers\\rectangle-renderer.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\editor\\item-renderers\\rectangle-renderer.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\397f1278\\T06q.tsx",
+        "timestamp":  1776720025416
+    },
+    {
+        "relativePath":  "src\\components\\editor\\item-renderers\\text-renderer.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\editor\\item-renderers\\text-renderer.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-33355e\\Z8fK.tsx",
+        "timestamp":  1776720025474
+    },
+    {
+        "relativePath":  "src\\components\\editor\\keyboard-shortcuts-modal.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\editor\\keyboard-shortcuts-modal.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-2ce48261\\hN1H.tsx",
+        "timestamp":  1776729473852
+    },
+    {
+        "relativePath":  "src\\components\\editor\\layer-renderer.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\editor\\layer-renderer.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-51f22449\\xiNB.tsx",
+        "timestamp":  1776724629480
+    },
+    {
+        "relativePath":  "src\\components\\editor\\map-renderer.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\editor\\map-renderer.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\21b1f4cc\\jnJc.tsx",
+        "timestamp":  1776553369280
+    },
+    {
+        "relativePath":  "src\\components\\editor\\multi-select-transformer.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\editor\\multi-select-transformer.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-24ca71ec\\FdfC.tsx",
+        "timestamp":  1776704555511
+    },
+    {
+        "relativePath":  "src\\components\\editor\\pin-edit-modal.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\editor\\pin-edit-modal.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\793a20da\\wzBp.tsx",
+        "timestamp":  1776801105428
+    },
+    {
+        "relativePath":  "src\\components\\editor\\pin-popover.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\editor\\pin-popover.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-59b24095\\RXmQ.tsx",
+        "timestamp":  1776712047883
+    },
+    {
+        "relativePath":  "src\\components\\editor\\read-only-canvas.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\editor\\read-only-canvas.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\c408a1a\\rwj4.tsx",
+        "timestamp":  1776801236070
+    },
+    {
+        "relativePath":  "src\\components\\editor\\selection-drag-rect.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\editor\\selection-drag-rect.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\40ace25a\\jiJh.tsx",
+        "timestamp":  1776655327867
+    },
+    {
+        "relativePath":  "src\\components\\editor\\shape-preview.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\editor\\shape-preview.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\17d30e5a\\wea8.tsx",
+        "timestamp":  1776552684381
+    },
+    {
+        "relativePath":  "src\\components\\editor\\share-modal.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\editor\\share-modal.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-14abccc3\\bHi7.tsx",
+        "timestamp":  1776729105474
+    },
+    {
+        "relativePath":  "src\\components\\editor\\text-editor.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\editor\\text-editor.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-444a14f5\\jH1u.tsx",
+        "timestamp":  1776713460540
+    },
+    {
+        "relativePath":  "src\\components\\error-boundary.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\error-boundary.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-674cae91\\JHD4.tsx",
+        "timestamp":  1776571868571
+    },
+    {
+        "relativePath":  "src\\components\\invitations\\InvitationResponseModal.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\invitations\\InvitationResponseModal.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\2166cbf4\\VRmf.tsx",
+        "timestamp":  1776786183045
+    },
+    {
+        "relativePath":  "src\\components\\invitations\\invite-modal.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\invitations\\invite-modal.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-407fbfc2\\tyOJ.tsx",
+        "timestamp":  1776729409559
+    },
+    {
+        "relativePath":  "src\\components\\landing\\cta-section.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\landing\\cta-section.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\596e1886\\O3f5.tsx",
+        "timestamp":  1776609773454
+    },
+    {
+        "relativePath":  "src\\components\\landing\\feature-card.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\landing\\feature-card.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\79ecdbdf\\yJ46.tsx",
+        "timestamp":  1776609698165
+    },
+    {
+        "relativePath":  "src\\components\\landing\\feature-section.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\landing\\feature-section.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-57d70914\\0Kgy.tsx",
+        "timestamp":  1776609708815
+    },
+    {
+        "relativePath":  "src\\components\\landing\\final-cta.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\landing\\final-cta.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\45bc21d7\\vFP0.tsx",
+        "timestamp":  1776609957093
+    },
+    {
+        "relativePath":  "src\\components\\landing\\footer.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\landing\\footer.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\57a051b3\\5SgN.tsx",
+        "timestamp":  1776722930359
+    },
+    {
+        "relativePath":  "src\\components\\landing\\header.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\landing\\header.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\78d2b5a5\\dYuh.tsx",
+        "timestamp":  1776722916331
+    },
+    {
+        "relativePath":  "src\\components\\landing\\hero-section.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\landing\\hero-section.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-31d25516\\9eRo.tsx",
+        "timestamp":  1776609847873
+    },
+    {
+        "relativePath":  "src\\components\\landing\\index.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\landing\\index.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\69010708\\tZ3O.ts",
+        "timestamp":  1776609191304
+    },
+    {
+        "relativePath":  "src\\components\\landing\\social-proof.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\landing\\social-proof.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\316348bc\\vsDf.tsx",
+        "timestamp":  1776609739120
+    },
+    {
+        "relativePath":  "src\\components\\layout\\client-layout.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\layout\\client-layout.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-7d3d359\\btjY.tsx",
+        "timestamp":  1776571225316
+    },
+    {
+        "relativePath":  "src\\components\\layout\\layer-panel.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\layout\\layer-panel.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\31d85dc3\\wJnx.tsx",
+        "timestamp":  1776725990972
+    },
+    {
+        "relativePath":  "src\\components\\layout\\left-tools-panel.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\layout\\left-tools-panel.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\2f520967\\Hm5g.tsx",
+        "timestamp":  1776724417739
+    },
+    {
+        "relativePath":  "src\\components\\layout\\navbar.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\layout\\navbar.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\5c6088ab\\RnnN.tsx",
+        "timestamp":  1776724398411
+    },
+    {
+        "relativePath":  "src\\components\\layout\\notification-bell.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\layout\\notification-bell.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\a042160\\O8tu.tsx",
+        "timestamp":  1776784653984
+    },
+    {
+        "relativePath":  "src\\components\\layout\\right-inspector-panel.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\layout\\right-inspector-panel.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-63f66d48\\10oJ.tsx",
+        "timestamp":  1776731539620
+    },
+    {
+        "relativePath":  "src\\components\\layout\\top-toolbar.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\layout\\top-toolbar.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-30cb3f42\\xpXZ.tsx",
+        "timestamp":  1776799599353
+    },
+    {
+        "relativePath":  "src\\components\\layout\\user-dropdown.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\layout\\user-dropdown.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\1b0e98e\\6KhI.tsx",
+        "timestamp":  1776781894016
+    },
+    {
+        "relativePath":  "src\\components\\ui\\blueprint-modal.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\ui\\blueprint-modal.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-511c4e68\\VYlB.tsx",
+        "timestamp":  1776785416366
+    },
+    {
+        "relativePath":  "src\\components\\ui\\blueprint-toaster.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\ui\\blueprint-toaster.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\2cd7407f\\Syz7.tsx",
+        "timestamp":  1776569179993
+    },
+    {
+        "relativePath":  "src\\components\\ui\\confirm-dialog.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\ui\\confirm-dialog.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-2a6af71a\\ojfA.tsx",
+        "timestamp":  1776731733330
+    },
+    {
+        "relativePath":  "src\\components\\ui\\logo-svg.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\ui\\logo-svg.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-607186cd\\hF3p.tsx",
+        "timestamp":  1776724113431
+    },
+    {
+        "relativePath":  "src\\components\\ui\\tooltip.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\ui\\tooltip.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-1d4beb58\\Z9lW.tsx",
+        "timestamp":  1776709561317
+    },
+    {
+        "relativePath":  "src\\components\\ui\\tooltip-provider.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\ui\\tooltip-provider.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\b9dafec\\mH35.tsx",
+        "timestamp":  1776709546137
+    },
+    {
+        "relativePath":  "src\\components\\workspace\\members-panel-modal.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\workspace\\members-panel-modal.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\3c80aa0c\\QI4v.tsx",
+        "timestamp":  1776785416367
+    },
+    {
+        "relativePath":  "src\\components\\workspace\\workspace-member-avatars.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\workspace\\workspace-member-avatars.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-1a8b07e7\\heIR.tsx",
+        "timestamp":  1776781829233
+    },
+    {
+        "relativePath":  "src\\components\\workspace\\workspace-settings-modal.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\components\\workspace\\workspace-settings-modal.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-3aca5f6b\\W64m.tsx",
+        "timestamp":  1776730548399
+    },
+    {
+        "relativePath":  "src\\config\\keyboard-shortcuts.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\config\\keyboard-shortcuts.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\4eaf589d\\KBlg.ts",
+        "timestamp":  1776709643729
+    },
+    {
+        "relativePath":  "src\\contexts\\auth-context.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\contexts\\auth-context.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-66bc4764\\ISUk.tsx",
+        "timestamp":  1776578725506
+    },
+    {
+        "relativePath":  "src\\contexts\\panel-context.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\contexts\\panel-context.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-50966876\\IdhM.tsx",
+        "timestamp":  1776549209402
+    },
+    {
+        "relativePath":  "src\\contexts\\workspace-context.tsx",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\contexts\\workspace-context.tsx",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-752bdbe5\\ShQC.tsx",
+        "timestamp":  1776786183035
+    },
+    {
+        "relativePath":  "src\\env.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\env.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-55aa297c\\RzGe.ts",
+        "timestamp":  1776601498390
+    },
+    {
+        "relativePath":  "src\\hooks\\use-auth.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\hooks\\use-auth.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\11a5a47c\\TgW8.ts",
+        "timestamp":  1776578753933
+    },
+    {
+        "relativePath":  "src\\hooks\\use-board-sync.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\hooks\\use-board-sync.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\294fd582\\O3An.ts",
+        "timestamp":  1776704555474
+    },
+    {
+        "relativePath":  "src\\hooks\\use-invitations.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\hooks\\use-invitations.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\2329e91c\\7kFe.ts",
+        "timestamp":  1776785670917
+    },
+    {
+        "relativePath":  "src\\hooks\\use-keyboard-shortcuts.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\hooks\\use-keyboard-shortcuts.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\147796fd\\RKkd.ts",
+        "timestamp":  1776709672156
+    },
+    {
+        "relativePath":  "src\\hooks\\use-mobile-gestures.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\hooks\\use-mobile-gestures.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-3793065f\\O6t9.ts",
+        "timestamp":  1776552105356
+    },
+    {
+        "relativePath":  "src\\hooks\\use-notifications.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\hooks\\use-notifications.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\5a4f9b2e\\ZnLw.ts",
+        "timestamp":  1776781688528
+    },
+    {
+        "relativePath":  "src\\hooks\\use-persistence.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\hooks\\use-persistence.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-487f9ba9\\Qw8k.ts",
+        "timestamp":  1776613922590
+    },
+    {
+        "relativePath":  "src\\hooks\\use-platform-admin.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\hooks\\use-platform-admin.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-558c1331\\KkmK.ts",
+        "timestamp":  1776577062240
+    },
+    {
+        "relativePath":  "src\\hooks\\use-realtime-board.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\hooks\\use-realtime-board.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-2206820\\Jipp.ts",
+        "timestamp":  1776552941095
+    },
+    {
+        "relativePath":  "src\\hooks\\use-shape-creator.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\hooks\\use-shape-creator.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\45ba7716\\Gx28.ts",
+        "timestamp":  1776716186285
+    },
+    {
+        "relativePath":  "src\\hooks\\use-thumbnail.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\hooks\\use-thumbnail.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\7ba58d2a\\GjHW.ts",
+        "timestamp":  1776783298874
+    },
+    {
+        "relativePath":  "src\\hooks\\use-workspace-invitations.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\hooks\\use-workspace-invitations.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\307ee14\\q3o7.ts",
+        "timestamp":  1776572818487
+    },
+    {
+        "relativePath":  "src\\lib\\appwrite\\auth.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\lib\\appwrite\\auth.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-890d77e\\HFVv.ts",
+        "timestamp":  1776577725696
+    },
+    {
+        "relativePath":  "src\\lib\\appwrite\\client.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\lib\\appwrite\\client.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\1267303f\\BJ8q.ts",
+        "timestamp":  1776549677094
+    },
+    {
+        "relativePath":  "src\\lib\\appwrite\\database.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\lib\\appwrite\\database.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\5312b94f\\eeWh.ts",
+        "timestamp":  1776570488755
+    },
+    {
+        "relativePath":  "src\\lib\\appwrite\\server-client.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\lib\\appwrite\\server-client.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\42306a1b\\RNY4.ts",
+        "timestamp":  1776607880007
+    },
+    {
+        "relativePath":  "src\\lib\\appwrite\\storage.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\lib\\appwrite\\storage.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\296339b5\\3ulG.ts",
+        "timestamp":  1776733083691
+    },
+    {
+        "relativePath":  "src\\lib\\authorization.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\lib\\authorization.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\383fdec2\\RsRu.ts",
+        "timestamp":  1776799542925
+    },
+    {
+        "relativePath":  "src\\lib\\dirty-items.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\lib\\dirty-items.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\1fb29d36\\1JPN.ts",
+        "timestamp":  1776704323482
+    },
+    {
+        "relativePath":  "src\\lib\\exif-utils.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\lib\\exif-utils.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-10a636f5\\rwgC.ts",
+        "timestamp":  1776552462003
+    },
+    {
+        "relativePath":  "src\\lib\\grouping-service.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\lib\\grouping-service.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\7430f1f4\\bG1F.ts",
+        "timestamp":  1776551975531
+    },
+    {
+        "relativePath":  "src\\lib\\layer-colors.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\lib\\layer-colors.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-74c1422d\\hDdU.ts",
+        "timestamp":  1776641040241
+    },
+    {
+        "relativePath":  "src\\lib\\ordering-commands.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\lib\\ordering-commands.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-4ecca726\\UDC7.ts",
+        "timestamp":  1776652795712
+    },
+    {
+        "relativePath":  "src\\lib\\pdf-to-image.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\lib\\pdf-to-image.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-3eecc9c5\\QWOi.ts",
+        "timestamp":  1776619509843
+    },
+    {
+        "relativePath":  "src\\lib\\realtime\\index.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\lib\\realtime\\index.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\2441f851\\9uHA.ts",
+        "timestamp":  1776552930453
+    },
+    {
+        "relativePath":  "src\\lib\\realtime\\realtime-service.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\lib\\realtime\\realtime-service.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-19d332fc\\YiBD.ts",
+        "timestamp":  1776786130107
+    },
+    {
+        "relativePath":  "src\\lib\\toast.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\lib\\toast.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\3736b054\\Gy2g.ts",
+        "timestamp":  1776569186009
+    },
+    {
+        "relativePath":  "src\\services\\asset-service.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\services\\asset-service.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-141508fe\\wW6N.ts",
+        "timestamp":  1776790129182
+    },
+    {
+        "relativePath":  "src\\services\\avatar-service.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\services\\avatar-service.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-47b634c1\\st3z.ts",
+        "timestamp":  1776781876644
+    },
+    {
+        "relativePath":  "src\\services\\board-service.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\services\\board-service.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\2603fd4c\\qgFq.ts",
+        "timestamp":  1776715567095
+    },
+    {
+        "relativePath":  "src\\services\\invitation-service.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\services\\invitation-service.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-30518481\\BNDk.ts",
+        "timestamp":  1776785879371
+    },
+    {
+        "relativePath":  "src\\services\\notification-service.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\services\\notification-service.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-2d9d8dd3\\3vWM.ts",
+        "timestamp":  1776784653955
+    },
+    {
+        "relativePath":  "src\\services\\platform-admin-service.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\services\\platform-admin-service.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-72b29d5d\\o1qg.ts",
+        "timestamp":  1776572543489
+    },
+    {
+        "relativePath":  "src\\services\\share-service.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\services\\share-service.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-4c9a894d\\YQfM.ts",
+        "timestamp":  1776603455221
+    },
+    {
+        "relativePath":  "src\\services\\users-service.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\services\\users-service.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\4624f4ea\\XIuq.ts",
+        "timestamp":  1776733197292
+    },
+    {
+        "relativePath":  "src\\services\\workspace-service.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\services\\workspace-service.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\227b4dbd\\EZUx.ts",
+        "timestamp":  1776623454594
+    },
+    {
+        "relativePath":  "src\\stores\\board-store.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\stores\\board-store.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\773d29cc\\2vNv.ts",
+        "timestamp":  1776724396989
+    },
+    {
+        "relativePath":  "src\\stores\\history-store.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\stores\\history-store.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-4764ea62\\HmGA.ts",
+        "timestamp":  1776705770607
+    },
+    {
+        "relativePath":  "src\\stores\\ui-store.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\stores\\ui-store.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-7046e3b4\\kn68.ts",
+        "timestamp":  1776726494277
+    },
+    {
+        "relativePath":  "src\\types\\asset.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\types\\asset.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\b4b6e77\\XYJs.ts",
+        "timestamp":  1776550737693
+    },
+    {
+        "relativePath":  "src\\types\\board.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\types\\board.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-7e73a13f\\B1f3.ts",
+        "timestamp":  1776783230727
+    },
+    {
+        "relativePath":  "src\\types\\index.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\types\\index.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\283ecd55\\5KZv.ts",
+        "timestamp":  1776572364554
+    },
+    {
+        "relativePath":  "src\\types\\invitation.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\types\\invitation.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\504840fa\\6SUq.ts",
+        "timestamp":  1776572313174
+    },
+    {
+        "relativePath":  "src\\types\\notification.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\types\\notification.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-70e71318\\XRVY.ts",
+        "timestamp":  1776723170488
+    },
+    {
+        "relativePath":  "src\\types\\platform.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\types\\platform.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-61f84ca0\\JnY0.ts",
+        "timestamp":  1776572287853
+    },
+    {
+        "relativePath":  "src\\types\\workspace.ts",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\src\\types\\workspace.ts",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\77cf21b2\\T3ti.ts",
+        "timestamp":  1776781633197
+    },
+    {
+        "relativePath":  "START-HERE.md",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\START-HERE.md",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\6ebcb251\\xbSr.md",
+        "timestamp":  1776608686424
+    },
+    {
+        "relativePath":  "tasks\\INDEX.md",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\tasks\\INDEX.md",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-684b2df3\\6YzD.md",
+        "timestamp":  1776603070290
+    },
+    {
+        "relativePath":  "tasks\\T-0017-background-image-workflow.md",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\tasks\\T-0017-background-image-workflow.md",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-64acdf17\\JsW6.md",
+        "timestamp":  1776608686515
+    },
+    {
+        "relativePath":  "tasks\\T-0025-auth-ui-pages.md",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\tasks\\T-0025-auth-ui-pages.md",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\-486ab6f4\\sG53.md",
+        "timestamp":  1776558805634
+    },
+    {
+        "relativePath":  "tasks\\T-0026-workspace-realtime-integration.md",
+        "sourcePath":  "d:\\RacoonDevs\\planymaps\\tasks\\T-0026-workspace-realtime-integration.md",
+        "snapshotPath":  "C:\\Users\\raulb\\AppData\\Roaming\\Code\\User\\History\\7f2ae565\\9Rzu.md",
+        "timestamp":  1776561710264
+    }
+]

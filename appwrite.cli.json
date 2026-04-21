@@ -1,0 +1,245 @@
+{
+  "projectId": "planymaps",
+  "name": "Planymaps",
+  "version": "1.0.0",
+  "tablesDB": [
+    {
+      "id": "planymaps_db",
+      "name": "Planymaps Database",
+      "tables": [
+        {
+          "id": "notifications",
+          "name": "Notifications",
+          "attributes": [
+            {
+              "key": "userId",
+              "type": "string",
+              "size": 256,
+              "required": true
+            },
+            { "key": "type", "type": "string", "size": 64, "required": true },
+            { "key": "title", "type": "string", "size": 256, "required": true },
+            { "key": "message", "type": "text", "required": true },
+            { "key": "isRead", "type": "boolean", "required": true },
+            { "key": "createdAt", "type": "datetime", "required": true }
+          ],
+          "indexes": [
+            { "key": "idx_user", "type": "key", "columns": ["userId"] },
+            {
+              "key": "idx_user_read",
+              "type": "key",
+              "columns": ["userId", "isRead"]
+            }
+          ]
+        },
+        {
+          "id": "workspace_invitations",
+          "name": "Workspace Invitations",
+          "attributes": [
+            {
+              "key": "workspaceId",
+              "type": "string",
+              "size": 256,
+              "required": true
+            },
+            { "key": "email", "type": "string", "size": 256, "required": true },
+            { "key": "role", "type": "string", "size": 32, "required": true },
+            { "key": "status", "type": "string", "size": 32, "required": true },
+            {
+              "key": "invitedBy",
+              "type": "string",
+              "size": 256,
+              "required": true
+            },
+            { "key": "expiresAt", "type": "datetime", "required": false },
+            { "key": "createdAt", "type": "datetime", "required": true },
+            { "key": "updatedAt", "type": "datetime", "required": true }
+          ],
+          "indexes": [
+            {
+              "key": "idx_workspace",
+              "type": "key",
+              "columns": ["workspaceId"]
+            },
+            { "key": "idx_email", "type": "key", "columns": ["email"] }
+          ]
+        },
+        {
+          "id": "workspaces",
+          "name": "Workspaces",
+          "attributes": [
+            { "key": "name", "type": "string", "size": 256, "required": true },
+            { "key": "description", "type": "text", "required": false },
+            {
+              "key": "ownerId",
+              "type": "string",
+              "size": 256,
+              "required": true
+            },
+            { "key": "createdAt", "type": "datetime", "required": true },
+            { "key": "updatedAt", "type": "datetime", "required": true }
+          ],
+          "indexes": [
+            { "key": "idx_owner", "type": "key", "columns": ["ownerId"] }
+          ]
+        },
+        {
+          "id": "boards",
+          "name": "Boards",
+          "attributes": [
+            {
+              "key": "workspaceId",
+              "type": "string",
+              "size": 256,
+              "required": true
+            },
+            { "key": "name", "type": "string", "size": 256, "required": true },
+            { "key": "description", "type": "text", "required": false },
+            {
+              "key": "ownerId",
+              "type": "string",
+              "size": 256,
+              "required": true
+            },
+            { "key": "isArchived", "type": "boolean", "required": true },
+            { "key": "createdAt", "type": "datetime", "required": true },
+            { "key": "updatedAt", "type": "datetime", "required": true }
+          ],
+          "indexes": [
+            {
+              "key": "idx_workspace",
+              "type": "key",
+              "columns": ["workspaceId"]
+            }
+          ]
+        },
+        {
+          "id": "board_layers",
+          "name": "Board Layers",
+          "attributes": [
+            {
+              "key": "boardId",
+              "type": "string",
+              "size": 256,
+              "required": true
+            },
+            { "key": "name", "type": "string", "size": 256, "required": true },
+            { "key": "order", "type": "float", "required": true },
+            { "key": "isVisible", "type": "boolean", "required": true },
+            { "key": "isLocked", "type": "boolean", "required": true },
+            { "key": "opacity", "type": "float", "required": true },
+            { "key": "createdAt", "type": "datetime", "required": true },
+            { "key": "updatedAt", "type": "datetime", "required": true }
+          ],
+          "indexes": [
+            { "key": "idx_board", "type": "key", "columns": ["boardId"] }
+          ]
+        },
+        {
+          "id": "board_items",
+          "name": "Board Items",
+          "attributes": [
+            {
+              "key": "layerId",
+              "type": "string",
+              "size": 256,
+              "required": true
+            },
+            { "key": "type", "type": "string", "size": 32, "required": true },
+            { "key": "x", "type": "float", "required": true },
+            { "key": "y", "type": "float", "required": true },
+            { "key": "width", "type": "float", "required": true },
+            { "key": "height", "type": "float", "required": true },
+            { "key": "rotation", "type": "float", "required": true },
+            { "key": "properties", "type": "text", "required": false },
+            { "key": "zIndex", "type": "integer", "required": true },
+            { "key": "isLocked", "type": "boolean", "required": true },
+            { "key": "createdAt", "type": "datetime", "required": true },
+            { "key": "updatedAt", "type": "datetime", "required": true }
+          ],
+          "indexes": [
+            { "key": "idx_layer", "type": "key", "columns": ["layerId"] }
+          ]
+        },
+        {
+          "id": "board_assets",
+          "name": "Board Assets",
+          "attributes": [
+            {
+              "key": "boardId",
+              "type": "string",
+              "size": 256,
+              "required": true
+            },
+            { "key": "name", "type": "string", "size": 256, "required": true },
+            {
+              "key": "mimeType",
+              "type": "string",
+              "size": 64,
+              "required": true
+            },
+            { "key": "sizeOriginal", "type": "integer", "required": true },
+            { "key": "sizeFinal", "type": "integer", "required": false },
+            {
+              "key": "pathOriginal",
+              "type": "string",
+              "size": 512,
+              "required": true
+            },
+            {
+              "key": "pathFinal",
+              "type": "string",
+              "size": 512,
+              "required": false
+            },
+            { "key": "width", "type": "integer", "required": true },
+            { "key": "height", "type": "integer", "required": true },
+            {
+              "key": "exifVersion",
+              "type": "string",
+              "size": 32,
+              "required": false
+            },
+            { "key": "createdAt", "type": "datetime", "required": true }
+          ],
+          "indexes": [
+            { "key": "idx_board", "type": "key", "columns": ["boardId"] }
+          ]
+        },
+        {
+          "id": "workspace_members",
+          "name": "Workspace Members",
+          "attributes": [
+            {
+              "key": "workspaceId",
+              "type": "string",
+              "size": 256,
+              "required": true
+            },
+            {
+              "key": "userId",
+              "type": "string",
+              "size": 256,
+              "required": true
+            },
+            { "key": "role", "type": "string", "size": 32, "required": true },
+            { "key": "createdAt", "type": "datetime", "required": true }
+          ],
+          "indexes": [
+            {
+              "key": "idx_workspace",
+              "type": "key",
+              "columns": ["workspaceId"]
+            },
+            { "key": "idx_user", "type": "key", "columns": ["userId"] },
+            {
+              "key": "idx_workspace_user",
+              "type": "key",
+              "columns": ["workspaceId", "userId"]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

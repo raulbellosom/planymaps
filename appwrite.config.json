@@ -1,0 +1,1194 @@
+{
+  "projectId": "planymaps",
+  "projectName": "planymaps",
+  "settings": {
+    "services": {
+      "account": true,
+      "avatars": true,
+      "databases": true,
+      "locale": true,
+      "health": true,
+      "storage": true,
+      "teams": true,
+      "users": true,
+      "sites": true,
+      "functions": true,
+      "graphql": true,
+      "messaging": true
+    },
+    "auth": {
+      "methods": {
+        "jwt": true,
+        "phone": true,
+        "invites": true,
+        "anonymous": true,
+        "email-otp": true,
+        "magic-url": true,
+        "email-password": true
+      },
+      "security": {
+        "duration": 31536000,
+        "limit": 0,
+        "sessionsLimit": 10,
+        "passwordHistory": 0,
+        "passwordDictionary": false,
+        "personalDataCheck": false,
+        "sessionAlerts": false,
+        "mockNumbers": []
+      }
+    }
+  },
+  "tablesDB": [
+    {
+      "$id": "planymaps_db",
+      "name": "Planymaps Database",
+      "enabled": true
+    }
+  ],
+  "tables": [
+    {
+      "$id": "notifications",
+      "$permissions": [
+        "read(\"users\")",
+        "create(\"users\")",
+        "update(\"users\")",
+        "delete(\"users\")",
+        "read(\"label:admin\")",
+        "create(\"label:admin\")",
+        "update(\"label:admin\")",
+        "delete(\"label:admin\")"
+      ],
+      "databaseId": "planymaps_db",
+      "name": "Notifications",
+      "enabled": true,
+      "rowSecurity": true,
+      "columns": [
+        {
+          "key": "userId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "type",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 64,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "title",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "message",
+          "type": "text",
+          "required": true,
+          "array": false,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "isRead",
+          "type": "boolean",
+          "required": true,
+          "array": false,
+          "default": null
+        },
+        {
+          "key": "createdAt",
+          "type": "datetime",
+          "required": true,
+          "array": false,
+          "default": null,
+          "format": ""
+        }
+      ],
+      "indexes": [
+        {
+          "key": "idx_user",
+          "type": "key",
+          "status": "available",
+          "columns": ["userId"],
+          "orders": []
+        },
+        {
+          "key": "idx_user_read",
+          "type": "key",
+          "status": "available",
+          "columns": ["userId", "isRead"],
+          "orders": []
+        }
+      ]
+    },
+    {
+      "$id": "workspace_invitations",
+      "$permissions": [
+        "read(\"users\")",
+        "create(\"users\")",
+        "update(\"users\")",
+        "delete(\"users\")",
+        "read(\"label:admin\")",
+        "create(\"label:admin\")",
+        "update(\"label:admin\")",
+        "delete(\"label:admin\")"
+      ],
+      "databaseId": "planymaps_db",
+      "name": "Workspace Invitations",
+      "enabled": true,
+      "rowSecurity": false,
+      "columns": [
+        {
+          "key": "workspaceId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "inviteeEmail",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "inviteeUserId",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "role",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 32,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "status",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 32,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "inviterUserId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "expiresAt",
+          "type": "datetime",
+          "required": true,
+          "array": false,
+          "default": null,
+          "format": ""
+        },
+        {
+          "key": "acceptedAt",
+          "type": "datetime",
+          "required": false,
+          "array": false,
+          "default": null,
+          "format": ""
+        },
+        {
+          "key": "rejectedAt",
+          "type": "datetime",
+          "required": false,
+          "array": false,
+          "default": null,
+          "format": ""
+        },
+        {
+          "key": "revokedAt",
+          "type": "datetime",
+          "required": false,
+          "array": false,
+          "default": null,
+          "format": ""
+        },
+        {
+          "key": "createdAt",
+          "type": "datetime",
+          "required": true,
+          "array": false,
+          "default": null,
+          "format": ""
+        }
+      ],
+      "indexes": [
+        {
+          "key": "idx_workspace",
+          "type": "key",
+          "status": "available",
+          "columns": ["workspaceId"],
+          "orders": []
+        },
+        {
+          "key": "idx_invitee_email",
+          "type": "key",
+          "status": "available",
+          "columns": ["inviteeEmail"],
+          "orders": []
+        },
+        {
+          "key": "idx_invitee_user",
+          "type": "key",
+          "status": "available",
+          "columns": ["inviteeUserId"],
+          "orders": []
+        },
+        {
+          "key": "idx_workspace_status",
+          "type": "key",
+          "status": "available",
+          "columns": ["workspaceId", "status"],
+          "orders": []
+        },
+        {
+          "key": "idx_status",
+          "type": "key",
+          "status": "available",
+          "columns": ["status"],
+          "orders": []
+        }
+      ]
+    },
+    {
+      "$id": "workspaces",
+      "$permissions": [
+        "read(\"users\")",
+        "create(\"users\")",
+        "update(\"users\")",
+        "delete(\"users\")",
+        "read(\"label:admin\")",
+        "create(\"label:admin\")",
+        "update(\"label:admin\")",
+        "delete(\"label:admin\")"
+      ],
+      "databaseId": "planymaps_db",
+      "name": "Workspaces",
+      "enabled": true,
+      "rowSecurity": true,
+      "columns": [
+        {
+          "key": "name",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "slug",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "description",
+          "type": "text",
+          "required": false,
+          "array": false,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "ownerId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        }
+      ],
+      "indexes": [
+        {
+          "key": "idx_owner",
+          "type": "key",
+          "status": "available",
+          "columns": ["ownerId"],
+          "orders": []
+        },
+        {
+          "key": "idx_slug",
+          "type": "key",
+          "status": "available",
+          "columns": ["slug"],
+          "orders": []
+        }
+      ]
+    },
+    {
+      "$id": "boards",
+      "$permissions": [
+        "read(\"users\")",
+        "create(\"users\")",
+        "update(\"users\")",
+        "delete(\"users\")",
+        "read(\"label:admin\")",
+        "create(\"label:admin\")",
+        "update(\"label:admin\")",
+        "delete(\"label:admin\")"
+      ],
+      "databaseId": "planymaps_db",
+      "name": "Boards",
+      "enabled": true,
+      "rowSecurity": false,
+      "columns": [
+        {
+          "key": "workspaceId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "name",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "description",
+          "type": "text",
+          "required": false,
+          "array": false,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "mode",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 32,
+          "default": "visual",
+          "encrypt": false
+        },
+        {
+          "key": "width",
+          "type": "integer",
+          "required": false,
+          "array": false,
+          "default": 1920,
+          "min": -9223372036854775808,
+          "max": 9223372036854775807
+        },
+        {
+          "key": "height",
+          "type": "integer",
+          "required": false,
+          "array": false,
+          "default": 1080,
+          "min": -9223372036854775808,
+          "max": 9223372036854775807
+        },
+        {
+          "key": "backgroundType",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 32,
+          "default": "none",
+          "encrypt": false
+        },
+        {
+          "key": "backgroundColor",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 32,
+          "default": "#ffffff",
+          "encrypt": false
+        },
+        {
+          "key": "backgroundAssetId",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "viewportState",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 65535,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "ownerId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "createdBy",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "thumbnailFileId",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "isArchived",
+          "type": "boolean",
+          "required": true,
+          "array": false,
+          "default": null
+        }
+      ],
+      "indexes": [
+        {
+          "key": "idx_workspace",
+          "type": "key",
+          "status": "available",
+          "columns": ["workspaceId"],
+          "orders": []
+        }
+      ]
+    },
+    {
+      "$id": "board_layers",
+      "$permissions": [
+        "read(\"users\")",
+        "create(\"users\")",
+        "update(\"users\")",
+        "delete(\"users\")",
+        "read(\"label:admin\")",
+        "create(\"label:admin\")",
+        "update(\"label:admin\")",
+        "delete(\"label:admin\")"
+      ],
+      "databaseId": "planymaps_db",
+      "name": "Board Layers",
+      "enabled": true,
+      "rowSecurity": false,
+      "columns": [
+        {
+          "key": "boardId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "name",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "order",
+          "type": "double",
+          "required": true,
+          "array": false,
+          "default": null,
+          "min": -1.7976931348623157e308,
+          "max": 1.7976931348623157e308
+        },
+        {
+          "key": "visible",
+          "type": "boolean",
+          "required": true,
+          "array": false,
+          "default": null
+        },
+        {
+          "key": "locked",
+          "type": "boolean",
+          "required": true,
+          "array": false,
+          "default": null
+        },
+        {
+          "key": "opacity",
+          "type": "double",
+          "required": true,
+          "array": false,
+          "default": null,
+          "min": -1.7976931348623157e308,
+          "max": 1.7976931348623157e308
+        }
+      ],
+      "indexes": [
+        {
+          "key": "idx_board",
+          "type": "key",
+          "status": "available",
+          "columns": ["boardId"],
+          "orders": []
+        }
+      ]
+    },
+    {
+      "$id": "board_items",
+      "$permissions": [
+        "read(\"users\")",
+        "create(\"users\")",
+        "update(\"users\")",
+        "delete(\"users\")",
+        "read(\"label:admin\")",
+        "create(\"label:admin\")",
+        "update(\"label:admin\")",
+        "delete(\"label:admin\")"
+      ],
+      "databaseId": "planymaps_db",
+      "name": "Board Items",
+      "enabled": true,
+      "rowSecurity": false,
+      "columns": [
+        {
+          "key": "boardId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "layerId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "type",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 32,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "x",
+          "type": "double",
+          "required": true,
+          "array": false,
+          "default": null,
+          "min": -1.7976931348623157e308,
+          "max": 1.7976931348623157e308
+        },
+        {
+          "key": "y",
+          "type": "double",
+          "required": true,
+          "array": false,
+          "default": null,
+          "min": -1.7976931348623157e308,
+          "max": 1.7976931348623157e308
+        },
+        {
+          "key": "width",
+          "type": "double",
+          "required": true,
+          "array": false,
+          "default": null,
+          "min": -1.7976931348623157e308,
+          "max": 1.7976931348623157e308
+        },
+        {
+          "key": "height",
+          "type": "double",
+          "required": true,
+          "array": false,
+          "default": null,
+          "min": -1.7976931348623157e308,
+          "max": 1.7976931348623157e308
+        },
+        {
+          "key": "rotation",
+          "type": "double",
+          "required": true,
+          "array": false,
+          "default": null,
+          "min": -1.7976931348623157e308,
+          "max": 1.7976931348623157e308
+        },
+        {
+          "key": "name",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "orderIndex",
+          "type": "integer",
+          "required": true,
+          "array": false,
+          "default": null,
+          "min": -9223372036854775808,
+          "max": 9223372036854775807
+        },
+        {
+          "key": "visible",
+          "type": "boolean",
+          "required": true,
+          "array": false,
+          "default": null
+        },
+        {
+          "key": "locked",
+          "type": "boolean",
+          "required": true,
+          "array": false,
+          "default": null
+        },
+        {
+          "key": "opacity",
+          "type": "double",
+          "required": true,
+          "array": false,
+          "default": null,
+          "min": -1.7976931348623157e308,
+          "max": 1.7976931348623157e308
+        },
+        {
+          "key": "scaleX",
+          "type": "double",
+          "required": true,
+          "array": false,
+          "default": null,
+          "min": -1.7976931348623157e308,
+          "max": 1.7976931348623157e308
+        },
+        {
+          "key": "scaleY",
+          "type": "double",
+          "required": true,
+          "array": false,
+          "default": null,
+          "min": -1.7976931348623157e308,
+          "max": 1.7976931348623157e308
+        },
+        {
+          "key": "styleJson",
+          "type": "text",
+          "required": false,
+          "array": false,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "contentJson",
+          "type": "text",
+          "required": false,
+          "array": false,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "interactionJson",
+          "type": "text",
+          "required": false,
+          "array": false,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "createdBy",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        }
+      ],
+      "indexes": [
+        {
+          "key": "idx_layer",
+          "type": "key",
+          "status": "available",
+          "columns": ["layerId"],
+          "orders": []
+        },
+        {
+          "key": "idx_board",
+          "type": "key",
+          "status": "available",
+          "columns": ["boardId"],
+          "orders": []
+        }
+      ]
+    },
+    {
+      "$id": "board_assets",
+      "$permissions": [
+        "read(\"users\")",
+        "create(\"users\")",
+        "update(\"users\")",
+        "delete(\"users\")",
+        "read(\"label:admin\")",
+        "create(\"label:admin\")",
+        "update(\"label:admin\")",
+        "delete(\"label:admin\")"
+      ],
+      "databaseId": "planymaps_db",
+      "name": "Board Assets",
+      "enabled": true,
+      "rowSecurity": false,
+      "columns": [
+        {
+          "key": "workspaceId",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "boardId",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "storageFileId",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "fileName",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "mimeType",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 64,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "sizeBytes",
+          "type": "integer",
+          "required": false,
+          "array": false,
+          "default": null,
+          "min": -9223372036854775808,
+          "max": 9223372036854775807
+        },
+        {
+          "key": "width",
+          "type": "integer",
+          "required": false,
+          "array": false,
+          "default": null,
+          "min": -9223372036854775808,
+          "max": 9223372036854775807
+        },
+        {
+          "key": "height",
+          "type": "integer",
+          "required": false,
+          "array": false,
+          "default": null,
+          "min": -9223372036854775808,
+          "max": 9223372036854775807
+        },
+        {
+          "key": "thumbnailFileId",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "exifJson",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 65535,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "gpsLat",
+          "type": "double",
+          "required": false,
+          "array": false,
+          "default": null
+        },
+        {
+          "key": "gpsLng",
+          "type": "double",
+          "required": false,
+          "array": false,
+          "default": null
+        },
+        {
+          "key": "uploadedBy",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "createdAt",
+          "type": "datetime",
+          "required": true,
+          "array": false,
+          "default": null,
+          "format": ""
+        }
+      ],
+      "indexes": [
+        {
+          "key": "idx_board",
+          "type": "key",
+          "status": "available",
+          "columns": ["boardId"],
+          "orders": []
+        },
+        {
+          "key": "idx_workspace",
+          "type": "key",
+          "status": "available",
+          "columns": ["workspaceId"],
+          "orders": []
+        }
+      ]
+    },
+    {
+      "$id": "workspace_members",
+      "$permissions": [
+        "read(\"users\")",
+        "create(\"users\")",
+        "update(\"users\")",
+        "delete(\"users\")",
+        "read(\"label:admin\")",
+        "create(\"label:admin\")",
+        "update(\"label:admin\")",
+        "delete(\"label:admin\")"
+      ],
+      "databaseId": "planymaps_db",
+      "name": "Workspace Members",
+      "enabled": true,
+      "rowSecurity": true,
+      "columns": [
+        {
+          "key": "workspaceId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "userId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "role",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 32,
+          "default": null,
+          "encrypt": false
+        }
+      ],
+      "indexes": [
+        {
+          "key": "idx_workspace",
+          "type": "key",
+          "status": "available",
+          "columns": ["workspaceId"],
+          "orders": []
+        },
+        {
+          "key": "idx_user",
+          "type": "key",
+          "status": "available",
+          "columns": ["userId"],
+          "orders": []
+        },
+        {
+          "key": "idx_workspace_user",
+          "type": "key",
+          "status": "available",
+          "columns": ["workspaceId", "userId"],
+          "orders": []
+        }
+      ]
+    },
+    {
+      "$id": "share_links",
+      "$permissions": [
+        "read(\"any\")",
+        "create(\"users\")",
+        "update(\"users\")",
+        "delete(\"users\")",
+        "read(\"label:admin\")",
+        "create(\"label:admin\")",
+        "update(\"label:admin\")",
+        "delete(\"label:admin\")"
+      ],
+      "databaseId": "planymaps_db",
+      "name": "Share Links",
+      "enabled": true,
+      "rowSecurity": true,
+      "columns": [
+        {
+          "key": "token",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 64,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "boardId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "workspaceId",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "createdBy",
+          "type": "string",
+          "required": true,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "label",
+          "type": "string",
+          "required": false,
+          "array": false,
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "expiresAt",
+          "type": "datetime",
+          "required": false,
+          "array": false,
+          "default": null,
+          "format": ""
+        },
+        {
+          "key": "isActive",
+          "type": "boolean",
+          "required": true,
+          "array": false,
+          "default": null
+        }
+      ],
+      "indexes": [
+        {
+          "key": "idx_token",
+          "type": "unique",
+          "status": "available",
+          "columns": ["token"],
+          "orders": []
+        },
+        {
+          "key": "idx_boardId",
+          "type": "key",
+          "status": "available",
+          "columns": ["boardId"],
+          "orders": []
+        },
+        {
+          "key": "idx_createdBy",
+          "type": "key",
+          "status": "available",
+          "columns": ["createdBy"],
+          "orders": []
+        }
+      ]
+    }
+  ],
+  "buckets": [
+    {
+      "$id": "avatars",
+      "$permissions": [
+        "read(\"any\")",
+        "create(\"users\")",
+        "update(\"users\")",
+        "delete(\"users\")",
+        "read(\"label:admin\")",
+        "create(\"label:admin\")",
+        "update(\"label:admin\")",
+        "delete(\"label:admin\")"
+      ],
+      "fileSecurity": true,
+      "name": "Profile Avatars",
+      "enabled": true,
+      "maximumFileSize": 10485760,
+      "allowedFileExtensions": ["jpg", "jpeg", "png", "gif", "webp"],
+      "compression": "gzip",
+      "encryption": true,
+      "antivirus": true
+    },
+    {
+      "$id": "board_thumbnails",
+      "$permissions": [
+        "read(\"users\")",
+        "create(\"users\")",
+        "update(\"users\")",
+        "delete(\"users\")",
+        "read(\"label:admin\")",
+        "create(\"label:admin\")",
+        "update(\"label:admin\")",
+        "delete(\"label:admin\")"
+      ],
+      "fileSecurity": true,
+      "name": "Board Thumbnails",
+      "enabled": true,
+      "maximumFileSize": 2097152,
+      "allowedFileExtensions": ["jpg", "jpeg", "png", "gif", "webp"],
+      "compression": "gzip",
+      "encryption": true,
+      "antivirus": true
+    },
+    {
+      "$id": "board_assets",
+      "$permissions": [
+        "read(\"users\")",
+        "create(\"users\")",
+        "update(\"users\")",
+        "delete(\"users\")",
+        "read(\"label:admin\")",
+        "create(\"label:admin\")",
+        "update(\"label:admin\")",
+        "delete(\"label:admin\")"
+      ],
+      "fileSecurity": true,
+      "name": "Board Assets",
+      "enabled": true,
+      "maximumFileSize": 30000000,
+      "allowedFileExtensions": ["jpg", "jpeg", "png", "gif", "webp"],
+      "compression": "gzip",
+      "encryption": true,
+      "antivirus": true
+    }
+  ],
+  "teams": [],
+  "functions": [
+    {
+      "$id": "bootstrap-admin",
+      "name": "Bootstrap Admin",
+      "runtime": "node-18.0",
+      "path": "functions/bootstrap-admin",
+      "entrypoint": "index.js",
+      "commands": "npm install",
+      "events": ["users.*.create"],
+      "schedule": "",
+      "timeout": 60,
+      "enabled": true,
+      "logging": true,
+      "scopes": []
+    }
+  ],
+  "name": "Planymaps",
+  "version": "1.0.0"
+}

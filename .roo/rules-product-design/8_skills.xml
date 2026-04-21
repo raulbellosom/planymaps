@@ -1,0 +1,479 @@
+<mode_switching_skills>
+    <overview>
+    This file defines skill logic for detecting when a task requires switching to a different
+    mode or agent, and how to execute seamless handoffs while maintaining context continuity.
+    These skills operate within the Product Design mode context and coordinate with other modes.
+    </overview>
+
+    <skill name="mode_switch_coordinator">
+        <description>
+      Detects when a design task has transitioned into a different domain and orchestrates
+      mode switches with full context preservation.
+        </description>
+
+        <trigger_detection>
+            <phase name="observation">
+                <action>Monitor task progress and conversation flow for domain boundaries</action>
+                <indicators>
+                    <indicator type="design_complete">
+                        <pattern>User confirms design specifications are final</pattern>
+                        <pattern>Request shifts to "how do we build this"</pattern>
+                        <pattern>Discussion of implementation details</pattern>
+                    </indicator>
+                    <indicator type="implementation_needed">
+                        <pattern>Questions about code structure</pattern>
+                        <pattern>Requests for specific component implementations</pattern>
+                        <pattern>Discussion of API contracts</pattern>
+                    </indicator>
+                    <indicator type="technical_issue">
+                        <pattern>User reports UI not working as designed</pattern>
+                        <pattern>Performance problems in rendering</pattern>
+                        <pattern>Interaction behaviors not matching spec</pattern>
+                    </indicator>
+                    <indicator type="testing_needed">
+                        <pattern>User asks about test coverage</pattern>
+                        <pattern>Requests for user flow testing</pattern>
+                        <pattern>Accessibility validation requests</pattern>
+                    </indicator>
+                    <indicator type="deployment_needed">
+                        <pattern>Discussion of deployment targets</pattern>
+                        <pattern>Configuration for different environments</pattern>
+                        <pattern>CD/CD pipeline questions</pattern>
+                    </indicator>
+                    <indicator type="backend_needed">
+                        <pattern>API endpoint design requests</pattern>
+                        <pattern>Database schema discussions</pattern>
+                        <pattern>Server-side logic requirements</pattern>
+                    </indicator>
+                </indicators>
+            </phase>
+
+            <phase name="evaluation">
+                <action>Assess if task has crossed domain boundary</action>
+                <decision_tree>
+                    <branch condition="Design specs are complete AND implementation is needed">
+                        <target_mode>code</target_mode>
+                        <confidence>high</confidence>
+                    </branch>
+                    <branch condition="Design specifies API/data requirements">
+                        <target_mode>code</target_mode>
+                        <confidence>medium</confidence>
+                        <note>May need architect mode for complex backend design</note>
+                    </branch>
+                    <branch condition="UI behaves differently than specified">
+                        <target_mode>debug</target_mode>
+                        <confidence>high</confidence>
+                    </branch>
+                    <branch condition="User requests test coverage for design">
+                        <target_mode>code</target_mode>
+                        <confidence>high</confidence>
+                        <note>Code mode handles test implementation</note>
+                    </branch>
+                    <branch condition="Infrastructure/deployment discussion">
+                        <target_mode>devops</target_mode>
+                        <confidence>high</confidence>
+                    </branch>
+                    <branch condition="Complex system architecture needed">
+                        <target_mode>architect</target_mode>
+                        <confidence>high</confidence>
+                    </branch>
+                    <branch condition="Ambiguous - user intent unclear">
+                        <action>Ask clarifying question</action>
+                        <confidence>low</confidence>
+                    </branch>
+                </decision_tree>
+            </phase>
+        </trigger_detection>
+
+        <handoff_protocol>
+            <step number="1" name="prepare_context">
+                <action>Capture current state and design decisions</action>
+                <artifacts>
+                    <artifact type="design_summary">
+                        <content>
+              - Completed design decisions
+              - Layout specifications
+              - Component architecture
+              - Interaction models
+              - Accessibility requirements
+                        </content>
+                    </artifact>
+                    <artifact type="pending_questions">
+                        <content>
+              - Unresolved design decisions
+              - Implementation constraints identified
+              - Technical concerns flagged
+                        </content>
+                    </artifact>
+                    <artifact type="file_affected">
+                        <content>
+              - Components specified
+              - Files to be created/modified
+              - Design system changes
+                        </content>
+                    </artifact>
+                </artifacts>
+            </step>
+
+            <step number="2" name="select_target_mode">
+                <action>Determine target mode based on evaluation</action>
+                <modes>
+                    <mode name="code">
+                        <use_when>Implementation of design specifications</use_when>
+                        <context_to_pass>
+              - Design summary
+              - Component specs
+              - Layout requirements
+              - Interaction specifications
+                        </context_to_pass>
+                    </mode>
+                    <mode name="debug">
+                        <use_when>UI/UX issues need investigation</use_when>
+                        <context_to_pass>
+              - Original design specifications
+              - Expected vs actual behavior
+              - Interaction flow
+                        </context_to_pass>
+                    </mode>
+                    <mode name="architect">
+                        <use_when>System-level design needed</use_when>
+                        <context_to_pass>
+              - Feature requirements
+              - Design decisions made
+              - Constraints identified
+                        </context_to_pass>
+                    </mode>
+                    <mode name="devops">
+                        <use_when>Deployment/infrastructure needed</use_when>
+                        <context_to_pass>
+              - Target environments
+              - Configuration requirements
+              - Deployment specifications
+                        </context_to_pass>
+                    </mode>
+                </modes>
+            </step>
+
+            <step number="3" name="execute_switch">
+                <action>Perform mode switch with transition message</action>
+                <requirements>
+                    <requirement>Provide clear reason for switch</requirement>
+                    <requirement>Summarize what Product Design mode accomplished</requirement>
+                    <requirement>List what the next mode needs to do</requirement>
+                    <requirement>Identify any ongoing concerns or risks</requirement>
+                </requirements>
+                <format>
+                    <message>
+            Transitioning from Product Design to [TARGET MODE]:
+            
+            Completed:
+            - [What design work is done]
+            
+            Next Mode Task:
+            - [What needs to happen next]
+            
+            Key Context:
+            - [Critical information for next mode]
+            
+            Concerns/Risks:
+            - [Any flagged issues]
+                    </message>
+                </format>
+            </step>
+
+            <step number="4" name="confirm_receipt">
+                <action>Verify next mode has the context needed</action>
+                <checklist>
+                    <item>Next mode acknowledges transition</item>
+                    <item>Context is understood</item>
+                    <item>No critical information was lost</item>
+                </checklist>
+            </step>
+        </handoff_protocol>
+
+        <state_preservation>
+            <principle>Essential state must survive mode switches</principle>
+
+            <state_elements>
+                <element name="design_decisions">
+                    <retention>Permanent - these are the source of truth</retention>
+                    <storage>Design summary document or README</storage>
+                </element>
+                <element name="file_changes">
+                    <retention>Permanent - committed to repository</retention>
+                    <storage>Version control</storage>
+                </element>
+                <element name="conversation_context">
+                    <retention>Transient - captured in transition message</retention>
+                    <storage>Transition message to next mode</storage>
+                </element>
+                <element name="pending_issues">
+                    <retention>Until resolved - tracked in transition message</retention>
+                    <storage>Passed to appropriate mode</storage>
+                </element>
+            </state_elements>
+        </state_preservation>
+    </skill>
+
+    <skill name="cross_mode_task_detector">
+        <description>
+      Detects tasks that inherently span multiple modes and coordinates parallel
+      or sequential mode engagement.
+        </description>
+
+        <detection_patterns>
+            <pattern name="full_stack_feature">
+                <description>Feature requiring UI, backend, and deployment</description>
+                <indicators>
+                    <indicator>User requests "complete feature" or "end-to-end implementation"</indicator>
+                    <indicator>Feature touches data layer, UI layer, and infrastructure</indicator>
+                </indicators>
+                <handling>
+                    <strategy>Sequential with state tracking</strategy>
+                    <sequence>
+                        <phase mode="architect">System design and API contracts</phase>
+                        <phase mode="product-design">UI/UX design</phase>
+                        <phase mode="code">Implementation</phase>
+                        <phase mode="devops">Deployment</phase>
+                    </sequence>
+                </handling>
+            </pattern>
+
+            <pattern name="redesign_with_implementation">
+                <description>Redesign of existing feature that needs reimplementation</description>
+                <indicators>
+                    <indicator>User asks to "redesign and implement" or "refresh and rebuild"</indicator>
+                    <indicator>Existing component needs significant UI change</indicator>
+                </indicators>
+                <handling>
+                    <strategy>Design first, then implementation with rollback plan</strategy>
+                    <sequence>
+                        <phase mode="product-design">New design specifications</phase>
+                        <phase mode="code">Implementation with backward compatibility consideration</phase>
+                    </sequence>
+                </handling>
+            </pattern>
+
+            <pattern name="bug_fix_with_design_change">
+                <description>Bug that requires design modification to fix properly</description>
+                <indicators>
+                    <indicator>Bug report that points to design flaw</indicator>
+                    <indicator>"This interaction is confusing" type feedback</indicator>
+                </indicators>
+                <handling>
+                    <strategy>Parallel engagement where possible</strategy>
+                    <note>Debug mode investigates, Product Design mode redesigns, Code mode implements</note>
+                </handling>
+            </pattern>
+        </detection_patterns>
+
+        <coordination_protocol>
+            <step number="1">
+                <action>Identify all modes needed for task</action>
+            </step>
+            <step number="2">
+                <action>Determine optimal sequence or parallel engagement</action>
+            </step>
+            <step number="3">
+                <action>Create master task tracking with mode transitions</action>
+            </step>
+            <step number="4">
+                <action>Execute sequential handoffs or coordinate parallel work</action>
+            </step>
+            <step number="5">
+                <action>Consolidate results and verify integration</action>
+            </step>
+        </coordination_protocol>
+    </skill>
+
+    <skill name="return_to_design_detector">
+        <description>
+      Detects when implementation reveals design issues that need revisiting,
+      creating a feedback loop between modes.
+        </description>
+
+        <trigger_conditions>
+            <condition>Implementation cannot match design spec due to technical constraint</condition>
+            <condition>Design assumption was incorrect (data not available, interaction not feasible)</condition>
+            <condition>User rejects implementation because it doesn't feel right</condition>
+            <condition>Performance requirements force design changes</condition>
+        </trigger_conditions>
+
+        <handling>
+            <protocol>
+                <step>Identify specific design aspect that needs revision</step>
+                <step>Document why design change is needed</step>
+                <step>Create revised design with technical constraints noted</step>
+                <step>Hand off back to code mode with updated specifications</step>
+            </protocol>
+            <feedback_loop_warning>
+        If feedback loops become frequent, flag for larger architectural discussion
+            </feedback_loop_warning>
+        </handling>
+    </skill>
+
+    <mode_transition_criteria>
+        <mode name="code">
+            <primary_triggers>
+                <trigger>Design specifications are complete and ready for implementation</trigger>
+                <trigger>User requests component implementation</trigger>
+                <trigger>API contracts need to be defined</trigger>
+            </primary_triggers>
+            <context_requirements>
+                <requirement>Component specifications (props, states, behaviors)</requirement>
+                <requirement>Layout and styling guidance</requirement>
+                <requirement>Interaction specifications</requirement>
+                <requirement>Accessibility requirements</requirement>
+            </context_requirements>
+            <return_trigger>Implementation complete OR design issue discovered</return_trigger>
+        </mode>
+
+        <mode name="debug">
+            <primary_triggers>
+                <trigger>UI behaves differently than specified</trigger>
+                <trigger>User reports unexpected interaction behavior</trigger>
+                <trigger>Performance issues in UI rendering</trigger>
+                <trigger>Layout breaks at specific breakpoints</trigger>
+            </primary_triggers>
+            <context_requirements>
+                <requirement>Original design specifications</requirement>
+                <requirement>Expected behavior vs actual behavior</requirement>
+                <requirement>Steps to reproduce</requirement>
+            </context_requirements>
+            <return_trigger>Root cause identified OR design fix needed</return_trigger>
+        </mode>
+
+        <mode name="architect">
+            <primary_triggers>
+                <trigger>Feature requires system-level design</trigger>
+                <trigger>Multiple services or data models involved</trigger>
+                <trigger>Technical architecture decision needed</trigger>
+                <trigger>Performance at scale needs consideration</trigger>
+            </primary_triggers>
+            <context_requirements>
+                <requirement>Feature requirements</requirement>
+                <requirement>High-level design constraints</requirement>
+                <requirement>Existing system context</requirement>
+            </context_requirements>
+            <return_trigger>Architecture decided AND design can proceed</return_trigger>
+        </mode>
+
+        <mode name="devops">
+            <primary_triggers>
+                <trigger>Feature deployment is needed</trigger>
+                <trigger>Environment configuration discussion</trigger>
+                <trigger>CI/CD pipeline setup or modification</trigger>
+                <trigger>Infrastructure provisioning</trigger>
+            </primary_triggers>
+            <context_requirements>
+                <requirement>Deployment targets</requirement>
+                <requirement>Configuration requirements</requirement>
+                <requirement>Environment variables and secrets</requirement>
+            </context_requirements>
+            <return_trigger>Deployment complete OR configuration issue discovered</return_trigger>
+        </mode>
+
+        <mode name="ask">
+            <primary_triggers>
+                <trigger>User has conceptual question</trigger>
+                <trigger>User wants explanation of design patterns</trigger>
+                <trigger>User needs technology recommendation</trigger>
+                <trigger>No specific implementation or design task</trigger>
+            </primary_triggers>
+            <context_requirements>
+                <requirement>Question or topic</requirement>
+            </context_requirements>
+            <return_trigger>N/A - informational only</return_trigger>
+        </mode>
+    </mode_transition_criteria>
+
+    <handoff_message_templates>
+        <template name="to_code_mode">
+            <subject>Design Complete - Implementation Needed</subject>
+            <body>
+                <section name="summary">
+          Product Design has completed the UI/UX specifications for [FEATURE NAME].
+                </section>
+                <section name="design_completed">
+          - [List of completed design specifications]
+                </section>
+                <section name="implementation_needed">
+          - [Component/files to implement]
+          - [Key specifications to follow]
+                </section>
+                <section name="design_questions_pending">
+          - [Any open questions that might affect implementation]
+                </section>
+                <section name="risks_identified">
+          - [Technical risks noted during design]
+                </section>
+            </body>
+        </template>
+
+        <template name="to_debug_mode">
+            <subject>Design Issue Reported - Investigation Needed</subject>
+            <body>
+                <section name="original_design">
+          [Reference to original design specifications]
+                </section>
+                <section name="expected_behavior">
+          [What the design specified]
+                </section>
+                <section name="actual_behavior">
+          [What is actually happening]
+                </section>
+                <section name="impact">
+          [How this affects the user experience]
+                </section>
+                <section name="attempted_resolutions">
+          [Any troubleshooting already done]
+                </section>
+            </body>
+        </template>
+
+        <template name="back_to_product_design">
+            <subject>Design Revision Needed</subject>
+            <body>
+                <section name="reason">
+          [Why design revision is needed]
+                </section>
+                <section name="technical_constraints">
+          [Constraints that implementation revealed]
+                </section>
+                <section name="proposed_approach">
+          [Any initial ideas for revised design]
+                </section>
+                <section name="scope">
+          [What aspects need redesign]
+                </section>
+            </body>
+        </template>
+    </handoff_message_templates>
+
+    <validation_rules>
+        <rule name="context_preservation">
+            <description>Every mode switch must include sufficient context for the receiving mode to act</description>
+            <validation>
+                <check>Does transition message include what was done?</check>
+                <check>Does transition message include what needs to happen next?</check>
+                <check>Does transition message include critical constraints or concerns?</check>
+            </validation>
+        </rule>
+
+        <rule name="bidirectional_awareness">
+            <description>The Product Design mode should be aware when its work feeds into another mode and when it receives feedback</description>
+            <validation>
+                <check>Are mode handoffs tracked?</check>
+                <check>Is there a mechanism to receive return context?</check>
+            </validation>
+        </rule>
+
+        <rule name="no_context_loss">
+            <description>Critical design decisions must not be lost during mode switches</description>
+            <validation>
+                <check>Are design specifications committed/permanent?</check>
+                <check>Are pending issues explicitly passed?</check>
+            </validation>
+        </rule>
+    </validation_rules>
+</mode_switching_skills>

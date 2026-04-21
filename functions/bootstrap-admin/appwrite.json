@@ -1,0 +1,10 @@
+{
+  "projectId": "planymaps",
+  "name": "bootstrap-admin",
+  "runtime": "nodejs-18",
+  "path": ".",
+  "entrypoint": "index.js",
+  "events": ["users.*.create"],
+  "timeout": 60,
+  "memory": 256
+}

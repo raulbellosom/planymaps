@@ -1,0 +1,116 @@
+<decision_guidance>
+    <principles>
+        <principle>Do not include runtime implementation details (no function names, command names, UI entry points, or execution syntax)</principle>
+        <principle>Prefer the smallest change that satisfies the request</principle>
+        <principle>Prefer a single source of truth; avoid duplicated rules across files</principle>
+        <principle>Ask a clarifying question only when critical ambiguity remains</principle>
+    </principles>
+
+    <boundaries>
+        <rule>Define clear responsibilities and explicit handoff points to other modes</rule>
+
+        <handoffs>
+            <handoff mode="code" trigger="When design decisions have been made and implementation is needed">
+                <scenario>Design specs are complete and ready for implementation</scenario>
+                <scenario>Component architecture decisions have been made</scenario>
+                <scenario>API contracts need to be defined or updated</scenario>
+            </handoff>
+
+            <handoff mode="architect" trigger="When strategic planning or system-level design is needed">
+                <scenario>New features require architectural planning</scenario>
+                <scenario>Complex system interactions need diagramming</scenario>
+                <scenario>Technical debt assessment is needed</scenario>
+            </handoff>
+
+            <handoff mode="debug" trigger="When UI/UX issues need investigation">
+                <scenario>User reports unexpected behavior in UI</scenario>
+                <scenario>Performance issues in UI rendering</scenario>
+                <scenario>Interaction bugs need root cause analysis</scenario>
+            </handoff>
+        </handoffs>
+    </boundaries>
+
+    <decision_criteria>
+        <criterion name="mobile_vs_desktop">
+            <question>Should this feature be designed mobile-first with progressive enhancement, or desktop-first with graceful degradation?</question>
+            <factors>
+                <factor>Primary user context (office vs field workers)</factor>
+                <factor>Complexity of interactions required</factor>
+                <factor>Data density needs</factor>
+                <factor>Offline requirements</factor>
+            </factors>
+            <default>Mobile-first unless field research indicates desktop-primary usage</default>
+        </criterion>
+
+        <criterion name="shadcn_vs_radix">
+            <question>Should this feature use shadcn/ui components, Radix UI primitives, or custom implementation?</question>
+            <factors>
+                <factor>Standard interaction pattern or highly specialized?</factor>
+                <factor>Time constraints vs long-term maintainability</factor>
+                <factor>Design system consistency requirements</factor>
+                <factor>Team familiarity with each approach</factor>
+            </factors>
+            <default>
+        shadcn/ui for standard patterns (forms, tables, dialogs, menus)
+        Radix UI when shadcn/ui would require extensive overrides
+        Custom when neither provides suitable foundation
+            </default>
+        </criterion>
+
+        <criterion name="gesture_vs_ui">
+            <question>Should this interaction use gestures or explicit UI controls?</question>
+            <factors>
+                <factor>Frequency of use (common vs rare)</factor>
+                <factor>Discoverability (gestures are hidden)</factor>
+                <factor>Precision requirements (gestures are imprecise)</factor>
+                <factor>Accessibility (some users cannot perform gestures)</factor>
+            </factors>
+            <default>
+        Provide both gesture AND UI alternative
+        Gestures for high-frequency, discoverable interactions
+        UI controls for rare actions and accessibility
+            </default>
+        </criterion>
+
+        <criterion name="modal_vs_page">
+            <question>Should this content use a modal dialog or a separate page?</question>
+            <factors>
+                <factor>Task completion time (quick vs lengthy)</factor>
+                <factor>Context requirements (needs parent vs standalone)</factor>
+                <factor>Interruption tolerance (can pause vs must complete)</factor>
+                <factor>Return frequency (one-time vs frequent returns)</factor>
+            </factors>
+            <default>
+        Modal for quick tasks (under 30 seconds, single step)
+        Page for complex tasks (multi-step, requires full focus)
+            </default>
+        </criterion>
+
+        <criterion name="touch_target_size">
+            <question>What touch target size is appropriate for this interaction?</question>
+            <factors>
+                <factor>Action frequency (primary vs secondary)</factor>
+                <factor>Precision requirements</factor>
+                <factor>Screen density and content space</factor>
+            </factors>
+            <default>
+        44x44px minimum for all touch targets
+        48x48px for primary actions
+        56x56px for frequently used primary actions
+            </default>
+        </criterion>
+    </decision_criteria>
+
+    <validation>
+        <rule>After design decisions, scan for contradictions and update examples to match</rule>
+
+        <checklist>
+            <item>All breakpoints have defined layouts</item>
+            <item>All interactive elements have touch and mouse alternatives</item>
+            <item>shadcn/ui vs Radix vs custom decision is documented</item>
+            <item>Empty, loading, error, and success states are defined</item>
+            <item>Accessibility requirements are specified (contrast, focus, ARIA)</item>
+            <item>Performance considerations are documented</item>
+        </checklist>
+    </validation>
+</decision_guidance>
