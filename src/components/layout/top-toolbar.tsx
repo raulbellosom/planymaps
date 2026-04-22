@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback } from "react";
 import {
   HelpCircle,
   Link2,
@@ -8,7 +8,6 @@ import {
   LogOut,
   Maximize2,
   Menu,
-  MoreHorizontal,
   Settings2,
   Settings,
   ZoomIn,
@@ -27,7 +26,6 @@ export function TopToolbar({ readOnly = false }: { readOnly?: boolean } = {}) {
   const { togglePanel, panels } = usePanels();
   const board = useBoardStore((state) => state.board);
   const renameBoard = useBoardStore((state) => state.renameBoard);
-  const updateBoard = useBoardStore((state) => state.updateBoard);
   const viewport = useUIStore((state) => state.viewport);
   const setViewport = useUIStore((state) => state.setViewport);
   const resetViewport = useUIStore((state) => state.resetViewport);
@@ -38,23 +36,6 @@ export function TopToolbar({ readOnly = false }: { readOnly?: boolean } = {}) {
   const [showZoomSlider, setShowZoomSlider] = useState(false);
   const [isEditingBoardName, setIsEditingBoardName] = useState(false);
   const [boardNameInput, setBoardNameInput] = useState("");
-  const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const mobileMenuRef = useRef<HTMLDivElement>(null);
-
-  // Close mobile menu when clicking outside
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
-        setShowMobileMenu(false);
-      }
-    }
-    if (showMobileMenu) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [showMobileMenu]);
 
   const handleBoardNameDoubleClick = useCallback(() => {
     if (board) {
@@ -108,8 +89,9 @@ export function TopToolbar({ readOnly = false }: { readOnly?: boolean } = {}) {
 
   return (
     <>
-      <header className="h-12 glass-panel border-b border-white/10 flex items-center justify-between px-2 sm:px-4">
-        <div className="flex items-center gap-1 sm:gap-2">
+      <header className="h-12 glass-panel border-b border-white/10 flex items-center justify-between px-2 sm:px-4 overflow-hidden">
+        {/* Left section — fixed, non-scrolling */}
+        <div className="flex items-center gap-1 sm:gap-2 shrink-0">
           {/* Exit/Back button */}
           <button
             onClick={handleExit}
@@ -134,19 +116,23 @@ export function TopToolbar({ readOnly = false }: { readOnly?: boolean } = {}) {
             <LogoSvg className="w-5 h-5" alt="Planymaps" />
             <span className="hidden xs:inline">Planymaps</span>
           </span>
+        </div>
+
+        {/* Right section — horizontally scrollable on mobile */}
+        <div
+          className="flex items-center gap-1 sm:gap-2 overflow-x-auto hide-scrollbar"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
           {/* View-only badge shown to viewers */}
           {readOnly && (
-            <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wide bg-white/8 text-[var(--gray-400)] border border-white/10">
+            <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wide bg-white/8 text-[var(--gray-400)] border border-white/10 shrink-0">
               View only
             </span>
           )}
-        </div>
 
-        {/* Right section - scrollable on mobile with more menu for secondary tools */}
-        <div className="flex items-center gap-1 sm:gap-2">
-          {/* Board name — only shown when a board is loaded */}
-          {board &&
-            (isEditingBoardName && !readOnly ? (
+          {/* Board name — always visible, truncate on small screens */}
+          {board && (
+            isEditingBoardName && !readOnly ? (
               <input
                 type="text"
                 value={boardNameInput}
@@ -154,14 +140,14 @@ export function TopToolbar({ readOnly = false }: { readOnly?: boolean } = {}) {
                 onBlur={handleBoardNameSubmit}
                 onKeyDown={handleBoardNameKeyDown}
                 autoFocus
-                className="hidden lg:block bg-white/10 text-white text-sm font-medium px-2 py-1 rounded border border-white/20 outline-none focus:border-[var(--accent-500)] max-w-[200px]"
+                className="bg-white/10 text-white text-sm font-medium px-2 py-1 rounded border border-white/20 outline-none focus:border-[var(--accent-500)] max-w-[120px] sm:max-w-[200px] shrink-0"
               />
             ) : (
               <span
                 onDoubleClick={
                   !readOnly ? handleBoardNameDoubleClick : undefined
                 }
-                className={`hidden lg:block text-white/80 text-sm font-medium px-2 truncate max-w-[200px] rounded transition-colors ${
+                className={`text-white/80 text-sm font-medium px-2 truncate max-w-[100px] sm:max-w-[200px] rounded transition-colors shrink-0 ${
                   readOnly
                     ? "cursor-default"
                     : "cursor-pointer hover:text-white hover:bg-white/5"
@@ -170,21 +156,24 @@ export function TopToolbar({ readOnly = false }: { readOnly?: boolean } = {}) {
               >
                 {board.name}
               </span>
-            ))}
+            )
+          )}
+
           {/* Share button — only in edit mode */}
           {board && !readOnly && (
             <button
               onClick={() => setShowShare(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/15 text-white text-xs font-medium transition-all touch-manipulation hover:scale-[1.02] active:scale-[0.98]"
+              className="flex items-center gap-1.5 px-2 sm:px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/15 text-white text-xs font-medium transition-all touch-manipulation shrink-0"
               aria-label="Share board"
             >
               <Link2 className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Share</span>
             </button>
           )}
-          {/* Zoom controls — only in edit mode (ReadOnlyCanvas has its own) */}
+
+          {/* Zoom controls — only in edit mode */}
           {board && !readOnly && (
-            <div className="flex items-center gap-1 relative">
+            <div className="flex items-center gap-0.5 relative shrink-0">
               {/* Zoom out button */}
               <button
                 onClick={() => zoomOut()}
@@ -197,7 +186,7 @@ export function TopToolbar({ readOnly = false }: { readOnly?: boolean } = {}) {
               {/* Zoom percentage display/button */}
               <button
                 onClick={() => setShowZoomSlider(!showZoomSlider)}
-                className="px-2 py-1 rounded-lg hover:bg-white/10 text-[var(--gray-300)] hover:text-white text-xs font-medium min-w-[60px] text-center transition-colors"
+                className="px-1 sm:px-2 py-1 rounded-lg hover:bg-white/10 text-[var(--gray-300)] hover:text-white text-xs font-medium min-w-[44px] text-center transition-colors"
                 aria-label="Toggle zoom slider"
                 title="Adjust zoom level"
               >
@@ -249,22 +238,23 @@ export function TopToolbar({ readOnly = false }: { readOnly?: boolean } = {}) {
               )}
             </div>
           )}
-          {/* Help / Keyboard shortcuts button */}
+
+          {/* Help / Keyboard shortcuts button — hidden on mobile (no keyboard) */}
           <button
             onClick={() => setShowShortcuts(true)}
-            className="p-2 sm:p-2 rounded-lg touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center text-[var(--gray-400)] hover:text-white hover:bg-white/10 transition-colors"
+            className="hidden md:flex p-2 rounded-lg touch-manipulation min-w-[44px] min-h-[44px] items-center justify-center text-[var(--gray-400)] hover:text-white hover:bg-white/10 transition-colors shrink-0"
             aria-label="Keyboard shortcuts"
             title="Keyboard shortcuts"
           >
             <HelpCircle className="w-5 h-5" />
           </button>
-          {/* Secondary tools - visible on md+, hidden in more menu on smaller screens */}
-          <div className="hidden md:flex items-center gap-1">
-            {/* Layer panel toggle — only in edit mode */}
-            {!readOnly && (
+
+          {/* Panel toggles — all visible, always shown directly */}
+          {!readOnly && (
+            <>
               <button
                 onClick={() => togglePanel("layerPanel")}
-                className={`p-2 sm:p-2 rounded-lg touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center transition-colors ${
+                className={`p-2 rounded-lg touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center transition-colors shrink-0 ${
                   panels.layerPanel
                     ? "bg-[var(--accent-500)]/20 text-[var(--accent-400)]"
                     : "text-[var(--gray-400)] hover:text-white hover:bg-white/10"
@@ -273,12 +263,9 @@ export function TopToolbar({ readOnly = false }: { readOnly?: boolean } = {}) {
               >
                 <Layers className="w-5 h-5" />
               </button>
-            )}
-            {/* Inspector panel toggle — only in edit mode */}
-            {!readOnly && (
               <button
                 onClick={() => togglePanel("rightPanel")}
-                className={`p-2 sm:p-2 rounded-lg touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center transition-colors ${
+                className={`p-2 rounded-lg touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center transition-colors shrink-0 ${
                   panels.rightPanel
                     ? "bg-[var(--accent-500)]/20 text-[var(--accent-400)]"
                     : "text-[var(--gray-400)] hover:text-white hover:bg-white/10"
@@ -287,12 +274,9 @@ export function TopToolbar({ readOnly = false }: { readOnly?: boolean } = {}) {
               >
                 <Settings2 className="w-5 h-5" />
               </button>
-            )}
-            {/* Board configuration panel toggle — only in edit mode */}
-            {!readOnly && (
               <button
                 onClick={() => togglePanel("configurationPanel")}
-                className={`p-2 sm:p-2 rounded-lg touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center transition-colors ${
+                className={`p-2 rounded-lg touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center transition-colors shrink-0 ${
                   panels.configurationPanel
                     ? "bg-[var(--accent-500)]/20 text-[var(--accent-400)]"
                     : "text-[var(--gray-400)] hover:text-white hover:bg-white/10"
@@ -301,71 +285,7 @@ export function TopToolbar({ readOnly = false }: { readOnly?: boolean } = {}) {
               >
                 <Settings className="w-5 h-5" />
               </button>
-            )}
-          </div>
-          {/* More menu button - only visible on small screens */}
-          {!readOnly && (
-            <div className="relative md:hidden" ref={mobileMenuRef}>
-              <button
-                onClick={() => setShowMobileMenu(!showMobileMenu)}
-                className={`p-2 sm:p-2 rounded-lg touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center transition-colors ${
-                  showMobileMenu
-                    ? "bg-[var(--accent-500)]/20 text-[var(--accent-400)]"
-                    : "text-[var(--gray-400)] hover:text-white hover:bg-white/10"
-                }`}
-                aria-label="More tools"
-                title="More tools"
-              >
-                <MoreHorizontal className="w-5 h-5" />
-              </button>
-              {/* Mobile dropdown menu */}
-              {showMobileMenu && (
-                <div className="absolute top-full mt-2 right-0 p-2 rounded-xl bg-[var(--navy-800)]/95 backdrop-blur-lg border border-white/10 shadow-xl z-50 min-w-[160px]">
-                  <button
-                    onClick={() => {
-                      togglePanel("layerPanel");
-                      setShowMobileMenu(false);
-                    }}
-                    className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-left text-sm transition-colors ${
-                      panels.layerPanel
-                        ? "bg-[var(--accent-500)]/20 text-[var(--accent-400)]"
-                        : "text-[var(--gray-300)] hover:bg-white/10 hover:text-white"
-                    }`}
-                  >
-                    <Layers className="w-4 h-4" />
-                    Layers
-                  </button>
-                  <button
-                    onClick={() => {
-                      togglePanel("rightPanel");
-                      setShowMobileMenu(false);
-                    }}
-                    className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-left text-sm transition-colors ${
-                      panels.rightPanel
-                        ? "bg-[var(--accent-500)]/20 text-[var(--accent-400)]"
-                        : "text-[var(--gray-300)] hover:bg-white/10 hover:text-white"
-                    }`}
-                  >
-                    <Settings2 className="w-4 h-4" />
-                    Inspector
-                  </button>
-                  <button
-                    onClick={() => {
-                      togglePanel("configurationPanel");
-                      setShowMobileMenu(false);
-                    }}
-                    className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-left text-sm transition-colors ${
-                      panels.configurationPanel
-                        ? "bg-[var(--accent-500)]/20 text-[var(--accent-400)]"
-                        : "text-[var(--gray-300)] hover:bg-white/10 hover:text-white"
-                    }`}
-                  >
-                    <Settings className="w-4 h-4" />
-                    Config
-                  </button>
-                </div>
-              )}
-            </div>
+            </>
           )}
         </div>
       </header>
