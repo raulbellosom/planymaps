@@ -741,7 +741,7 @@ function BoardContent() {
 export default function BoardPage() {
   return (
     <PanelProvider>
-      <div className="h-screen flex flex-col overflow-hidden">
+      <div className="h-dvh flex flex-col overflow-hidden">
         {/* Main content area */}
         <Suspense
           fallback={

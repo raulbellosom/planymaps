@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import {
   HelpCircle,
   Link2,
@@ -8,6 +8,7 @@ import {
   LogOut,
   Maximize2,
   Menu,
+  MoreHorizontal,
   Settings2,
   Settings,
   ZoomIn,
@@ -37,6 +38,23 @@ export function TopToolbar({ readOnly = false }: { readOnly?: boolean } = {}) {
   const [showZoomSlider, setShowZoomSlider] = useState(false);
   const [isEditingBoardName, setIsEditingBoardName] = useState(false);
   const [boardNameInput, setBoardNameInput] = useState("");
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
+        setShowMobileMenu(false);
+      }
+    }
+    if (showMobileMenu) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showMobileMenu]);
 
   const handleBoardNameDoubleClick = useCallback(() => {
     if (board) {
@@ -114,7 +132,7 @@ export function TopToolbar({ readOnly = false }: { readOnly?: boolean } = {}) {
           )}
           <span className="font-semibold text-white text-sm sm:text-base flex items-center gap-2">
             <LogoSvg className="w-5 h-5" alt="Planymaps" />
-            Planymaps
+            <span className="hidden xs:inline">Planymaps</span>
           </span>
           {/* View-only badge shown to viewers */}
           {readOnly && (
@@ -124,6 +142,7 @@ export function TopToolbar({ readOnly = false }: { readOnly?: boolean } = {}) {
           )}
         </div>
 
+        {/* Right section - scrollable on mobile with more menu for secondary tools */}
         <div className="flex items-center gap-1 sm:gap-2">
           {/* Board name — only shown when a board is loaded */}
           {board &&
@@ -239,47 +258,114 @@ export function TopToolbar({ readOnly = false }: { readOnly?: boolean } = {}) {
           >
             <HelpCircle className="w-5 h-5" />
           </button>
-          {/* Layer panel toggle — only in edit mode */}
+          {/* Secondary tools - visible on md+, hidden in more menu on smaller screens */}
+          <div className="hidden md:flex items-center gap-1">
+            {/* Layer panel toggle — only in edit mode */}
+            {!readOnly && (
+              <button
+                onClick={() => togglePanel("layerPanel")}
+                className={`p-2 sm:p-2 rounded-lg touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center transition-colors ${
+                  panels.layerPanel
+                    ? "bg-[var(--accent-500)]/20 text-[var(--accent-400)]"
+                    : "text-[var(--gray-400)] hover:text-white hover:bg-white/10"
+                }`}
+                aria-label="Toggle layer panel"
+              >
+                <Layers className="w-5 h-5" />
+              </button>
+            )}
+            {/* Inspector panel toggle — only in edit mode */}
+            {!readOnly && (
+              <button
+                onClick={() => togglePanel("rightPanel")}
+                className={`p-2 sm:p-2 rounded-lg touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center transition-colors ${
+                  panels.rightPanel
+                    ? "bg-[var(--accent-500)]/20 text-[var(--accent-400)]"
+                    : "text-[var(--gray-400)] hover:text-white hover:bg-white/10"
+                }`}
+                aria-label="Toggle inspector panel"
+              >
+                <Settings2 className="w-5 h-5" />
+              </button>
+            )}
+            {/* Board configuration panel toggle — only in edit mode */}
+            {!readOnly && (
+              <button
+                onClick={() => togglePanel("configurationPanel")}
+                className={`p-2 sm:p-2 rounded-lg touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center transition-colors ${
+                  panels.configurationPanel
+                    ? "bg-[var(--accent-500)]/20 text-[var(--accent-400)]"
+                    : "text-[var(--gray-400)] hover:text-white hover:bg-white/10"
+                }`}
+                aria-label="Toggle configuration panel"
+              >
+                <Settings className="w-5 h-5" />
+              </button>
+            )}
+          </div>
+          {/* More menu button - only visible on small screens */}
           {!readOnly && (
-            <button
-              onClick={() => togglePanel("layerPanel")}
-              className={`p-2 sm:p-2 rounded-lg touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center transition-colors ${
-                panels.layerPanel
-                  ? "bg-[var(--accent-500)]/20 text-[var(--accent-400)]"
-                  : "text-[var(--gray-400)] hover:text-white hover:bg-white/10"
-              }`}
-              aria-label="Toggle layer panel"
-            >
-              <Layers className="w-5 h-5" />
-            </button>
-          )}
-          {/* Inspector panel toggle — only in edit mode */}
-          {!readOnly && (
-            <button
-              onClick={() => togglePanel("rightPanel")}
-              className={`p-2 sm:p-2 rounded-lg touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center transition-colors ${
-                panels.rightPanel
-                  ? "bg-[var(--accent-500)]/20 text-[var(--accent-400)]"
-                  : "text-[var(--gray-400)] hover:text-white hover:bg-white/10"
-              }`}
-              aria-label="Toggle inspector panel"
-            >
-              <Settings2 className="w-5 h-5" />
-            </button>
-          )}
-          {/* Board configuration panel toggle — only in edit mode */}
-          {!readOnly && (
-            <button
-              onClick={() => togglePanel("configurationPanel")}
-              className={`p-2 sm:p-2 rounded-lg touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center transition-colors ${
-                panels.configurationPanel
-                  ? "bg-[var(--accent-500)]/20 text-[var(--accent-400)]"
-                  : "text-[var(--gray-400)] hover:text-white hover:bg-white/10"
-              }`}
-              aria-label="Toggle configuration panel"
-            >
-              <Settings className="w-5 h-5" />
-            </button>
+            <div className="relative md:hidden" ref={mobileMenuRef}>
+              <button
+                onClick={() => setShowMobileMenu(!showMobileMenu)}
+                className={`p-2 sm:p-2 rounded-lg touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center transition-colors ${
+                  showMobileMenu
+                    ? "bg-[var(--accent-500)]/20 text-[var(--accent-400)]"
+                    : "text-[var(--gray-400)] hover:text-white hover:bg-white/10"
+                }`}
+                aria-label="More tools"
+                title="More tools"
+              >
+                <MoreHorizontal className="w-5 h-5" />
+              </button>
+              {/* Mobile dropdown menu */}
+              {showMobileMenu && (
+                <div className="absolute top-full mt-2 right-0 p-2 rounded-xl bg-[var(--navy-800)]/95 backdrop-blur-lg border border-white/10 shadow-xl z-50 min-w-[160px]">
+                  <button
+                    onClick={() => {
+                      togglePanel("layerPanel");
+                      setShowMobileMenu(false);
+                    }}
+                    className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-left text-sm transition-colors ${
+                      panels.layerPanel
+                        ? "bg-[var(--accent-500)]/20 text-[var(--accent-400)]"
+                        : "text-[var(--gray-300)] hover:bg-white/10 hover:text-white"
+                    }`}
+                  >
+                    <Layers className="w-4 h-4" />
+                    Layers
+                  </button>
+                  <button
+                    onClick={() => {
+                      togglePanel("rightPanel");
+                      setShowMobileMenu(false);
+                    }}
+                    className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-left text-sm transition-colors ${
+                      panels.rightPanel
+                        ? "bg-[var(--accent-500)]/20 text-[var(--accent-400)]"
+                        : "text-[var(--gray-300)] hover:bg-white/10 hover:text-white"
+                    }`}
+                  >
+                    <Settings2 className="w-4 h-4" />
+                    Inspector
+                  </button>
+                  <button
+                    onClick={() => {
+                      togglePanel("configurationPanel");
+                      setShowMobileMenu(false);
+                    }}
+                    className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-left text-sm transition-colors ${
+                      panels.configurationPanel
+                        ? "bg-[var(--accent-500)]/20 text-[var(--accent-400)]"
+                        : "text-[var(--gray-300)] hover:bg-white/10 hover:text-white"
+                    }`}
+                  >
+                    <Settings className="w-4 h-4" />
+                    Config
+                  </button>
+                </div>
+              )}
+            </div>
           )}
         </div>
       </header>
