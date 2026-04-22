@@ -17,7 +17,7 @@ import {
   TileLayer,
   useMap,
 } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
+import "leaflet/dist/leaflet.css?url";
 
 import type { MapSettings } from "@/types/board";
 import { getTileConfig } from "@/lib/geo-utils";
