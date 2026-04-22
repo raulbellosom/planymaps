@@ -32,10 +32,15 @@ import {
   sendToBackMulti,
 } from "@/lib/ordering-commands";
 import type { BoardItem } from "@/types/board";
-import { LayoutDashboard } from "lucide-react";
+import { parseMapSettings } from "@/types/board";
+import { LayoutDashboard, Crosshair, Map, Check, X, Move } from "lucide-react";
+import { MapRenderer, isMapBoard } from "./map-renderer";
+import { formatCoordinate } from "@/lib/geo-utils";
+import type { CoordinateFormat } from "@/lib/geo-utils";
 
 export function EditorCanvas() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const mapContainerRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<Konva.Stage>(null);
 
   // Capture a thumbnail snapshot after each auto-save
@@ -51,6 +56,7 @@ export function EditorCanvas() {
   const reorderItems = useBoardStore((state) => state.reorderItems);
   const groupItemsAction = useBoardStore((state) => state.groupItems);
   const ungroupItemsAction = useBoardStore((state) => state.ungroupItems);
+  const updateBoard = useBoardStore((state) => state.updateBoard);
 
   // UI state
   const viewport = useUIStore((state) => state.viewport);
@@ -66,6 +72,8 @@ export function EditorCanvas() {
   const showContextMenu = useUIStore((state) => state.showContextMenu);
   const hideContextMenu = useUIStore((state) => state.hideContextMenu);
   const contextMenuTargetId = useUIStore((state) => state.contextMenuTargetId);
+  const isEditingMapPosition = useUIStore((state) => state.isEditingMapPosition);
+  const setIsEditingMapPosition = useUIStore((state) => state.setIsEditingMapPosition);
 
   // Auth
   const { user } = useAuthContext();
@@ -146,8 +154,12 @@ export function EditorCanvas() {
         stage.position(panViewportRef.current);
         stage.batchDraw();
       }
+      // Mutate the map container directly for perfect 60fps sync without React lag
+      if (mapContainerRef.current) {
+        mapContainerRef.current.style.transform = `translate(${panViewportRef.current.x}px, ${panViewportRef.current.y}px) scale(${viewport.scale})`;
+      }
     },
-    [stageRef],
+    [viewport.scale],
   );
 
   // Stop middle-mouse pan: flush accumulated position into React state, restore tool
@@ -692,18 +704,81 @@ export function EditorCanvas() {
     [setViewport],
   );
 
-  // Prevent any shape drag initiated by a non-left-click (e.g. middle button)
-  // dragstart bubbles to Stage so one handler covers all child shapes
-  const handleStageDragStart = useCallback((e: KonvaEventObject<DragEvent>) => {
-    // isMiddleMouseDown is set synchronously in our native mousedown handler
-    if (isMiddleMouseDown.current && e.target !== e.target.getStage()) {
-      e.target.stopDrag();
+  // Sync viewport during drag so the map behind it moves in real-time
+  const handleDragMove = useCallback((e: KonvaEventObject<DragEvent>) => {
+    if (e.target === e.target.getStage()) {
+      const stage = e.target;
+      // Mutate the map container directly for perfect sync with Konva's native drag
+      if (mapContainerRef.current) {
+        mapContainerRef.current.style.transform = `translate(${stage.x()}px, ${stage.y()}px) scale(${stage.scaleX()})`;
+      }
     }
   }, []);
+
+  // Prevent any shape drag initiated by a non-left-click (e.g. middle button)
+  // dragstart bubbles to Stage so one handler covers all child shapes
+  const handleStageDragStart = useCallback(
+    (e: KonvaEventObject<DragEvent>) => {
+      // isMiddleMouseDown is set synchronously in our native mousedown handler
+      if (isMiddleMouseDown.current && e.target !== e.target.getStage()) {
+        e.target.stopDrag();
+      }
+      // When in hand tool mode (pan), prevent any shape from being dragged
+      // This ensures mobile panning gestures don't accidentally move shapes
+      if (activeTool === "hand" && e.target !== e.target.getStage()) {
+        e.target.stopDrag();
+      }
+    },
+    [activeTool],
+  );
 
   // Board dimensions (default to 1920x1080 if no board loaded)
   const boardWidth = board?.width || 1920;
   const boardHeight = board?.height || 1080;
+
+  // Check if this board has a map background
+  const hasMap = isMapBoard(board);
+  const mapSettings = board ? parseMapSettings(board) : null;
+
+  // State to hold temporary map settings while editing
+  const [draftMapSettings, setDraftMapSettings] = useState<{ lat: number; lng: number; zoom: number } | null>(null);
+
+  // Enter edit mode
+  const handleEditMapPosition = useCallback(() => {
+    if (!mapSettings) return;
+    setDraftMapSettings({ lat: mapSettings.centerLat, lng: mapSettings.centerLng, zoom: mapSettings.zoom });
+    setIsEditingMapPosition(true);
+    // Switch to select tool so hand tool doesn't conflict
+    setActiveTool("select");
+  }, [mapSettings, setIsEditingMapPosition, setActiveTool]);
+
+  // Cancel edit mode
+  const handleCancelMapEdit = useCallback(() => {
+    setIsEditingMapPosition(false);
+    setDraftMapSettings(null);
+  }, [setIsEditingMapPosition]);
+
+  // Save edit mode
+  const handleSaveMapEdit = useCallback(() => {
+    if (!board || !draftMapSettings || !mapSettings) return;
+    
+    updateBoard({
+      mapSettingsJson: JSON.stringify({
+        ...mapSettings,
+        centerLat: draftMapSettings.lat,
+        centerLng: draftMapSettings.lng,
+        zoom: draftMapSettings.zoom,
+      })
+    });
+    
+    setIsEditingMapPosition(false);
+    setDraftMapSettings(null);
+  }, [board, draftMapSettings, mapSettings, updateBoard, setIsEditingMapPosition]);
+
+  // Map change during edit mode
+  const handleMapChange = useCallback((lat: number, lng: number, zoom: number) => {
+    setDraftMapSettings({ lat, lng, zoom });
+  }, []);
 
   // When the image tool is selected, immediately open the upload modal
   // centered in the visible viewport — no drawing required.
@@ -886,69 +961,121 @@ export function EditorCanvas() {
     [itemsByLayer, selectedItemIds],
   );
 
+  // Map cursor position for coordinate display
+  const mapCursorPosition = useUIStore((s) => s.mapCursorPosition);
+  const coordinateFormat = useUIStore((s) => s.coordinateFormat);
+  const setCoordinateFormat = useUIStore((s) => s.setCoordinateFormat);
+
   return (
     <div
       ref={containerRef}
-      className="flex-1 bg-gray-100 relative overflow-hidden"
+      className={`flex-1 relative overflow-hidden ${hasMap ? "bg-[#191a1a]" : "bg-gray-100"}`}
       style={{ cursor: getCursor() }}
       onMouseDown={handleMiddleMouseDown}
       onMouseMove={handleMiddleMouseMove}
       onMouseUp={handleMiddleMouseUp}
       onMouseLeave={handleMouseLeave}
     >
-      {/* Konva Stage */}
-      <Stage
-        ref={stageRef}
-        width={containerSize.width}
-        height={containerSize.height}
-        x={viewport.x}
-        y={viewport.y}
-        scaleX={viewport.scale}
-        scaleY={viewport.scale}
-        draggable={activeTool === "hand"}
-        onMouseDown={handleStageMouseDown}
-        onMouseMove={handleStageMouseMove}
-        onMouseUp={handleStageMouseUp}
-        onClick={handleStageClick}
-        onWheel={handleWheel}
-        onDragStart={handleStageDragStart}
-        onDragEnd={handleDragEnd}
-      >
-        {/* Board background and Grid - merged into single layer for performance */}
-        <Layer listening={false}>
-          <Rect
-            x={0}
-            y={0}
-            width={boardWidth}
-            height={boardHeight}
-            fill="#ffffff"
-            shadowColor="rgba(0,0,0,0.15)"
-            shadowBlur={10}
-            shadowOffset={{ x: 0, y: 4 }}
+      {/* Map layer — sized to board dimensions, transformed with Konva viewport
+          so map and shapes move together as one unit.
+          When editing map position, pointer events are auto so it's interactive,
+          and the transform is reset so it fills the screen perfectly for editing. */}
+      {hasMap && board && (
+        <div
+          ref={mapContainerRef}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: isEditingMapPosition ? "100%" : boardWidth,
+            height: isEditingMapPosition ? "100%" : boardHeight,
+            transform: isEditingMapPosition 
+              ? "none" 
+              : `translate(${viewport.x}px, ${viewport.y}px) scale(${viewport.scale})`,
+            transformOrigin: "0 0",
+            pointerEvents: isEditingMapPosition ? "auto" : "none",
+            zIndex: isEditingMapPosition ? 10 : 0,
+          }}
+        >
+          <MapRenderer
+            board={board}
+            width={isEditingMapPosition ? containerSize.width : boardWidth}
+            height={isEditingMapPosition ? containerSize.height : boardHeight}
+            interactive={isEditingMapPosition}
+            onMapChange={handleMapChange}
           />
-          {Array.from({ length: Math.ceil(boardHeight / 20) }).map((_, i) => (
+        </div>
+      )}
+
+      {/* Konva Stage — same viewport transform, shapes stay aligned with map */}
+      <div 
+        style={{ 
+          opacity: isEditingMapPosition ? 0.3 : 1,
+          pointerEvents: isEditingMapPosition ? "none" : "auto",
+          transition: "opacity 0.2s",
+        }}
+      >
+        <Stage
+          ref={stageRef}
+          width={containerSize.width}
+          height={containerSize.height}
+          x={viewport.x}
+          y={viewport.y}
+          scaleX={viewport.scale}
+          scaleY={viewport.scale}
+          draggable={activeTool === "hand"}
+          onMouseDown={handleStageMouseDown}
+          onMouseMove={handleStageMouseMove}
+          onMouseUp={handleStageMouseUp}
+          onClick={handleStageClick}
+          onWheel={handleWheel}
+          onDragStart={handleStageDragStart}
+          onDragMove={handleDragMove}
+          onDragEnd={handleDragEnd}
+        >
+        {/* Board background and Grid - only shown for non-map boards */}
+        {!hasMap && (
+          <Layer listening={false}>
             <Rect
-              key={`h-${i}`}
               x={0}
-              y={i * 20}
-              width={boardWidth}
-              height={0.5}
-              fill="#f0f0f0"
-              opacity={0.5}
-            />
-          ))}
-          {Array.from({ length: Math.ceil(boardWidth / 20) }).map((_, i) => (
-            <Rect
-              key={`v-${i}`}
-              x={i * 20}
               y={0}
-              width={0.5}
+              width={boardWidth}
               height={boardHeight}
-              fill="#f0f0f0"
-              opacity={0.5}
+              fill={
+                board &&
+                board.backgroundType === "color" &&
+                board.backgroundColor
+                  ? board.backgroundColor
+                  : "#ffffff"
+              }
+              shadowColor="rgba(0,0,0,0.15)"
+              shadowBlur={10}
+              shadowOffset={{ x: 0, y: 4 }}
             />
-          ))}
-        </Layer>
+            {Array.from({ length: Math.ceil(boardHeight / 20) }).map((_, i) => (
+              <Rect
+                key={`h-${i}`}
+                x={0}
+                y={i * 20}
+                width={boardWidth}
+                height={0.5}
+                fill="#f0f0f0"
+                opacity={0.5}
+              />
+            ))}
+            {Array.from({ length: Math.ceil(boardWidth / 20) }).map((_, i) => (
+              <Rect
+                key={`v-${i}`}
+                x={i * 20}
+                y={0}
+                width={0.5}
+                height={boardHeight}
+                fill="#f0f0f0"
+                opacity={0.5}
+              />
+            ))}
+          </Layer>
+        )}
 
         {/* All board layers in one Konva Layer — each board layer is a Group.
             Keeps Konva within the recommended 3-layer limit. */}
@@ -1002,7 +1129,8 @@ export function EditorCanvas() {
             />
           )}
         </Layer>
-      </Stage>
+        </Stage>
+      </div>
 
       {/* Context Menu (rendered outside the canvas) */}
       <ContextMenu
@@ -1069,6 +1197,71 @@ export function EditorCanvas() {
 
       {/* Text inline editor — rendered outside Konva Stage to avoid reconciler conflicts */}
       <TextEditor />
+
+      {/* Map coordinate badge — bottom-left, minimal */}
+      {hasMap && mapCursorPosition && !isEditingMapPosition && (
+        <div className="absolute bottom-12 left-4 z-10 glass-panel rounded-lg px-3 py-1.5 flex items-center gap-2 text-xs pointer-events-auto">
+          <Crosshair className="w-3 h-3 text-[var(--accent-400)]" />
+          <span className="text-white font-mono text-[11px]">
+            {formatCoordinate(
+              mapCursorPosition.lat,
+              mapCursorPosition.lng,
+              coordinateFormat,
+            )}
+          </span>
+          <button
+            onClick={() => {
+              const formats: CoordinateFormat[] = ["dd", "dms", "ddm"];
+              const idx = formats.indexOf(coordinateFormat);
+              setCoordinateFormat(formats[(idx + 1) % formats.length]);
+            }}
+            className="px-1 py-0.5 rounded bg-white/10 hover:bg-white/20 text-[var(--gray-400)] hover:text-white transition-colors text-[9px] uppercase tracking-wider"
+          >
+            {coordinateFormat.toUpperCase()}
+          </button>
+        </div>
+      )}
+
+      {/* Map Edit Controls */}
+      {hasMap && !isEditingMapPosition && (
+        <button
+          onClick={handleEditMapPosition}
+          className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 glass-panel rounded-full px-5 py-2.5 flex items-center gap-2.5 text-sm text-white hover:bg-white/10 transition-all pointer-events-auto shadow-xl border border-white/10 hover:scale-105 active:scale-95"
+        >
+          <Move className="w-4 h-4 text-[var(--accent-400)]" />
+          <span className="font-medium tracking-wide">Reposition Map</span>
+        </button>
+      )}
+
+      {isEditingMapPosition && (
+        <div className="absolute top-6 left-1/2 -translate-x-1/2 z-20 glass-panel rounded-xl flex items-center justify-between px-5 py-3 shadow-2xl border border-white/10 pointer-events-auto w-[480px]">
+          <div className="flex items-center gap-3 text-white">
+            <div className="w-8 h-8 rounded-full bg-[var(--accent-500)]/20 flex items-center justify-center">
+              <Map className="w-4 h-4 text-[var(--accent-400)]" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-sm tracking-wide">Reposition Mode</h3>
+              <p className="text-xs text-[var(--gray-400)]">Drag and zoom to set map bounds</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleCancelMapEdit}
+              className="px-3 py-1.5 rounded-lg text-sm font-medium text-[var(--gray-300)] hover:bg-white/5 hover:text-white transition-colors cursor-pointer flex items-center gap-1.5"
+            >
+              <X className="w-3.5 h-3.5" />
+              Cancel
+            </button>
+            <button
+              onClick={handleSaveMapEdit}
+              className="px-3 py-1.5 rounded-lg text-sm font-semibold bg-[var(--accent-500)] hover:bg-[var(--accent-400)] text-white transition-colors shadow cursor-pointer flex items-center gap-1.5"
+            >
+              <Check className="w-3.5 h-3.5" />
+              Save
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

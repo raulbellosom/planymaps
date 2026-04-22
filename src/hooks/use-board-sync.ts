@@ -329,7 +329,8 @@ export function useBoardSync(boardId: string | null): UseBoardSyncReturn {
           prev.layerId !== item.layerId ||
           prev.orderIndex !== item.orderIndex ||
           prev.styleJson !== item.styleJson ||
-          prev.contentJson !== item.contentJson;
+          prev.contentJson !== item.contentJson ||
+          prev.geoJson !== item.geoJson;
 
         if (transformChanged || stateChanged) {
           markItemDirty(item.$id);
@@ -348,6 +349,7 @@ export function useBoardSync(boardId: string | null): UseBoardSyncReturn {
             orderIndex: item.orderIndex,
             styleJson: item.styleJson,
             contentJson: item.contentJson,
+            geoJson: item.geoJson,
           });
         }
       }

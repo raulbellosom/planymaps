@@ -44,9 +44,9 @@ export const publicEnv = {
   appwriteBucketBoardThumbnails:
     process.env.NEXT_PUBLIC_APPWRITE_BUCKET_BOARD_THUMBNAILS,
 
-  // Map/Geolocation (for future use)
+  // Map/Geolocation
+  mapTileProvider: process.env.NEXT_PUBLIC_MAP_TILE_PROVIDER || "osm",
   // mapProviderApiKey: process.env.NEXT_PUBLIC_MAP_PROVIDER_API_KEY,
-  // mapStyleUrl: process.env.NEXT_PUBLIC_MAP_STYLE_URL,
 } as const;
 
 /**

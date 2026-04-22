@@ -70,6 +70,9 @@ interface BoardActions {
   groupItems: (itemIds: string[]) => string | null;
   ungroupItems: (groupId: string) => void;
 
+  // Geo actions
+  updateItemGeo: (itemId: string, geoJson: string) => void;
+
   // State management
   setLoading: (isLoading: boolean) => void;
   setError: (error: string | null) => void;
@@ -621,6 +624,25 @@ export const useBoardStore = create<BoardState & BoardActions>((set, get) => ({
       return;
     }
   },
+
+  // ============ GEO ACTIONS ============
+  updateItemGeo: (itemId, geoJson) =>
+    set((state) => {
+      const newItemsByLayer = { ...state.itemsByLayer };
+      for (const layerId of Object.keys(newItemsByLayer)) {
+        const items = newItemsByLayer[layerId];
+        const index = items.findIndex((i) => i.$id === itemId);
+        if (index !== -1) {
+          newItemsByLayer[layerId] = [
+            ...items.slice(0, index),
+            { ...items[index], geoJson },
+            ...items.slice(index + 1),
+          ];
+          break;
+        }
+      }
+      return { itemsByLayer: newItemsByLayer, isDirty: true };
+    }),
 
   // ============ STATE MANAGEMENT ============
   setLoading: (isLoading) => set({ isLoading }),

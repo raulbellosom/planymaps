@@ -6,6 +6,7 @@ interface PanelState {
   leftPanel: boolean;
   rightPanel: boolean;
   layerPanel: boolean;
+  configurationPanel: boolean;
 }
 
 interface PanelContextValue {
@@ -22,6 +23,7 @@ export function PanelProvider({ children }: { children: ReactNode }) {
     leftPanel: true, // Tools panel - open by default on desktop
     rightPanel: false, // Inspector - closed by default
     layerPanel: true, // Layer panel - open by default on desktop
+    configurationPanel: false, // Configuration panel - closed by default
   });
 
   const togglePanel = (panel: keyof PanelState) => {

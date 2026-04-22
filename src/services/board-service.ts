@@ -45,6 +45,7 @@ export async function createBoard(input: CreateBoardInput): Promise<Board> {
       backgroundType: input.backgroundType || "none",
       backgroundColor: input.backgroundColor || "#ffffff",
       backgroundAssetId: input.backgroundAssetId || null,
+      mapSettingsJson: input.mapSettingsJson || null,
       isArchived: false,
       ownerId: input.createdBy,
       createdBy: input.createdBy,
@@ -89,11 +90,13 @@ export async function updateBoard(
       Board,
       | "name"
       | "description"
+      | "mode"
       | "backgroundType"
       | "backgroundColor"
       | "backgroundAssetId"
       | "thumbnailFileId"
       | "viewportState"
+      | "mapSettingsJson"
     >
   >,
 ): Promise<Board> {

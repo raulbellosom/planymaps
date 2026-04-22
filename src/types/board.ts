@@ -9,6 +9,18 @@ export type BackgroundType = "none" | "color" | "image" | "map";
 // Board mode options
 export type BoardMode = "visual" | "geo";
 
+// Map tile provider options
+export type TileProvider = "osm" | "satellite" | "terrain";
+
+// Map settings stored as JSON on the board
+export interface MapSettings {
+  centerLat: number;
+  centerLng: number;
+  zoom: number;
+  tileProvider: TileProvider;
+  mapOpacity: number; // 0-1
+}
+
 // Item type options
 export type ItemType =
   | "rectangle"
@@ -97,6 +109,7 @@ export interface Board {
   backgroundAssetId?: string;
   thumbnailFileId?: string;
   viewportState?: string; // JSON string with pan/zoom state
+  mapSettingsJson?: string; // JSON string of MapSettings
   isArchived: boolean;
   createdBy: string;
 }
@@ -177,6 +190,23 @@ export function parseGeoProps(item: BoardItem): GeoProps | null {
   }
 }
 
+export const defaultMapSettings: MapSettings = {
+  centerLat: 20.6534,
+  centerLng: -105.2253,
+  zoom: 13,
+  tileProvider: "osm",
+  mapOpacity: 1,
+};
+
+export function parseMapSettings(board: Board): MapSettings {
+  if (!board.mapSettingsJson) return defaultMapSettings;
+  try {
+    return { ...defaultMapSettings, ...JSON.parse(board.mapSettingsJson) };
+  } catch {
+    return defaultMapSettings;
+  }
+}
+
 // Default values for new items
 export const defaultTransform: Transform = {
   x: 0,
@@ -213,6 +243,7 @@ export interface CreateBoardInput {
   backgroundType?: BackgroundType;
   backgroundColor?: string;
   backgroundAssetId?: string;
+  mapSettingsJson?: string;
   createdBy: string;
 }
 

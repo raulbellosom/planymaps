@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { usePanels } from "@/contexts/panel-context";
 import { useBoardStore } from "@/stores/board-store";
 import { useUIStore } from "@/stores/ui-store";
-import { parseStyleProps, parseContentProps } from "@/types/board";
+import { parseStyleProps, parseContentProps, parseGeoProps } from "@/types/board";
 import type { BoardItem, Layer } from "@/types/board";
 import {
   X,
@@ -506,6 +506,28 @@ function InspectorContent({
             <MapPin className="w-3.5 h-3.5 text-red-400" />
             Edit Pin &amp; Photos
           </button>
+
+          {/* Geo coordinates */}
+          <SectionHeader label="Coordinates" />
+          <div className="grid grid-cols-2 gap-2">
+            <NumberInput
+              label="Latitude"
+              value={content.gpsLat ?? 0}
+              step={0.000001}
+              onChange={(v) => updateContent({ gpsLat: v })}
+            />
+            <NumberInput
+              label="Longitude"
+              value={content.gpsLng ?? 0}
+              step={0.000001}
+              onChange={(v) => updateContent({ gpsLng: v })}
+            />
+          </div>
+          {(content.gpsLat !== undefined && content.gpsLng !== undefined) && (
+            <p className="text-[10px] text-(--gray-500) font-mono">
+              {content.gpsLat.toFixed(6)}°, {content.gpsLng.toFixed(6)}°
+            </p>
+          )}
         </>
       )}
 

@@ -9,6 +9,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { LeftToolsPanel } from "@/components/layout/left-tools-panel";
 import { RightInspectorPanel } from "@/components/layout/right-inspector-panel";
 import { LayerPanel } from "@/components/layout/layer-panel";
+import { BoardConfigurationPanel } from "@/components/layout/board-configuration-panel";
 import { useBoardStore } from "@/stores/board-store";
 import { useUIStore } from "@/stores/ui-store";
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
@@ -476,38 +477,38 @@ function BoardContent() {
                           Click to open
                         </span>
                         {canEdit && (
-                        <div className="flex gap-2">
-                          <button
-                            onClick={(e) => {
-                              e.preventDefault();
-                              handleEditBoard(b);
-                            }}
-                            className="p-2 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 transition-colors"
-                            title="Edit board"
-                          >
-                            <Settings2 className="w-4 h-4" />
-                          </button>
-                          <button
-                            onClick={(e) => {
-                              e.preventDefault();
-                              setShowBoardSettingsModal(b);
-                            }}
-                            className="p-2 rounded-lg bg-purple-500/10 hover:bg-purple-500/20 text-purple-400 transition-colors"
-                            title="Background settings"
-                          >
-                            <Palette className="w-4 h-4" />
-                          </button>
-                          <button
-                            onClick={(e) => {
-                              e.preventDefault();
-                              setShowDeleteBoardModal(b);
-                            }}
-                            className="p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 transition-colors"
-                            title="Delete board"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
+                          <div className="flex gap-2">
+                            <button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                handleEditBoard(b);
+                              }}
+                              className="p-2 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 transition-colors"
+                              title="Edit board"
+                            >
+                              <Settings2 className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                setShowBoardSettingsModal(b);
+                              }}
+                              className="p-2 rounded-lg bg-purple-500/10 hover:bg-purple-500/20 text-purple-400 transition-colors"
+                              title="Background settings"
+                            >
+                              <Palette className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                setShowDeleteBoardModal(b);
+                              }}
+                              className="p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 transition-colors"
+                              title="Delete board"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
                         )}
                       </div>
                     </div>
@@ -714,6 +715,9 @@ function BoardContent() {
 
         {/* Right inspector panel */}
         <RightInspectorPanel />
+
+        {/* Board configuration panel */}
+        <BoardConfigurationPanel />
 
         {/* Layer panel - positioned at bottom-left */}
         <LayerPanel />

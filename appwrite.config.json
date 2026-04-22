@@ -458,6 +458,14 @@
           "encrypt": false
         },
         {
+          "key": "mapSettingsJson",
+          "type": "text",
+          "required": false,
+          "array": false,
+          "default": null,
+          "encrypt": false
+        },
+        {
           "key": "ownerId",
           "type": "string",
           "required": true,
@@ -746,6 +754,14 @@
         },
         {
           "key": "interactionJson",
+          "type": "text",
+          "required": false,
+          "array": false,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "geoJson",
           "type": "text",
           "required": false,
           "array": false,

@@ -119,7 +119,19 @@ export const PinRenderer: React.FC<ItemRendererProps> = ({
   // strokeScaleEnabled=false prevents the shape's own scaleX/Y from magnifying
   // the stroke; pre-dividing by stageScale then cancels the stage's contribution,
   // yielding a constant on-screen stroke width regardless of zoom.
-  const strokeWidthCanvas = (style.strokeWidth ?? 1.5) / stageScale;
+  //
+  // Dynamic stroke scaling: when zoomed out below STROKE_SCALE_THRESHOLD,
+  // the stroke width is reduced proportionally so the pin fill remains visible
+  // instead of appearing as a hollow outline.
+  const STROKE_SCALE_THRESHOLD = 0.5;
+  const STROKE_SCALE_FACTOR = 0.5; // Factor to reduce stroke by when below threshold
+  const baseStrokeWidth = style.strokeWidth ?? 1.5;
+  const dynamicStrokeScale =
+    stageScale < STROKE_SCALE_THRESHOLD
+      ? STROKE_SCALE_FACTOR +
+        (stageScale / STROKE_SCALE_THRESHOLD) * (1 - STROKE_SCALE_FACTOR)
+      : 1;
+  const strokeWidthCanvas = (baseStrokeWidth * dynamicStrokeScale) / stageScale;
 
   // ── Lifecycle ─────────────────────────────────────────────────────────────
 

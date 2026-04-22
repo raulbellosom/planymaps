@@ -492,7 +492,9 @@ export function CreateBoardWizard({
                 <input
                   type="color"
                   value={bgColor}
-                  onChange={(e) => setBgColor(e.target.value)}
+                  onInput={(e) =>
+                    setBgColor((e.target as HTMLInputElement).value)
+                  }
                   className="w-10 h-10 rounded cursor-pointer border border-white/20 bg-transparent"
                 />
                 <input

@@ -5,6 +5,7 @@
 
 import { create } from "zustand";
 import type { ItemType } from "@/types/board";
+import type { CoordinateFormat } from "@/lib/geo-utils";
 import type React from "react";
 
 // Tool types
@@ -68,6 +69,15 @@ interface UIState {
     text: string;
     textareaStyle: React.CSSProperties;
   } | null;
+
+  // Map cursor position (geo coordinates under the mouse)
+  mapCursorPosition: { lat: number; lng: number } | null;
+
+  // Coordinate display format preference
+  coordinateFormat: CoordinateFormat;
+
+  // Whether the user is actively panning/zooming the Leaflet map to set its region
+  isEditingMapPosition: boolean;
 }
 
 // Actions interface
@@ -110,6 +120,11 @@ interface UIActions {
   // Text editor actions
   setTextEdit: (edit: UIState["textEdit"]) => void;
 
+  // Map actions
+  setMapCursorPosition: (pos: UIState["mapCursorPosition"]) => void;
+  setCoordinateFormat: (format: CoordinateFormat) => void;
+  setIsEditingMapPosition: (isEditing: boolean) => void;
+
   // State management
   reset: () => void;
 }
@@ -129,6 +144,9 @@ const initialState: UIState = {
   pinPopover: null,
   pinEditModal: null,
   textEdit: null,
+  mapCursorPosition: null,
+  coordinateFormat: "dd" as CoordinateFormat,
+  isEditingMapPosition: false,
 };
 
 export const useUIStore = create<UIState & UIActions>((set, get) => ({
@@ -266,6 +284,11 @@ export const useUIStore = create<UIState & UIActions>((set, get) => ({
 
   // ============ TEXT EDITOR ACTIONS ============
   setTextEdit: (edit) => set({ textEdit: edit }),
+
+  // ============ MAP ACTIONS ============
+  setMapCursorPosition: (pos) => set({ mapCursorPosition: pos }),
+  setCoordinateFormat: (format) => set({ coordinateFormat: format }),
+  setIsEditingMapPosition: (isEditing) => set({ isEditingMapPosition: isEditing }),
 
   // ============ STATE MANAGEMENT ============
   reset: () => set(initialState),

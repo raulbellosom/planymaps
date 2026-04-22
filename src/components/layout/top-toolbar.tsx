@@ -8,8 +8,8 @@ import {
   LogOut,
   Maximize2,
   Menu,
-  Palette,
   Settings2,
+  Settings,
   ZoomIn,
   ZoomOut,
 } from "lucide-react";
@@ -17,7 +17,6 @@ import { useRouter } from "next/navigation";
 import { usePanels } from "@/contexts/panel-context";
 import { useBoardStore } from "@/stores/board-store";
 import { useUIStore } from "@/stores/ui-store";
-import { BoardSettingsModal } from "@/components/editor/board-settings-modal";
 import { ShareModal } from "@/components/editor/share-modal";
 import { KeyboardShortcutsModal } from "@/components/editor/keyboard-shortcuts-modal";
 import { LogoSvg } from "@/components/ui/logo-svg";
@@ -35,7 +34,6 @@ export function TopToolbar({ readOnly = false }: { readOnly?: boolean } = {}) {
   const zoomOut = useUIStore((state) => state.zoomOut);
   const [showShare, setShowShare] = useState(false);
   const [showShortcuts, setShowShortcuts] = useState(false);
-  const [showBoardSettings, setShowBoardSettings] = useState(false);
   const [showZoomSlider, setShowZoomSlider] = useState(false);
   const [isEditingBoardName, setIsEditingBoardName] = useState(false);
   const [boardNameInput, setBoardNameInput] = useState("");
@@ -141,7 +139,9 @@ export function TopToolbar({ readOnly = false }: { readOnly?: boolean } = {}) {
               />
             ) : (
               <span
-                onDoubleClick={!readOnly ? handleBoardNameDoubleClick : undefined}
+                onDoubleClick={
+                  !readOnly ? handleBoardNameDoubleClick : undefined
+                }
                 className={`hidden lg:block text-white/80 text-sm font-medium px-2 truncate max-w-[200px] rounded transition-colors ${
                   readOnly
                     ? "cursor-default"
@@ -152,17 +152,6 @@ export function TopToolbar({ readOnly = false }: { readOnly?: boolean } = {}) {
                 {board.name}
               </span>
             ))}
-          {/* Board background settings — only in edit mode */}
-          {board && !readOnly && (
-            <button
-              onClick={() => setShowBoardSettings(true)}
-              className="p-2 rounded-lg hover:bg-white/10 text-(--gray-400) hover:text-white transition-colors"
-              aria-label="Board background settings"
-              title="Board background"
-            >
-              <Palette className="w-4 h-4" />
-            </button>
-          )}
           {/* Share button — only in edit mode */}
           {board && !readOnly && (
             <button
@@ -278,21 +267,22 @@ export function TopToolbar({ readOnly = false }: { readOnly?: boolean } = {}) {
               <Settings2 className="w-5 h-5" />
             </button>
           )}
+          {/* Board configuration panel toggle — only in edit mode */}
+          {!readOnly && (
+            <button
+              onClick={() => togglePanel("configurationPanel")}
+              className={`p-2 sm:p-2 rounded-lg touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center transition-colors ${
+                panels.configurationPanel
+                  ? "bg-[var(--accent-500)]/20 text-[var(--accent-400)]"
+                  : "text-[var(--gray-400)] hover:text-white hover:bg-white/10"
+              }`}
+              aria-label="Toggle configuration panel"
+            >
+              <Settings className="w-5 h-5" />
+            </button>
+          )}
         </div>
       </header>
-
-      {/* Board background settings modal */}
-      {showBoardSettings && board && (
-        <BoardSettingsModal
-          key={board.$id}
-          isOpen={showBoardSettings}
-          onClose={() => setShowBoardSettings(false)}
-          board={board}
-          workspaceId={board.workspaceId}
-          userId={board.createdBy}
-          onSaved={(updated) => updateBoard(updated)}
-        />
-      )}
 
       {/* Share modal */}
       {showShare && board && (
