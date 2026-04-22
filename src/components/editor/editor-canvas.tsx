@@ -38,6 +38,9 @@ import { MapRenderer, isMapBoard } from "./map-renderer";
 import { formatCoordinate } from "@/lib/geo-utils";
 import type { CoordinateFormat } from "@/lib/geo-utils";
 
+import { updateBoard as updateBoardApi } from "@/services/board-service";
+import { toast } from "sonner";
+
 export function EditorCanvas() {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -759,20 +762,29 @@ export function EditorCanvas() {
   }, [setIsEditingMapPosition]);
 
   // Save edit mode
-  const handleSaveMapEdit = useCallback(() => {
+  const handleSaveMapEdit = useCallback(async () => {
     if (!board || !draftMapSettings || !mapSettings) return;
     
-    updateBoard({
-      mapSettingsJson: JSON.stringify({
-        ...mapSettings,
-        centerLat: draftMapSettings.lat,
-        centerLng: draftMapSettings.lng,
-        zoom: draftMapSettings.zoom,
-      })
+    const updatedMapSettingsJson = JSON.stringify({
+      ...mapSettings,
+      centerLat: draftMapSettings.lat,
+      centerLng: draftMapSettings.lng,
+      zoom: draftMapSettings.zoom,
     });
-    
+
+    // Optimistic update
+    updateBoard({ mapSettingsJson: updatedMapSettingsJson });
     setIsEditingMapPosition(false);
     setDraftMapSettings(null);
+
+    // Save to database
+    try {
+      await updateBoardApi(board.$id, { mapSettingsJson: updatedMapSettingsJson });
+      toast.success("Map region saved");
+    } catch (error) {
+      console.error("Failed to save map settings:", error);
+      toast.error("Failed to save map region");
+    }
   }, [board, draftMapSettings, mapSettings, updateBoard, setIsEditingMapPosition]);
 
   // Map change during edit mode
