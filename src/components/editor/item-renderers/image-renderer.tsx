@@ -297,7 +297,7 @@ export const ImageRenderer: React.FC<ItemRendererProps> = ({
         visible={item.visible}
         opacity={opacity}
         image={displayImage}
-        draggable={interaction.draggable !== false && !item.locked}
+        draggable={isSelected && interaction.draggable !== false && !item.locked}
         onClick={handleClick}
         onTap={handleTap}
         onDragEnd={handleDragEnd}
